@@ -3,7 +3,7 @@
   "info": {
     "title": "Creator API",
     "version": "1.0.0",
-    "description": "API for managing creators"
+    "description": "API for managing entire platform"
   },
   "paths": {
     "/api/creator": {
@@ -181,6 +181,91 @@
                     "error": {
                       "type": "string",
                       "example": "Invalid input data"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/follow": {
+      "post": {
+        "summary": "Follow a user",
+        "description": "Allows a user to follow another user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userAddress": {
+                    "type": "string",
+                    "example": "0x1234567890abcdef"
+                  },
+                  "targetAddress": {
+                    "type": "string",
+                    "example": "0xabcdef1234567890"
+                  }
+                },
+                "required": ["userAddress", "targetAddress"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "followerId": {
+                          "type": "string",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "followingId": {
+                          "type": "string",
+                          "example": "987fdebc-a654-3210-9876-543210987654"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2021-01-01T00:00:00Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
                     }
                   }
                 }

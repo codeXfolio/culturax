@@ -38,3 +38,31 @@ export const getUserByAddress = async (address: string) => {
   });
   return user;
 };
+
+export const followUser = async (
+  userAddress: string,
+  targetAddress: string,
+) => {
+  const prisma = new PrismaClient();
+
+  const target = await prisma.user.findUnique({
+    where: { address: userAddress },
+  });
+
+  const user = await prisma.user.findUnique({
+    where: { address: targetAddress },
+  });
+
+  if (!user || !target) {
+    throw new Error('User not found');
+  }
+
+  const follow = await prisma.follow.create({
+    data: {
+      followerId: user.id,
+      followingId: target.id,
+    },
+  });
+
+  return follow;
+};

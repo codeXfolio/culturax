@@ -1,5 +1,10 @@
 import { Request, Response } from 'express';
-import { getUserByAddress, inputUser, RegisterUserInput } from './user.service';
+import {
+  getUserByAddress,
+  inputUser,
+  RegisterUserInput,
+  followUser,
+} from './user.service';
 
 class UserController {
   async register(req: Request, res: Response) {
@@ -43,6 +48,30 @@ class UserController {
     }
 
     res.json(user);
+  }
+
+  async follow(req: Request, res: Response) {
+    try {
+      const { userAddress, targetAddress } = req.body;
+
+      if (!userAddress || !targetAddress) {
+        return res.status(400).json({
+          success: false,
+          error: 'User and target addresses are required',
+        });
+      }
+
+      const follow = await followUser(userAddress, targetAddress);
+      res.json({ success: true, data: follow });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ success: false, error: error.message });
+      } else {
+        res
+          .status(500)
+          .json({ success: false, error: 'Internal server error' });
+      }
+    }
   }
 }
 
