@@ -6,6 +6,7 @@ import swaggerUi from 'swagger-ui-express';
 // @ts-ignore
 import openApiDocumentation from '../openapi.json';
 import userRoutes from './routes/user.routes';
+import aiRoutes from './routes/ai.routes';
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(logRequest);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
 app.use('/api/creator', creatorRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/ai', aiRoutes);
 
 app.use(errorHandler);
 
