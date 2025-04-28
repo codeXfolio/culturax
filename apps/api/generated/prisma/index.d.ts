@@ -4669,6 +4669,7 @@ export namespace Prisma {
     title: string | null
     description: string | null
     tags: string | null
+    coverImage: string | null
     userId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4679,6 +4680,7 @@ export namespace Prisma {
     title: string | null
     description: string | null
     tags: string | null
+    coverImage: string | null
     userId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4689,6 +4691,7 @@ export namespace Prisma {
     title: number
     description: number
     tags: number
+    coverImage: number
     userId: number
     createdAt: number
     updatedAt: number
@@ -4701,6 +4704,7 @@ export namespace Prisma {
     title?: true
     description?: true
     tags?: true
+    coverImage?: true
     userId?: true
     createdAt?: true
     updatedAt?: true
@@ -4711,6 +4715,7 @@ export namespace Prisma {
     title?: true
     description?: true
     tags?: true
+    coverImage?: true
     userId?: true
     createdAt?: true
     updatedAt?: true
@@ -4721,6 +4726,7 @@ export namespace Prisma {
     title?: true
     description?: true
     tags?: true
+    coverImage?: true
     userId?: true
     createdAt?: true
     updatedAt?: true
@@ -4804,6 +4810,7 @@ export namespace Prisma {
     title: string
     description: string
     tags: string
+    coverImage: string
     userId: string
     createdAt: Date
     updatedAt: Date
@@ -4831,6 +4838,7 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     tags?: boolean
+    coverImage?: boolean
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4842,6 +4850,7 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     tags?: boolean
+    coverImage?: boolean
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4853,6 +4862,7 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     tags?: boolean
+    coverImage?: boolean
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4864,12 +4874,13 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     tags?: boolean
+    coverImage?: boolean
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type CollectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "tags" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["collection"]>
+  export type CollectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "tags" | "coverImage" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["collection"]>
   export type CollectionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -4890,6 +4901,7 @@ export namespace Prisma {
       title: string
       description: string
       tags: string
+      coverImage: string
       userId: string
       createdAt: Date
       updatedAt: Date
@@ -5321,6 +5333,7 @@ export namespace Prisma {
     readonly title: FieldRef<"Collection", 'String'>
     readonly description: FieldRef<"Collection", 'String'>
     readonly tags: FieldRef<"Collection", 'String'>
+    readonly coverImage: FieldRef<"Collection", 'String'>
     readonly userId: FieldRef<"Collection", 'String'>
     readonly createdAt: FieldRef<"Collection", 'DateTime'>
     readonly updatedAt: FieldRef<"Collection", 'DateTime'>
@@ -5797,6 +5810,7 @@ export namespace Prisma {
     title: 'title',
     description: 'description',
     tags: 'tags',
+    coverImage: 'coverImage',
     userId: 'userId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -6139,6 +6153,7 @@ export namespace Prisma {
     title?: StringFilter<"Collection"> | string
     description?: StringFilter<"Collection"> | string
     tags?: StringFilter<"Collection"> | string
+    coverImage?: StringFilter<"Collection"> | string
     userId?: StringFilter<"Collection"> | string
     createdAt?: DateTimeFilter<"Collection"> | Date | string
     updatedAt?: DateTimeFilter<"Collection"> | Date | string
@@ -6150,6 +6165,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     tags?: SortOrder
+    coverImage?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -6164,6 +6180,7 @@ export namespace Prisma {
     title?: StringFilter<"Collection"> | string
     description?: StringFilter<"Collection"> | string
     tags?: StringFilter<"Collection"> | string
+    coverImage?: StringFilter<"Collection"> | string
     userId?: StringFilter<"Collection"> | string
     createdAt?: DateTimeFilter<"Collection"> | Date | string
     updatedAt?: DateTimeFilter<"Collection"> | Date | string
@@ -6175,6 +6192,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     tags?: SortOrder
+    coverImage?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -6191,6 +6209,7 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Collection"> | string
     description?: StringWithAggregatesFilter<"Collection"> | string
     tags?: StringWithAggregatesFilter<"Collection"> | string
+    coverImage?: StringWithAggregatesFilter<"Collection"> | string
     userId?: StringWithAggregatesFilter<"Collection"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Collection"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Collection"> | Date | string
@@ -6425,6 +6444,7 @@ export namespace Prisma {
     title: string
     description: string
     tags: string
+    coverImage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutCollectionInput
@@ -6435,6 +6455,7 @@ export namespace Prisma {
     title: string
     description: string
     tags: string
+    coverImage?: string
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6445,6 +6466,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
+    coverImage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutCollectionNestedInput
@@ -6455,6 +6477,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
+    coverImage?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6465,6 +6488,7 @@ export namespace Prisma {
     title: string
     description: string
     tags: string
+    coverImage?: string
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6475,6 +6499,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
+    coverImage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6484,6 +6509,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
+    coverImage?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6796,6 +6822,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     tags?: SortOrder
+    coverImage?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -6806,6 +6833,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     tags?: SortOrder
+    coverImage?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -6816,6 +6844,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     tags?: SortOrder
+    coverImage?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -7305,6 +7334,7 @@ export namespace Prisma {
     title: string
     description: string
     tags: string
+    coverImage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7314,6 +7344,7 @@ export namespace Prisma {
     title: string
     description: string
     tags: string
+    coverImage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7419,6 +7450,7 @@ export namespace Prisma {
     title?: StringFilter<"Collection"> | string
     description?: StringFilter<"Collection"> | string
     tags?: StringFilter<"Collection"> | string
+    coverImage?: StringFilter<"Collection"> | string
     userId?: StringFilter<"Collection"> | string
     createdAt?: DateTimeFilter<"Collection"> | Date | string
     updatedAt?: DateTimeFilter<"Collection"> | Date | string
@@ -7846,6 +7878,7 @@ export namespace Prisma {
     title: string
     description: string
     tags: string
+    coverImage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7903,6 +7936,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
+    coverImage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7912,6 +7946,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
+    coverImage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7921,6 +7956,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     tags?: StringFieldUpdateOperationsInput | string
+    coverImage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

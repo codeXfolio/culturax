@@ -18,7 +18,17 @@ const getByUserHandler: RequestHandler = async (req, res) => {
   await collectionController.getByUser(req, res);
 };
 
+const getByIdHandler: RequestHandler = async (req, res) => {
+  await collectionController.getById(req, res);
+};
+
+const updateHandler: RequestHandler = async (req, res) => {
+  await collectionController.update(req, res);
+};
+
 router.post('/upload', upload.single('images'), uploadHandler);
 router.get('/user/:userId', getByUserHandler);
+router.get('/:id', getByIdHandler);
+router.put('/update/:id', updateHandler);
 
 export default router;

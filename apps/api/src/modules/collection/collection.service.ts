@@ -1,6 +1,6 @@
 import { PrismaClient } from '../../../generated/prisma';
 import { unzip } from 'unzipit';
-import { mkdir, writeFile } from 'fs/promises';
+import { mkdir, writeFile, readdir } from 'fs/promises';
 import { join } from 'path';
 
 export interface CollectionInput {
@@ -71,4 +71,70 @@ export const getCollectionsByUser = async (userId: string) => {
   });
 
   return collections;
+};
+
+interface CollectionFile {
+  name: string;
+  path: string;
+}
+
+export const getCollectionById = async (id: string) => {
+  const prisma = new PrismaClient();
+
+  const collection = await prisma.collection.findUnique({
+    where: { id },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+
+  if (!collection) {
+    throw new Error('Collection not found');
+  }
+
+  // Get list of files in the collection directory
+  const uploadDir = join(process.cwd(), 'uploads', 'collections', id);
+  let files: CollectionFile[] = [];
+
+  try {
+    const fileNames = await readdir(uploadDir);
+    files = fileNames.map((fileName) => ({
+      name: fileName,
+      path: `/uploads/collections/${id}/${fileName}`,
+    }));
+  } catch (error) {
+    // Directory might not exist yet if no files were uploaded
+    files = [];
+  }
+
+  return {
+    ...collection,
+    files,
+  };
+};
+
+export const updateCollection = async (
+  id: string,
+  data: {
+    title?: string;
+    description?: string;
+    tags?: string;
+    coverImage?: string;
+  },
+) => {
+  const prisma = new PrismaClient();
+
+  const collection = await prisma.collection.update({
+    where: { id },
+    data,
+  });
+
+  return collection;
 };

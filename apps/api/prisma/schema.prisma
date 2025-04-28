@@ -59,6 +59,7 @@ model Collection {
   title       String
   description String
   tags        String
+  coverImage  String   @default("https://placehold.co/1200x400")
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())

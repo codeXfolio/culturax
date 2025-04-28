@@ -153,6 +153,7 @@ exports.Prisma.CollectionScalarFieldEnum = {
   title: 'title',
   description: 'description',
   tags: 'tags',
+  coverImage: 'coverImage',
   userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

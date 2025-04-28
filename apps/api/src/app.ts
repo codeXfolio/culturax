@@ -9,6 +9,7 @@ import userRoutes from './routes/user.routes';
 import aiRoutes from './routes/ai.routes';
 import collectionRoutes from './routes/collection.routes';
 import feedRoutes from './routes/feed.routes';
+import path from 'path';
 
 const app = express();
 
@@ -21,6 +22,9 @@ app.use('/api/user', userRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/collection', collectionRoutes);
 app.use('/api/feed', feedRoutes);
+
+// Serve static files from uploads directory
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use(errorHandler);
 
