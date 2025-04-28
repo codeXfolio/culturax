@@ -6,12 +6,15 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@prisma/client": "6.6.0",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
+    "@types/swagger-ui-express": "^4.1.8",
     "nodemon": "^3.1.10",
     "prettier": "^3.5.3",
     "prisma": "^6.6.0",
