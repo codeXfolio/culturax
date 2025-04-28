@@ -7,6 +7,8 @@ import swaggerUi from 'swagger-ui-express';
 import openApiDocumentation from '../openapi.json';
 import userRoutes from './routes/user.routes';
 import aiRoutes from './routes/ai.routes';
+import collectionRoutes from './routes/collection.routes';
+import feedRoutes from './routes/feed.routes';
 
 const app = express();
 
@@ -17,6 +19,8 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
 app.use('/api/creator', creatorRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/collection', collectionRoutes);
+app.use('/api/feed', feedRoutes);
 
 app.use(errorHandler);
 
