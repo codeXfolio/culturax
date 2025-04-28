@@ -111,6 +111,10 @@
                   "address": {
                     "type": "string",
                     "example": "0x1234567890abcdef"
+                  },
+                  "accountType": {
+                    "type": "string",
+                    "example": "USER"
                   }
                 }
               }
@@ -151,6 +155,10 @@
                         "address": {
                           "type": "string",
                           "example": "0x1234567890abcdef"
+                        },
+                        "accountType": {
+                          "type": "string",
+                          "example": "USER"
                         }
                       }
                     }
