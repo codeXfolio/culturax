@@ -5,9 +5,28 @@
     "version": "1.0.0",
     "description": "API for managing entire platform"
   },
+  "tags": [
+    {
+      "name": "Creator",
+      "description": "Operations related to creators"
+    },
+    {
+      "name": "User",
+      "description": "Operations related to users"
+    },
+    {
+      "name": "AI",
+      "description": "Operations related to AI"
+    },
+    {
+      "name": "Collection",
+      "description": "Operations related to collections"
+    }
+  ],
   "paths": {
     "/api/creator": {
       "get": {
+        "tags": ["Creator"],
         "summary": "Get all creators",
         "description": "Retrieves a list of all creators",
         "responses": {
@@ -86,8 +105,275 @@
         }
       }
     },
+    "/api/user/{address}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user details",
+        "description": "Retrieves details for a user by their blockchain address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "description": "Blockchain address of the user",
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x1234567890abcdef"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "john.doe@example.com"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "username": {
+                          "type": "string",
+                          "example": "johndoe"
+                        },
+                        "address": {
+                          "type": "string",
+                          "example": "0x1234567890abcdef"
+                        },
+                        "accountType": {
+                          "type": "string",
+                          "example": "USER"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-01-01T00:00:00Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["User"],
+        "summary": "Update user details",
+        "description": "Updates user details by their blockchain address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "description": "Blockchain address of the user",
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x1234567890abcdef"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "johndoe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john.doe@example.com"
+                  },
+                  "website": {
+                    "type": "string",
+                    "example": "https://johndoe.com"
+                  },
+                  "bio": {
+                    "type": "string",
+                    "example": "Digital artist and creator"
+                  },
+                  "language": {
+                    "type": "string",
+                    "example": "en"
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "example": "UTC"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "username": {
+                          "type": "string",
+                          "example": "johndoe"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "john.doe@example.com"
+                        },
+                        "website": {
+                          "type": "string",
+                          "example": "https://johndoe.com"
+                        },
+                        "bio": {
+                          "type": "string",
+                          "example": "Digital artist and creator"
+                        },
+                        "language": {
+                          "type": "string",
+                          "example": "en"
+                        },
+                        "timezone": {
+                          "type": "string",
+                          "example": "UTC"
+                        },
+                        "address": {
+                          "type": "string",
+                          "example": "0x1234567890abcdef"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid input data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/user/register": {
       "post": {
+        "tags": ["User"],
         "summary": "Register a new user",
         "description": "Registers a new user with the provided email, name, username, and address",
         "requestBody": {
@@ -192,6 +478,7 @@
     },
     "/api/user/follow": {
       "post": {
+        "tags": ["User"],
         "summary": "Follow a user",
         "description": "Allows a user to follow another user",
         "requestBody": {
@@ -277,6 +564,7 @@
     },
     "/api/ai/generate-caption": {
       "post": {
+        "tags": ["AI"],
         "summary": "Generate AI caption",
         "description": "Generates a caption and hashtags based on the provided description and tone",
         "requestBody": {
@@ -347,6 +635,222 @@
                     "message": {
                       "type": "string",
                       "example": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/collection/upload": {
+      "post": {
+        "tags": ["Collection"],
+        "summary": "Upload a new collection",
+        "description": "Upload a collection with images and metadata",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "description",
+                  "tags",
+                  "userId",
+                  "images"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Collection title"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Collection description"
+                  },
+                  "tags": {
+                    "type": "string",
+                    "description": "JSON string array of tags"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "description": "User ID who owns the collection"
+                  },
+                  "images": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Zip file containing collection images"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Collection uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "userId": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/collection/user/{userId}": {
+      "get": {
+        "tags": ["Collection"],
+        "summary": "Get collections by user ID",
+        "description": "Retrieve all collections owned by a specific user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Collections retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "userId": {
+                            "type": "string"
+                          },
+                          "user": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "username": {
+                                "type": "string"
+                              },
+                              "avatar": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "string"
                     }
                   }
                 }

@@ -4,6 +4,8 @@ import {
   inputUser,
   RegisterUserInput,
   followUser,
+  updateUser,
+  UpdateUserInput,
 } from './user.service';
 
 class UserController {
@@ -63,6 +65,31 @@ class UserController {
 
       const follow = await followUser(userAddress, targetAddress);
       res.json({ success: true, data: follow });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ success: false, error: error.message });
+      } else {
+        res
+          .status(500)
+          .json({ success: false, error: 'Internal server error' });
+      }
+    }
+  }
+
+  async update(req: Request, res: Response) {
+    try {
+      const { address } = req.params;
+      const input = req.body as UpdateUserInput;
+
+      if (!address) {
+        return res.status(400).json({
+          success: false,
+          error: 'Address is required',
+        });
+      }
+
+      const user = await updateUser(address, input);
+      res.json({ success: true, data: user });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ success: false, error: error.message });

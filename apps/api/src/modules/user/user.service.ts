@@ -66,3 +66,32 @@ export const followUser = async (
 
   return follow;
 };
+
+export interface UpdateUserInput {
+  name?: string;
+  username?: string;
+  email?: string;
+  website?: string;
+  bio?: string;
+  language?: string;
+  timezone?: string;
+}
+
+export const updateUser = async (address: string, input: UpdateUserInput) => {
+  const prisma = new PrismaClient();
+
+  const user = await prisma.user.update({
+    where: { address },
+    data: {
+      name: input.name,
+      username: input.username,
+      email: input.email,
+      website: input.website,
+      bio: input.bio,
+      language: input.language,
+      timezone: input.timezone,
+    },
+  });
+
+  return user;
+};

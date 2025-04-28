@@ -148,6 +148,16 @@ exports.Prisma.SocialScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.CollectionScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  tags: 'tags',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -171,7 +181,8 @@ exports.AccountType = exports.$Enums.AccountType = {
 exports.Prisma.ModelName = {
   User: 'User',
   Follow: 'Follow',
-  Social: 'Social'
+  Social: 'Social',
+  Collection: 'Collection'
 };
 
 /**

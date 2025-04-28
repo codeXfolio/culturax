@@ -17,8 +17,13 @@ const followHandler: RequestHandler = async (req, res) => {
   await userController.follow(req, res);
 };
 
+const updateHandler: RequestHandler = async (req, res) => {
+  await userController.update(req, res);
+};
+
 router.post('/register', registerHandler);
 router.get('/:address', getUserHandler);
 router.post('/follow', followHandler);
+router.patch('/:address', updateHandler);
 
 export default router;
