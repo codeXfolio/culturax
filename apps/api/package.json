@@ -4,7 +4,7 @@
     "start": "node dist/server.js",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'tsx' src/server.ts",
     "clean": "rm -rf dist",
-    "specs": "tsx src/specs.ts"
+    "specs": "nodemon --watch 'src/**/*.ts' --exec 'tsx' src/specs.ts"
   },
   "dependencies": {
     "@prisma/client": "6.6.0",

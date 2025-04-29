@@ -1,6 +1,6 @@
 import { PrismaClient } from '../../../generated/prisma';
 import { unzip } from 'unzipit';
-import { mkdir, writeFile, readdir } from 'fs/promises';
+import { mkdir, writeFile, readdir, rm } from 'fs/promises';
 import { join } from 'path';
 
 export interface CollectionInput {
@@ -134,6 +134,25 @@ export const updateCollection = async (
   const collection = await prisma.collection.update({
     where: { id },
     data,
+  });
+
+  return collection;
+};
+
+export const deleteCollection = async (id: string) => {
+  const prisma = new PrismaClient();
+
+  // Delete the collection directory if it exists
+  const uploadDir = join(process.cwd(), 'uploads', 'collections', id);
+  try {
+    await rm(uploadDir, { recursive: true, force: true });
+  } catch (error) {
+    // Directory might not exist, which is fine
+  }
+
+  // Delete the collection from database
+  const collection = await prisma.collection.delete({
+    where: { id },
   });
 
   return collection;

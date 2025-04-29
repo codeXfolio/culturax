@@ -367,6 +367,105 @@
               }
             }
           }
+        },
+        "delete": {
+          "tags": ["Collection"],
+          "summary": "Delete a collection",
+          "description": "Deletes a collection and its associated files by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "Collection ID",
+              "schema": {
+                "type": "string"
+              },
+              "example": "123e4567-e89b-12d3-a456-426614174000"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Collection deleted successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Collection deleted successfully"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Collection ID is required"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Collection not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Collection not found"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal server error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Failed to delete collection"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -551,6 +650,107 @@
                         }
                       }
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/collection/delete/{id}": {
+    "delete": {
+      "tags": ["Collection"],
+      "summary": "Delete a collection",
+      "description": "Deletes a collection and its associated files by ID",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Collection ID",
+          "schema": {
+            "type": "string"
+          },
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Collection deleted successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Collection deleted successfully"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Collection ID is required"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Collection not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Collection not found"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Failed to delete collection"
                   }
                 }
               }

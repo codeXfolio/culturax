@@ -26,9 +26,14 @@ const updateHandler: RequestHandler = async (req, res) => {
   await collectionController.update(req, res);
 };
 
+const deleteHandler: RequestHandler = async (req, res) => {
+  await collectionController.delete(req, res);
+};
+
 router.post('/upload', upload.single('images'), uploadHandler);
 router.get('/user/:userId', getByUserHandler);
 router.get('/:id', getByIdHandler);
 router.put('/update/:id', updateHandler);
+router.delete('/delete/:id', deleteHandler);
 
 export default router;

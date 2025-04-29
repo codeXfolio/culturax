@@ -5,6 +5,7 @@ import {
   CollectionInput,
   getCollectionById,
   updateCollection,
+  deleteCollection,
 } from './collection.service';
 
 class CollectionController {
@@ -114,6 +115,31 @@ class CollectionController {
       return res.status(500).json({
         success: false,
         error: 'Failed to update collection',
+      });
+    }
+  }
+
+  async delete(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      if (!id) {
+        return res.status(400).json({
+          success: false,
+          error: 'Collection ID is required',
+        });
+      }
+
+      await deleteCollection(id);
+      return res.status(200).json({
+        success: true,
+        message: 'Collection deleted successfully',
+      });
+    } catch (error) {
+      console.error('Error deleting collection:', error);
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to delete collection',
       });
     }
   }
