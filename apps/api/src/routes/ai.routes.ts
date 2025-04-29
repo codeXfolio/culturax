@@ -1,14 +1,21 @@
-import { RequestHandler, Router } from 'express';
+import { Router } from 'express';
 import AiController from '../modules/ai/ai.controller';
+import { RouteConfig } from '../types/route.types';
 
 const router = Router();
-
 const aiController = new AiController();
 
-const generateCaptionHandler: RequestHandler = async (req, res) => {
-  await aiController.generateCaption(req, res);
-};
+const routes: RouteConfig[] = [
+  {
+    path: '/generate-caption',
+    method: 'post',
+    handler: aiController.generateCaption,
+  },
+];
 
-router.post('/generate-caption', generateCaptionHandler);
+// Register routes
+routes.forEach(({ path, method, handler, middlewares = [] }) => {
+  router[method](path, ...middlewares, handler);
+});
 
 export default router;

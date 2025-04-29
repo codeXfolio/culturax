@@ -1,9 +1,21 @@
 import { Router } from 'express';
 import CreatorController from '../modules/creator/creator.controller';
+import { RouteConfig } from '../types/route.types';
 
 const router = Router();
 const creatorController = new CreatorController();
 
-router.get('/', creatorController.getCreators);
+const routes: RouteConfig[] = [
+  {
+    path: '/',
+    method: 'get',
+    handler: creatorController.getCreators,
+  },
+];
+
+// Register routes
+routes.forEach(({ path, method, handler, middlewares = [] }) => {
+  router[method](path, ...middlewares, handler);
+});
 
 export default router;

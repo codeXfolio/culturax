@@ -1,54 +1,59 @@
 import { Router } from 'express';
-import { RequestHandler } from 'express';
 import multer, { memoryStorage } from 'multer';
 import UserController from '../modules/user/user.controller';
+import { RouteConfig } from '../types/route.types';
 
 const upload = multer({
   storage: memoryStorage(),
   dest: 'uploads/avatars',
 });
 
-const userController = new UserController();
 const router = Router();
+const userController = new UserController();
 
-const registerHandler: RequestHandler = async (req, res) => {
-  await userController.register(req, res);
-};
+const routes: RouteConfig[] = [
+  {
+    path: '/register',
+    method: 'post',
+    handler: userController.register,
+    middlewares: [upload.single('avatar')],
+  },
+  {
+    path: '/:address',
+    method: 'get',
+    handler: userController.getUser,
+  },
+  {
+    path: '/follow',
+    method: 'post',
+    handler: userController.follow,
+  },
+  {
+    path: '/:address',
+    method: 'patch',
+    handler: userController.update,
+  },
+  {
+    path: '/:userId/followers',
+    method: 'get',
+    handler: userController.getFollowers,
+  },
+  {
+    path: '/:userId/following',
+    method: 'get',
+    handler: userController.getFollowing,
+  },
+  {
+    path: '/:userId/cover',
+    method: 'patch',
+    handler: userController.updateCoverImage,
+    middlewares: [upload.single('coverImage')],
+  },
+];
 
-const getUserHandler: RequestHandler = async (req, res) => {
-  await userController.getUser(req, res);
-};
-
-const followHandler: RequestHandler = async (req, res) => {
-  await userController.follow(req, res);
-};
-
-const updateHandler: RequestHandler = async (req, res) => {
-  await userController.update(req, res);
-};
-
-const getFollowersHandler: RequestHandler = async (req, res) => {
-  await userController.getFollowers(req, res);
-};
-
-const getFollowingHandler: RequestHandler = async (req, res) => {
-  await userController.getFollowing(req, res);
-};
-
-const updateCoverImageHandler: RequestHandler = async (req, res) => {
-  await userController.updateCoverImage(req, res);
-};
-
-router.post('/register', upload.single('avatar'), registerHandler);
-router.get('/:address', getUserHandler);
-router.post('/follow', followHandler);
-router.patch('/:address', updateHandler);
-router.get('/:userId/followers', getFollowersHandler);
-router.get('/:userId/following', getFollowingHandler);
-router.patch(
-  '/:userId/cover',
-  upload.single('coverImage'),
-  updateCoverImageHandler,
-);
+// Register routes
+routes.forEach(({ path, method, handler, middlewares = [] }) => {
+  router[method](path, ...middlewares, handler);
+});
 
 export default router;

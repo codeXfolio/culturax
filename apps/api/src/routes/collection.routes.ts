@@ -1,39 +1,48 @@
 import { Router } from 'express';
-import { RequestHandler } from 'express';
 import multer, { memoryStorage } from 'multer';
 import CollectionController from '../modules/collection/collection.controller';
+import { RouteConfig } from '../types/route.types';
 
 const upload = multer({
   storage: memoryStorage(),
   dest: 'uploads/collections',
 });
-const collectionController = new CollectionController();
+
 const router = Router();
+const collectionController = new CollectionController();
 
-const uploadHandler: RequestHandler = async (req, res) => {
-  await collectionController.upload(req, res);
-};
+const routes: RouteConfig[] = [
+  {
+    path: '/upload',
+    method: 'post',
+    handler: collectionController.upload,
+    middlewares: [upload.single('images')],
+  },
+  {
+    path: '/user/:userId',
+    method: 'get',
+    handler: collectionController.getByUser,
+  },
+  {
+    path: '/:id',
+    method: 'get',
+    handler: collectionController.getById,
+  },
+  {
+    path: '/update/:id',
+    method: 'put',
+    handler: collectionController.update,
+  },
+  {
+    path: '/delete/:id',
+    method: 'delete',
+    handler: collectionController.delete,
+  },
+];
 
-const getByUserHandler: RequestHandler = async (req, res) => {
-  await collectionController.getByUser(req, res);
-};
-
-const getByIdHandler: RequestHandler = async (req, res) => {
-  await collectionController.getById(req, res);
-};
-
-const updateHandler: RequestHandler = async (req, res) => {
-  await collectionController.update(req, res);
-};
-
-const deleteHandler: RequestHandler = async (req, res) => {
-  await collectionController.delete(req, res);
-};
-
-router.post('/upload', upload.single('images'), uploadHandler);
-router.get('/user/:userId', getByUserHandler);
-router.get('/:id', getByIdHandler);
-router.put('/update/:id', updateHandler);
-router.delete('/delete/:id', deleteHandler);
+// Register routes
+routes.forEach(({ path, method, handler, middlewares = [] }) => {
+  router[method](path, ...middlewares, handler);
+});
 
 export default router;

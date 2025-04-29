@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { RequestHandler } from 'express';
 import multer, { memoryStorage } from 'multer';
 import FeedController from '../modules/feed/feed.controller';
+import { RouteConfig } from '../types/route.types';
 
 const upload = multer({
   storage: memoryStorage(),
@@ -11,45 +11,53 @@ const upload = multer({
 const router = Router();
 const feedController = new FeedController();
 
-const createHandler: RequestHandler = async (req, res) => {
-  await feedController.create(req, res);
-};
+const routes: RouteConfig[] = [
+  {
+    path: '/create',
+    method: 'post',
+    handler: feedController.create,
+    middlewares: [upload.single('image')],
+  },
+  {
+    path: '/:id',
+    method: 'delete',
+    handler: feedController.delete,
+  },
+  {
+    path: '/comment',
+    method: 'post',
+    handler: feedController.createComment,
+  },
+  {
+    path: '/comment/:id',
+    method: 'delete',
+    handler: feedController.deleteComment,
+  },
+  {
+    path: '/like',
+    method: 'post',
+    handler: feedController.like,
+  },
+  {
+    path: '/unlike',
+    method: 'post',
+    handler: feedController.unlike,
+  },
+  {
+    path: '/:feedPostId/likes',
+    method: 'get',
+    handler: feedController.getLikes,
+  },
+  {
+    path: '/:feedPostId/comments',
+    method: 'get',
+    handler: feedController.getComments,
+  },
+];
 
-const deleteHandler: RequestHandler = async (req, res) => {
-  await feedController.delete(req, res);
-};
-
-const createCommentHandler: RequestHandler = async (req, res) => {
-  await feedController.createComment(req, res);
-};
-
-const deleteCommentHandler: RequestHandler = async (req, res) => {
-  await feedController.deleteComment(req, res);
-};
-
-const likeHandler: RequestHandler = async (req, res) => {
-  await feedController.like(req, res);
-};
-
-const unlikeHandler: RequestHandler = async (req, res) => {
-  await feedController.unlike(req, res);
-};
-
-const getLikesHandler: RequestHandler = async (req, res) => {
-  await feedController.getLikes(req, res);
-};
-
-const getCommentsHandler: RequestHandler = async (req, res) => {
-  await feedController.getComments(req, res);
-};
-
-router.post('/create', upload.single('image'), createHandler);
-router.delete('/:id', deleteHandler);
-router.post('/comment', createCommentHandler);
-router.delete('/comment/:id', deleteCommentHandler);
-router.post('/like', likeHandler);
-router.post('/unlike', unlikeHandler);
-router.get('/:feedPostId/likes', getLikesHandler);
-router.get('/:feedPostId/comments', getCommentsHandler);
+// Register routes
+routes.forEach(({ path, method, handler, middlewares = [] }) => {
+  router[method](path, ...middlewares, handler);
+});
 
 export default router;
