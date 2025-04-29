@@ -159,6 +159,29 @@ exports.Prisma.CollectionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FeedPostScalarFieldEnum = {
+  id: 'id',
+  image: 'image',
+  caption: 'caption',
+  isPremium: 'isPremium',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.FeedPostCommentScalarFieldEnum = {
+  id: 'id',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  userId: 'userId',
+  feedPostId: 'feedPostId'
+};
+
+exports.Prisma.FeedPostLikeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  feedPostId: 'feedPostId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -183,7 +206,10 @@ exports.Prisma.ModelName = {
   User: 'User',
   Follow: 'Follow',
   Social: 'Social',
-  Collection: 'Collection'
+  Collection: 'Collection',
+  FeedPost: 'FeedPost',
+  FeedPostComment: 'FeedPostComment',
+  FeedPostLike: 'FeedPostLike'
 };
 
 /**

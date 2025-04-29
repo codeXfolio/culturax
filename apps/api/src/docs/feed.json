@@ -1,0 +1,208 @@
+{
+  "/api/feed/create": {
+    "post": {
+      "tags": ["Feed"],
+      "summary": "Create a new feed post",
+      "description": "Creates a new feed post with optional image and caption",
+      "requestBody": {
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "required": ["userId"],
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "description": "ID of the user creating the post"
+                },
+                "caption": {
+                  "type": "string",
+                  "description": "Post caption (optional)"
+                },
+                "isPremium": {
+                  "type": "boolean",
+                  "description": "Whether the post is premium content (optional)"
+                },
+                "image": {
+                  "type": "string",
+                  "format": "binary",
+                  "description": "Post image (optional)"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Post created successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "caption": {
+                        "type": "string",
+                        "example": "My amazing post!"
+                      },
+                      "image": {
+                        "type": "string",
+                        "example": "/uploads/feed/123e4567-e89b-12d3-a456-426614174000/image.jpg"
+                      },
+                      "isPremium": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "userId": {
+                        "type": "string",
+                        "example": "987fdebc-a654-3210-9876-543210987654"
+                      },
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "987fdebc-a654-3210-9876-543210987654"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "John Doe"
+                          },
+                          "username": {
+                            "type": "string",
+                            "example": "johndoe"
+                          },
+                          "avatar": {
+                            "type": "string",
+                            "example": "/uploads/avatars/0x1234567890abcdef/avatar.jpg"
+                          }
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "User ID is required"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/feed/{id}": {
+    "delete": {
+      "tags": ["Feed"],
+      "summary": "Delete a feed post",
+      "description": "Deletes a feed post and its associated image by ID",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Post ID",
+          "schema": {
+            "type": "string"
+          },
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Post deleted successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Post deleted successfully"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Post ID is required"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Post not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Post not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

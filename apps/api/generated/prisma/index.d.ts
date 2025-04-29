@@ -33,6 +33,21 @@ export type Social = $Result.DefaultSelection<Prisma.$SocialPayload>
  * 
  */
 export type Collection = $Result.DefaultSelection<Prisma.$CollectionPayload>
+/**
+ * Model FeedPost
+ * 
+ */
+export type FeedPost = $Result.DefaultSelection<Prisma.$FeedPostPayload>
+/**
+ * Model FeedPostComment
+ * 
+ */
+export type FeedPostComment = $Result.DefaultSelection<Prisma.$FeedPostCommentPayload>
+/**
+ * Model FeedPostLike
+ * 
+ */
+export type FeedPostLike = $Result.DefaultSelection<Prisma.$FeedPostLikePayload>
 
 /**
  * Enums
@@ -216,6 +231,36 @@ export class PrismaClient<
     * ```
     */
   get collection(): Prisma.CollectionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.feedPost`: Exposes CRUD operations for the **FeedPost** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FeedPosts
+    * const feedPosts = await prisma.feedPost.findMany()
+    * ```
+    */
+  get feedPost(): Prisma.FeedPostDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.feedPostComment`: Exposes CRUD operations for the **FeedPostComment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FeedPostComments
+    * const feedPostComments = await prisma.feedPostComment.findMany()
+    * ```
+    */
+  get feedPostComment(): Prisma.FeedPostCommentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.feedPostLike`: Exposes CRUD operations for the **FeedPostLike** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FeedPostLikes
+    * const feedPostLikes = await prisma.feedPostLike.findMany()
+    * ```
+    */
+  get feedPostLike(): Prisma.FeedPostLikeDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -659,7 +704,10 @@ export namespace Prisma {
     User: 'User',
     Follow: 'Follow',
     Social: 'Social',
-    Collection: 'Collection'
+    Collection: 'Collection',
+    FeedPost: 'FeedPost',
+    FeedPostComment: 'FeedPostComment',
+    FeedPostLike: 'FeedPostLike'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -678,7 +726,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "follow" | "social" | "collection"
+      modelProps: "user" | "follow" | "social" | "collection" | "feedPost" | "feedPostComment" | "feedPostLike"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -978,6 +1026,228 @@ export namespace Prisma {
           }
         }
       }
+      FeedPost: {
+        payload: Prisma.$FeedPostPayload<ExtArgs>
+        fields: Prisma.FeedPostFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FeedPostFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FeedPostFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostPayload>
+          }
+          findFirst: {
+            args: Prisma.FeedPostFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FeedPostFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostPayload>
+          }
+          findMany: {
+            args: Prisma.FeedPostFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostPayload>[]
+          }
+          create: {
+            args: Prisma.FeedPostCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostPayload>
+          }
+          createMany: {
+            args: Prisma.FeedPostCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FeedPostCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostPayload>[]
+          }
+          delete: {
+            args: Prisma.FeedPostDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostPayload>
+          }
+          update: {
+            args: Prisma.FeedPostUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostPayload>
+          }
+          deleteMany: {
+            args: Prisma.FeedPostDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FeedPostUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FeedPostUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostPayload>[]
+          }
+          upsert: {
+            args: Prisma.FeedPostUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostPayload>
+          }
+          aggregate: {
+            args: Prisma.FeedPostAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFeedPost>
+          }
+          groupBy: {
+            args: Prisma.FeedPostGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FeedPostGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FeedPostCountArgs<ExtArgs>
+            result: $Utils.Optional<FeedPostCountAggregateOutputType> | number
+          }
+        }
+      }
+      FeedPostComment: {
+        payload: Prisma.$FeedPostCommentPayload<ExtArgs>
+        fields: Prisma.FeedPostCommentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FeedPostCommentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostCommentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FeedPostCommentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostCommentPayload>
+          }
+          findFirst: {
+            args: Prisma.FeedPostCommentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostCommentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FeedPostCommentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostCommentPayload>
+          }
+          findMany: {
+            args: Prisma.FeedPostCommentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostCommentPayload>[]
+          }
+          create: {
+            args: Prisma.FeedPostCommentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostCommentPayload>
+          }
+          createMany: {
+            args: Prisma.FeedPostCommentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FeedPostCommentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostCommentPayload>[]
+          }
+          delete: {
+            args: Prisma.FeedPostCommentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostCommentPayload>
+          }
+          update: {
+            args: Prisma.FeedPostCommentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostCommentPayload>
+          }
+          deleteMany: {
+            args: Prisma.FeedPostCommentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FeedPostCommentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FeedPostCommentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostCommentPayload>[]
+          }
+          upsert: {
+            args: Prisma.FeedPostCommentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostCommentPayload>
+          }
+          aggregate: {
+            args: Prisma.FeedPostCommentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFeedPostComment>
+          }
+          groupBy: {
+            args: Prisma.FeedPostCommentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FeedPostCommentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FeedPostCommentCountArgs<ExtArgs>
+            result: $Utils.Optional<FeedPostCommentCountAggregateOutputType> | number
+          }
+        }
+      }
+      FeedPostLike: {
+        payload: Prisma.$FeedPostLikePayload<ExtArgs>
+        fields: Prisma.FeedPostLikeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FeedPostLikeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostLikePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FeedPostLikeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostLikePayload>
+          }
+          findFirst: {
+            args: Prisma.FeedPostLikeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostLikePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FeedPostLikeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostLikePayload>
+          }
+          findMany: {
+            args: Prisma.FeedPostLikeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostLikePayload>[]
+          }
+          create: {
+            args: Prisma.FeedPostLikeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostLikePayload>
+          }
+          createMany: {
+            args: Prisma.FeedPostLikeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FeedPostLikeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostLikePayload>[]
+          }
+          delete: {
+            args: Prisma.FeedPostLikeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostLikePayload>
+          }
+          update: {
+            args: Prisma.FeedPostLikeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostLikePayload>
+          }
+          deleteMany: {
+            args: Prisma.FeedPostLikeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FeedPostLikeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FeedPostLikeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostLikePayload>[]
+          }
+          upsert: {
+            args: Prisma.FeedPostLikeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeedPostLikePayload>
+          }
+          aggregate: {
+            args: Prisma.FeedPostLikeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFeedPostLike>
+          }
+          groupBy: {
+            args: Prisma.FeedPostLikeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FeedPostLikeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FeedPostLikeCountArgs<ExtArgs>
+            result: $Utils.Optional<FeedPostLikeCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1066,6 +1336,9 @@ export namespace Prisma {
     follow?: FollowOmit
     social?: SocialOmit
     collection?: CollectionOmit
+    feedPost?: FeedPostOmit
+    feedPostComment?: FeedPostCommentOmit
+    feedPostLike?: FeedPostLikeOmit
   }
 
   /* Types for Logging */
@@ -1164,6 +1437,9 @@ export namespace Prisma {
     followers: number
     following: number
     Collection: number
+    FeedPost: number
+    FeedPostLike: number
+    FeedPostComment: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1171,6 +1447,9 @@ export namespace Prisma {
     followers?: boolean | UserCountOutputTypeCountFollowersArgs
     following?: boolean | UserCountOutputTypeCountFollowingArgs
     Collection?: boolean | UserCountOutputTypeCountCollectionArgs
+    FeedPost?: boolean | UserCountOutputTypeCountFeedPostArgs
+    FeedPostLike?: boolean | UserCountOutputTypeCountFeedPostLikeArgs
+    FeedPostComment?: boolean | UserCountOutputTypeCountFeedPostCommentArgs
   }
 
   // Custom InputTypes
@@ -1210,6 +1489,67 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountCollectionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CollectionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFeedPostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeedPostWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFeedPostLikeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeedPostLikeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFeedPostCommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeedPostCommentWhereInput
+  }
+
+
+  /**
+   * Count Type FeedPostCountOutputType
+   */
+
+  export type FeedPostCountOutputType = {
+    FeedPostComment: number
+    FeedPostLike: number
+  }
+
+  export type FeedPostCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    FeedPostComment?: boolean | FeedPostCountOutputTypeCountFeedPostCommentArgs
+    FeedPostLike?: boolean | FeedPostCountOutputTypeCountFeedPostLikeArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * FeedPostCountOutputType without action
+   */
+  export type FeedPostCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostCountOutputType
+     */
+    select?: FeedPostCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * FeedPostCountOutputType without action
+   */
+  export type FeedPostCountOutputTypeCountFeedPostCommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeedPostCommentWhereInput
+  }
+
+  /**
+   * FeedPostCountOutputType without action
+   */
+  export type FeedPostCountOutputTypeCountFeedPostLikeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeedPostLikeWhereInput
   }
 
 
@@ -1465,6 +1805,9 @@ export namespace Prisma {
     followers?: boolean | User$followersArgs<ExtArgs>
     following?: boolean | User$followingArgs<ExtArgs>
     Collection?: boolean | User$CollectionArgs<ExtArgs>
+    FeedPost?: boolean | User$FeedPostArgs<ExtArgs>
+    FeedPostLike?: boolean | User$FeedPostLikeArgs<ExtArgs>
+    FeedPostComment?: boolean | User$FeedPostCommentArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1528,6 +1871,9 @@ export namespace Prisma {
     followers?: boolean | User$followersArgs<ExtArgs>
     following?: boolean | User$followingArgs<ExtArgs>
     Collection?: boolean | User$CollectionArgs<ExtArgs>
+    FeedPost?: boolean | User$FeedPostArgs<ExtArgs>
+    FeedPostLike?: boolean | User$FeedPostLikeArgs<ExtArgs>
+    FeedPostComment?: boolean | User$FeedPostCommentArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1540,6 +1886,9 @@ export namespace Prisma {
       followers: Prisma.$FollowPayload<ExtArgs>[]
       following: Prisma.$FollowPayload<ExtArgs>[]
       Collection: Prisma.$CollectionPayload<ExtArgs>[]
+      FeedPost: Prisma.$FeedPostPayload<ExtArgs>[]
+      FeedPostLike: Prisma.$FeedPostLikePayload<ExtArgs>[]
+      FeedPostComment: Prisma.$FeedPostCommentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1955,6 +2304,9 @@ export namespace Prisma {
     followers<T extends User$followersArgs<ExtArgs> = {}>(args?: Subset<T, User$followersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     following<T extends User$followingArgs<ExtArgs> = {}>(args?: Subset<T, User$followingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Collection<T extends User$CollectionArgs<ExtArgs> = {}>(args?: Subset<T, User$CollectionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    FeedPost<T extends User$FeedPostArgs<ExtArgs> = {}>(args?: Subset<T, User$FeedPostArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    FeedPostLike<T extends User$FeedPostLikeArgs<ExtArgs> = {}>(args?: Subset<T, User$FeedPostLikeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    FeedPostComment<T extends User$FeedPostCommentArgs<ExtArgs> = {}>(args?: Subset<T, User$FeedPostCommentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2480,6 +2832,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CollectionScalarFieldEnum | CollectionScalarFieldEnum[]
+  }
+
+  /**
+   * User.FeedPost
+   */
+  export type User$FeedPostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostInclude<ExtArgs> | null
+    where?: FeedPostWhereInput
+    orderBy?: FeedPostOrderByWithRelationInput | FeedPostOrderByWithRelationInput[]
+    cursor?: FeedPostWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FeedPostScalarFieldEnum | FeedPostScalarFieldEnum[]
+  }
+
+  /**
+   * User.FeedPostLike
+   */
+  export type User$FeedPostLikeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeInclude<ExtArgs> | null
+    where?: FeedPostLikeWhereInput
+    orderBy?: FeedPostLikeOrderByWithRelationInput | FeedPostLikeOrderByWithRelationInput[]
+    cursor?: FeedPostLikeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FeedPostLikeScalarFieldEnum | FeedPostLikeScalarFieldEnum[]
+  }
+
+  /**
+   * User.FeedPostComment
+   */
+  export type User$FeedPostCommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentInclude<ExtArgs> | null
+    where?: FeedPostCommentWhereInput
+    orderBy?: FeedPostCommentOrderByWithRelationInput | FeedPostCommentOrderByWithRelationInput[]
+    cursor?: FeedPostCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FeedPostCommentScalarFieldEnum | FeedPostCommentScalarFieldEnum[]
   }
 
   /**
@@ -5752,6 +6176,3241 @@ export namespace Prisma {
 
 
   /**
+   * Model FeedPost
+   */
+
+  export type AggregateFeedPost = {
+    _count: FeedPostCountAggregateOutputType | null
+    _min: FeedPostMinAggregateOutputType | null
+    _max: FeedPostMaxAggregateOutputType | null
+  }
+
+  export type FeedPostMinAggregateOutputType = {
+    id: string | null
+    image: string | null
+    caption: string | null
+    isPremium: boolean | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type FeedPostMaxAggregateOutputType = {
+    id: string | null
+    image: string | null
+    caption: string | null
+    isPremium: boolean | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type FeedPostCountAggregateOutputType = {
+    id: number
+    image: number
+    caption: number
+    isPremium: number
+    userId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type FeedPostMinAggregateInputType = {
+    id?: true
+    image?: true
+    caption?: true
+    isPremium?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type FeedPostMaxAggregateInputType = {
+    id?: true
+    image?: true
+    caption?: true
+    isPremium?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type FeedPostCountAggregateInputType = {
+    id?: true
+    image?: true
+    caption?: true
+    isPremium?: true
+    userId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type FeedPostAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FeedPost to aggregate.
+     */
+    where?: FeedPostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeedPosts to fetch.
+     */
+    orderBy?: FeedPostOrderByWithRelationInput | FeedPostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FeedPostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeedPosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeedPosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FeedPosts
+    **/
+    _count?: true | FeedPostCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FeedPostMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FeedPostMaxAggregateInputType
+  }
+
+  export type GetFeedPostAggregateType<T extends FeedPostAggregateArgs> = {
+        [P in keyof T & keyof AggregateFeedPost]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFeedPost[P]>
+      : GetScalarType<T[P], AggregateFeedPost[P]>
+  }
+
+
+
+
+  export type FeedPostGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeedPostWhereInput
+    orderBy?: FeedPostOrderByWithAggregationInput | FeedPostOrderByWithAggregationInput[]
+    by: FeedPostScalarFieldEnum[] | FeedPostScalarFieldEnum
+    having?: FeedPostScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FeedPostCountAggregateInputType | true
+    _min?: FeedPostMinAggregateInputType
+    _max?: FeedPostMaxAggregateInputType
+  }
+
+  export type FeedPostGroupByOutputType = {
+    id: string
+    image: string | null
+    caption: string | null
+    isPremium: boolean
+    userId: string
+    createdAt: Date
+    _count: FeedPostCountAggregateOutputType | null
+    _min: FeedPostMinAggregateOutputType | null
+    _max: FeedPostMaxAggregateOutputType | null
+  }
+
+  type GetFeedPostGroupByPayload<T extends FeedPostGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FeedPostGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FeedPostGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FeedPostGroupByOutputType[P]>
+            : GetScalarType<T[P], FeedPostGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FeedPostSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    image?: boolean
+    caption?: boolean
+    isPremium?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    FeedPostComment?: boolean | FeedPost$FeedPostCommentArgs<ExtArgs>
+    FeedPostLike?: boolean | FeedPost$FeedPostLikeArgs<ExtArgs>
+    _count?: boolean | FeedPostCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["feedPost"]>
+
+  export type FeedPostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    image?: boolean
+    caption?: boolean
+    isPremium?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["feedPost"]>
+
+  export type FeedPostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    image?: boolean
+    caption?: boolean
+    isPremium?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["feedPost"]>
+
+  export type FeedPostSelectScalar = {
+    id?: boolean
+    image?: boolean
+    caption?: boolean
+    isPremium?: boolean
+    userId?: boolean
+    createdAt?: boolean
+  }
+
+  export type FeedPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "image" | "caption" | "isPremium" | "userId" | "createdAt", ExtArgs["result"]["feedPost"]>
+  export type FeedPostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    FeedPostComment?: boolean | FeedPost$FeedPostCommentArgs<ExtArgs>
+    FeedPostLike?: boolean | FeedPost$FeedPostLikeArgs<ExtArgs>
+    _count?: boolean | FeedPostCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type FeedPostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FeedPostIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $FeedPostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FeedPost"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      FeedPostComment: Prisma.$FeedPostCommentPayload<ExtArgs>[]
+      FeedPostLike: Prisma.$FeedPostLikePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      image: string | null
+      caption: string | null
+      isPremium: boolean
+      userId: string
+      createdAt: Date
+    }, ExtArgs["result"]["feedPost"]>
+    composites: {}
+  }
+
+  type FeedPostGetPayload<S extends boolean | null | undefined | FeedPostDefaultArgs> = $Result.GetResult<Prisma.$FeedPostPayload, S>
+
+  type FeedPostCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FeedPostFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FeedPostCountAggregateInputType | true
+    }
+
+  export interface FeedPostDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FeedPost'], meta: { name: 'FeedPost' } }
+    /**
+     * Find zero or one FeedPost that matches the filter.
+     * @param {FeedPostFindUniqueArgs} args - Arguments to find a FeedPost
+     * @example
+     * // Get one FeedPost
+     * const feedPost = await prisma.feedPost.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FeedPostFindUniqueArgs>(args: SelectSubset<T, FeedPostFindUniqueArgs<ExtArgs>>): Prisma__FeedPostClient<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FeedPost that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FeedPostFindUniqueOrThrowArgs} args - Arguments to find a FeedPost
+     * @example
+     * // Get one FeedPost
+     * const feedPost = await prisma.feedPost.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FeedPostFindUniqueOrThrowArgs>(args: SelectSubset<T, FeedPostFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FeedPostClient<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FeedPost that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostFindFirstArgs} args - Arguments to find a FeedPost
+     * @example
+     * // Get one FeedPost
+     * const feedPost = await prisma.feedPost.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FeedPostFindFirstArgs>(args?: SelectSubset<T, FeedPostFindFirstArgs<ExtArgs>>): Prisma__FeedPostClient<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FeedPost that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostFindFirstOrThrowArgs} args - Arguments to find a FeedPost
+     * @example
+     * // Get one FeedPost
+     * const feedPost = await prisma.feedPost.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FeedPostFindFirstOrThrowArgs>(args?: SelectSubset<T, FeedPostFindFirstOrThrowArgs<ExtArgs>>): Prisma__FeedPostClient<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FeedPosts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FeedPosts
+     * const feedPosts = await prisma.feedPost.findMany()
+     * 
+     * // Get first 10 FeedPosts
+     * const feedPosts = await prisma.feedPost.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const feedPostWithIdOnly = await prisma.feedPost.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FeedPostFindManyArgs>(args?: SelectSubset<T, FeedPostFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FeedPost.
+     * @param {FeedPostCreateArgs} args - Arguments to create a FeedPost.
+     * @example
+     * // Create one FeedPost
+     * const FeedPost = await prisma.feedPost.create({
+     *   data: {
+     *     // ... data to create a FeedPost
+     *   }
+     * })
+     * 
+     */
+    create<T extends FeedPostCreateArgs>(args: SelectSubset<T, FeedPostCreateArgs<ExtArgs>>): Prisma__FeedPostClient<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FeedPosts.
+     * @param {FeedPostCreateManyArgs} args - Arguments to create many FeedPosts.
+     * @example
+     * // Create many FeedPosts
+     * const feedPost = await prisma.feedPost.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FeedPostCreateManyArgs>(args?: SelectSubset<T, FeedPostCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FeedPosts and returns the data saved in the database.
+     * @param {FeedPostCreateManyAndReturnArgs} args - Arguments to create many FeedPosts.
+     * @example
+     * // Create many FeedPosts
+     * const feedPost = await prisma.feedPost.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FeedPosts and only return the `id`
+     * const feedPostWithIdOnly = await prisma.feedPost.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FeedPostCreateManyAndReturnArgs>(args?: SelectSubset<T, FeedPostCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FeedPost.
+     * @param {FeedPostDeleteArgs} args - Arguments to delete one FeedPost.
+     * @example
+     * // Delete one FeedPost
+     * const FeedPost = await prisma.feedPost.delete({
+     *   where: {
+     *     // ... filter to delete one FeedPost
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FeedPostDeleteArgs>(args: SelectSubset<T, FeedPostDeleteArgs<ExtArgs>>): Prisma__FeedPostClient<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FeedPost.
+     * @param {FeedPostUpdateArgs} args - Arguments to update one FeedPost.
+     * @example
+     * // Update one FeedPost
+     * const feedPost = await prisma.feedPost.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FeedPostUpdateArgs>(args: SelectSubset<T, FeedPostUpdateArgs<ExtArgs>>): Prisma__FeedPostClient<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FeedPosts.
+     * @param {FeedPostDeleteManyArgs} args - Arguments to filter FeedPosts to delete.
+     * @example
+     * // Delete a few FeedPosts
+     * const { count } = await prisma.feedPost.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FeedPostDeleteManyArgs>(args?: SelectSubset<T, FeedPostDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FeedPosts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FeedPosts
+     * const feedPost = await prisma.feedPost.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FeedPostUpdateManyArgs>(args: SelectSubset<T, FeedPostUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FeedPosts and returns the data updated in the database.
+     * @param {FeedPostUpdateManyAndReturnArgs} args - Arguments to update many FeedPosts.
+     * @example
+     * // Update many FeedPosts
+     * const feedPost = await prisma.feedPost.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FeedPosts and only return the `id`
+     * const feedPostWithIdOnly = await prisma.feedPost.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FeedPostUpdateManyAndReturnArgs>(args: SelectSubset<T, FeedPostUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FeedPost.
+     * @param {FeedPostUpsertArgs} args - Arguments to update or create a FeedPost.
+     * @example
+     * // Update or create a FeedPost
+     * const feedPost = await prisma.feedPost.upsert({
+     *   create: {
+     *     // ... data to create a FeedPost
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FeedPost we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FeedPostUpsertArgs>(args: SelectSubset<T, FeedPostUpsertArgs<ExtArgs>>): Prisma__FeedPostClient<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FeedPosts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostCountArgs} args - Arguments to filter FeedPosts to count.
+     * @example
+     * // Count the number of FeedPosts
+     * const count = await prisma.feedPost.count({
+     *   where: {
+     *     // ... the filter for the FeedPosts we want to count
+     *   }
+     * })
+    **/
+    count<T extends FeedPostCountArgs>(
+      args?: Subset<T, FeedPostCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FeedPostCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FeedPost.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FeedPostAggregateArgs>(args: Subset<T, FeedPostAggregateArgs>): Prisma.PrismaPromise<GetFeedPostAggregateType<T>>
+
+    /**
+     * Group by FeedPost.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FeedPostGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FeedPostGroupByArgs['orderBy'] }
+        : { orderBy?: FeedPostGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FeedPostGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFeedPostGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FeedPost model
+   */
+  readonly fields: FeedPostFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FeedPost.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FeedPostClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    FeedPostComment<T extends FeedPost$FeedPostCommentArgs<ExtArgs> = {}>(args?: Subset<T, FeedPost$FeedPostCommentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    FeedPostLike<T extends FeedPost$FeedPostLikeArgs<ExtArgs> = {}>(args?: Subset<T, FeedPost$FeedPostLikeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FeedPost model
+   */
+  interface FeedPostFieldRefs {
+    readonly id: FieldRef<"FeedPost", 'String'>
+    readonly image: FieldRef<"FeedPost", 'String'>
+    readonly caption: FieldRef<"FeedPost", 'String'>
+    readonly isPremium: FieldRef<"FeedPost", 'Boolean'>
+    readonly userId: FieldRef<"FeedPost", 'String'>
+    readonly createdAt: FieldRef<"FeedPost", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FeedPost findUnique
+   */
+  export type FeedPostFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPost to fetch.
+     */
+    where: FeedPostWhereUniqueInput
+  }
+
+  /**
+   * FeedPost findUniqueOrThrow
+   */
+  export type FeedPostFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPost to fetch.
+     */
+    where: FeedPostWhereUniqueInput
+  }
+
+  /**
+   * FeedPost findFirst
+   */
+  export type FeedPostFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPost to fetch.
+     */
+    where?: FeedPostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeedPosts to fetch.
+     */
+    orderBy?: FeedPostOrderByWithRelationInput | FeedPostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FeedPosts.
+     */
+    cursor?: FeedPostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeedPosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeedPosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FeedPosts.
+     */
+    distinct?: FeedPostScalarFieldEnum | FeedPostScalarFieldEnum[]
+  }
+
+  /**
+   * FeedPost findFirstOrThrow
+   */
+  export type FeedPostFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPost to fetch.
+     */
+    where?: FeedPostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeedPosts to fetch.
+     */
+    orderBy?: FeedPostOrderByWithRelationInput | FeedPostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FeedPosts.
+     */
+    cursor?: FeedPostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeedPosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeedPosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FeedPosts.
+     */
+    distinct?: FeedPostScalarFieldEnum | FeedPostScalarFieldEnum[]
+  }
+
+  /**
+   * FeedPost findMany
+   */
+  export type FeedPostFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPosts to fetch.
+     */
+    where?: FeedPostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeedPosts to fetch.
+     */
+    orderBy?: FeedPostOrderByWithRelationInput | FeedPostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FeedPosts.
+     */
+    cursor?: FeedPostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeedPosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeedPosts.
+     */
+    skip?: number
+    distinct?: FeedPostScalarFieldEnum | FeedPostScalarFieldEnum[]
+  }
+
+  /**
+   * FeedPost create
+   */
+  export type FeedPostCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FeedPost.
+     */
+    data: XOR<FeedPostCreateInput, FeedPostUncheckedCreateInput>
+  }
+
+  /**
+   * FeedPost createMany
+   */
+  export type FeedPostCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FeedPosts.
+     */
+    data: FeedPostCreateManyInput | FeedPostCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FeedPost createManyAndReturn
+   */
+  export type FeedPostCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * The data used to create many FeedPosts.
+     */
+    data: FeedPostCreateManyInput | FeedPostCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FeedPost update
+   */
+  export type FeedPostUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FeedPost.
+     */
+    data: XOR<FeedPostUpdateInput, FeedPostUncheckedUpdateInput>
+    /**
+     * Choose, which FeedPost to update.
+     */
+    where: FeedPostWhereUniqueInput
+  }
+
+  /**
+   * FeedPost updateMany
+   */
+  export type FeedPostUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FeedPosts.
+     */
+    data: XOR<FeedPostUpdateManyMutationInput, FeedPostUncheckedUpdateManyInput>
+    /**
+     * Filter which FeedPosts to update
+     */
+    where?: FeedPostWhereInput
+    /**
+     * Limit how many FeedPosts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FeedPost updateManyAndReturn
+   */
+  export type FeedPostUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * The data used to update FeedPosts.
+     */
+    data: XOR<FeedPostUpdateManyMutationInput, FeedPostUncheckedUpdateManyInput>
+    /**
+     * Filter which FeedPosts to update
+     */
+    where?: FeedPostWhereInput
+    /**
+     * Limit how many FeedPosts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FeedPost upsert
+   */
+  export type FeedPostUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FeedPost to update in case it exists.
+     */
+    where: FeedPostWhereUniqueInput
+    /**
+     * In case the FeedPost found by the `where` argument doesn't exist, create a new FeedPost with this data.
+     */
+    create: XOR<FeedPostCreateInput, FeedPostUncheckedCreateInput>
+    /**
+     * In case the FeedPost was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FeedPostUpdateInput, FeedPostUncheckedUpdateInput>
+  }
+
+  /**
+   * FeedPost delete
+   */
+  export type FeedPostDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostInclude<ExtArgs> | null
+    /**
+     * Filter which FeedPost to delete.
+     */
+    where: FeedPostWhereUniqueInput
+  }
+
+  /**
+   * FeedPost deleteMany
+   */
+  export type FeedPostDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FeedPosts to delete
+     */
+    where?: FeedPostWhereInput
+    /**
+     * Limit how many FeedPosts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FeedPost.FeedPostComment
+   */
+  export type FeedPost$FeedPostCommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentInclude<ExtArgs> | null
+    where?: FeedPostCommentWhereInput
+    orderBy?: FeedPostCommentOrderByWithRelationInput | FeedPostCommentOrderByWithRelationInput[]
+    cursor?: FeedPostCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FeedPostCommentScalarFieldEnum | FeedPostCommentScalarFieldEnum[]
+  }
+
+  /**
+   * FeedPost.FeedPostLike
+   */
+  export type FeedPost$FeedPostLikeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeInclude<ExtArgs> | null
+    where?: FeedPostLikeWhereInput
+    orderBy?: FeedPostLikeOrderByWithRelationInput | FeedPostLikeOrderByWithRelationInput[]
+    cursor?: FeedPostLikeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FeedPostLikeScalarFieldEnum | FeedPostLikeScalarFieldEnum[]
+  }
+
+  /**
+   * FeedPost without action
+   */
+  export type FeedPostDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPost
+     */
+    select?: FeedPostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPost
+     */
+    omit?: FeedPostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FeedPostComment
+   */
+
+  export type AggregateFeedPostComment = {
+    _count: FeedPostCommentCountAggregateOutputType | null
+    _min: FeedPostCommentMinAggregateOutputType | null
+    _max: FeedPostCommentMaxAggregateOutputType | null
+  }
+
+  export type FeedPostCommentMinAggregateOutputType = {
+    id: string | null
+    comment: string | null
+    createdAt: Date | null
+    userId: string | null
+    feedPostId: string | null
+  }
+
+  export type FeedPostCommentMaxAggregateOutputType = {
+    id: string | null
+    comment: string | null
+    createdAt: Date | null
+    userId: string | null
+    feedPostId: string | null
+  }
+
+  export type FeedPostCommentCountAggregateOutputType = {
+    id: number
+    comment: number
+    createdAt: number
+    userId: number
+    feedPostId: number
+    _all: number
+  }
+
+
+  export type FeedPostCommentMinAggregateInputType = {
+    id?: true
+    comment?: true
+    createdAt?: true
+    userId?: true
+    feedPostId?: true
+  }
+
+  export type FeedPostCommentMaxAggregateInputType = {
+    id?: true
+    comment?: true
+    createdAt?: true
+    userId?: true
+    feedPostId?: true
+  }
+
+  export type FeedPostCommentCountAggregateInputType = {
+    id?: true
+    comment?: true
+    createdAt?: true
+    userId?: true
+    feedPostId?: true
+    _all?: true
+  }
+
+  export type FeedPostCommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FeedPostComment to aggregate.
+     */
+    where?: FeedPostCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeedPostComments to fetch.
+     */
+    orderBy?: FeedPostCommentOrderByWithRelationInput | FeedPostCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FeedPostCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeedPostComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeedPostComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FeedPostComments
+    **/
+    _count?: true | FeedPostCommentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FeedPostCommentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FeedPostCommentMaxAggregateInputType
+  }
+
+  export type GetFeedPostCommentAggregateType<T extends FeedPostCommentAggregateArgs> = {
+        [P in keyof T & keyof AggregateFeedPostComment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFeedPostComment[P]>
+      : GetScalarType<T[P], AggregateFeedPostComment[P]>
+  }
+
+
+
+
+  export type FeedPostCommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeedPostCommentWhereInput
+    orderBy?: FeedPostCommentOrderByWithAggregationInput | FeedPostCommentOrderByWithAggregationInput[]
+    by: FeedPostCommentScalarFieldEnum[] | FeedPostCommentScalarFieldEnum
+    having?: FeedPostCommentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FeedPostCommentCountAggregateInputType | true
+    _min?: FeedPostCommentMinAggregateInputType
+    _max?: FeedPostCommentMaxAggregateInputType
+  }
+
+  export type FeedPostCommentGroupByOutputType = {
+    id: string
+    comment: string
+    createdAt: Date
+    userId: string
+    feedPostId: string
+    _count: FeedPostCommentCountAggregateOutputType | null
+    _min: FeedPostCommentMinAggregateOutputType | null
+    _max: FeedPostCommentMaxAggregateOutputType | null
+  }
+
+  type GetFeedPostCommentGroupByPayload<T extends FeedPostCommentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FeedPostCommentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FeedPostCommentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FeedPostCommentGroupByOutputType[P]>
+            : GetScalarType<T[P], FeedPostCommentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FeedPostCommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    comment?: boolean
+    createdAt?: boolean
+    userId?: boolean
+    feedPostId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    feedPost?: boolean | FeedPostDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["feedPostComment"]>
+
+  export type FeedPostCommentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    comment?: boolean
+    createdAt?: boolean
+    userId?: boolean
+    feedPostId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    feedPost?: boolean | FeedPostDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["feedPostComment"]>
+
+  export type FeedPostCommentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    comment?: boolean
+    createdAt?: boolean
+    userId?: boolean
+    feedPostId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    feedPost?: boolean | FeedPostDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["feedPostComment"]>
+
+  export type FeedPostCommentSelectScalar = {
+    id?: boolean
+    comment?: boolean
+    createdAt?: boolean
+    userId?: boolean
+    feedPostId?: boolean
+  }
+
+  export type FeedPostCommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "comment" | "createdAt" | "userId" | "feedPostId", ExtArgs["result"]["feedPostComment"]>
+  export type FeedPostCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    feedPost?: boolean | FeedPostDefaultArgs<ExtArgs>
+  }
+  export type FeedPostCommentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    feedPost?: boolean | FeedPostDefaultArgs<ExtArgs>
+  }
+  export type FeedPostCommentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    feedPost?: boolean | FeedPostDefaultArgs<ExtArgs>
+  }
+
+  export type $FeedPostCommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FeedPostComment"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      feedPost: Prisma.$FeedPostPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      comment: string
+      createdAt: Date
+      userId: string
+      feedPostId: string
+    }, ExtArgs["result"]["feedPostComment"]>
+    composites: {}
+  }
+
+  type FeedPostCommentGetPayload<S extends boolean | null | undefined | FeedPostCommentDefaultArgs> = $Result.GetResult<Prisma.$FeedPostCommentPayload, S>
+
+  type FeedPostCommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FeedPostCommentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FeedPostCommentCountAggregateInputType | true
+    }
+
+  export interface FeedPostCommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FeedPostComment'], meta: { name: 'FeedPostComment' } }
+    /**
+     * Find zero or one FeedPostComment that matches the filter.
+     * @param {FeedPostCommentFindUniqueArgs} args - Arguments to find a FeedPostComment
+     * @example
+     * // Get one FeedPostComment
+     * const feedPostComment = await prisma.feedPostComment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FeedPostCommentFindUniqueArgs>(args: SelectSubset<T, FeedPostCommentFindUniqueArgs<ExtArgs>>): Prisma__FeedPostCommentClient<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FeedPostComment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FeedPostCommentFindUniqueOrThrowArgs} args - Arguments to find a FeedPostComment
+     * @example
+     * // Get one FeedPostComment
+     * const feedPostComment = await prisma.feedPostComment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FeedPostCommentFindUniqueOrThrowArgs>(args: SelectSubset<T, FeedPostCommentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FeedPostCommentClient<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FeedPostComment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostCommentFindFirstArgs} args - Arguments to find a FeedPostComment
+     * @example
+     * // Get one FeedPostComment
+     * const feedPostComment = await prisma.feedPostComment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FeedPostCommentFindFirstArgs>(args?: SelectSubset<T, FeedPostCommentFindFirstArgs<ExtArgs>>): Prisma__FeedPostCommentClient<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FeedPostComment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostCommentFindFirstOrThrowArgs} args - Arguments to find a FeedPostComment
+     * @example
+     * // Get one FeedPostComment
+     * const feedPostComment = await prisma.feedPostComment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FeedPostCommentFindFirstOrThrowArgs>(args?: SelectSubset<T, FeedPostCommentFindFirstOrThrowArgs<ExtArgs>>): Prisma__FeedPostCommentClient<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FeedPostComments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostCommentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FeedPostComments
+     * const feedPostComments = await prisma.feedPostComment.findMany()
+     * 
+     * // Get first 10 FeedPostComments
+     * const feedPostComments = await prisma.feedPostComment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const feedPostCommentWithIdOnly = await prisma.feedPostComment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FeedPostCommentFindManyArgs>(args?: SelectSubset<T, FeedPostCommentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FeedPostComment.
+     * @param {FeedPostCommentCreateArgs} args - Arguments to create a FeedPostComment.
+     * @example
+     * // Create one FeedPostComment
+     * const FeedPostComment = await prisma.feedPostComment.create({
+     *   data: {
+     *     // ... data to create a FeedPostComment
+     *   }
+     * })
+     * 
+     */
+    create<T extends FeedPostCommentCreateArgs>(args: SelectSubset<T, FeedPostCommentCreateArgs<ExtArgs>>): Prisma__FeedPostCommentClient<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FeedPostComments.
+     * @param {FeedPostCommentCreateManyArgs} args - Arguments to create many FeedPostComments.
+     * @example
+     * // Create many FeedPostComments
+     * const feedPostComment = await prisma.feedPostComment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FeedPostCommentCreateManyArgs>(args?: SelectSubset<T, FeedPostCommentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FeedPostComments and returns the data saved in the database.
+     * @param {FeedPostCommentCreateManyAndReturnArgs} args - Arguments to create many FeedPostComments.
+     * @example
+     * // Create many FeedPostComments
+     * const feedPostComment = await prisma.feedPostComment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FeedPostComments and only return the `id`
+     * const feedPostCommentWithIdOnly = await prisma.feedPostComment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FeedPostCommentCreateManyAndReturnArgs>(args?: SelectSubset<T, FeedPostCommentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FeedPostComment.
+     * @param {FeedPostCommentDeleteArgs} args - Arguments to delete one FeedPostComment.
+     * @example
+     * // Delete one FeedPostComment
+     * const FeedPostComment = await prisma.feedPostComment.delete({
+     *   where: {
+     *     // ... filter to delete one FeedPostComment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FeedPostCommentDeleteArgs>(args: SelectSubset<T, FeedPostCommentDeleteArgs<ExtArgs>>): Prisma__FeedPostCommentClient<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FeedPostComment.
+     * @param {FeedPostCommentUpdateArgs} args - Arguments to update one FeedPostComment.
+     * @example
+     * // Update one FeedPostComment
+     * const feedPostComment = await prisma.feedPostComment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FeedPostCommentUpdateArgs>(args: SelectSubset<T, FeedPostCommentUpdateArgs<ExtArgs>>): Prisma__FeedPostCommentClient<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FeedPostComments.
+     * @param {FeedPostCommentDeleteManyArgs} args - Arguments to filter FeedPostComments to delete.
+     * @example
+     * // Delete a few FeedPostComments
+     * const { count } = await prisma.feedPostComment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FeedPostCommentDeleteManyArgs>(args?: SelectSubset<T, FeedPostCommentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FeedPostComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostCommentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FeedPostComments
+     * const feedPostComment = await prisma.feedPostComment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FeedPostCommentUpdateManyArgs>(args: SelectSubset<T, FeedPostCommentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FeedPostComments and returns the data updated in the database.
+     * @param {FeedPostCommentUpdateManyAndReturnArgs} args - Arguments to update many FeedPostComments.
+     * @example
+     * // Update many FeedPostComments
+     * const feedPostComment = await prisma.feedPostComment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FeedPostComments and only return the `id`
+     * const feedPostCommentWithIdOnly = await prisma.feedPostComment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FeedPostCommentUpdateManyAndReturnArgs>(args: SelectSubset<T, FeedPostCommentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FeedPostComment.
+     * @param {FeedPostCommentUpsertArgs} args - Arguments to update or create a FeedPostComment.
+     * @example
+     * // Update or create a FeedPostComment
+     * const feedPostComment = await prisma.feedPostComment.upsert({
+     *   create: {
+     *     // ... data to create a FeedPostComment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FeedPostComment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FeedPostCommentUpsertArgs>(args: SelectSubset<T, FeedPostCommentUpsertArgs<ExtArgs>>): Prisma__FeedPostCommentClient<$Result.GetResult<Prisma.$FeedPostCommentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FeedPostComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostCommentCountArgs} args - Arguments to filter FeedPostComments to count.
+     * @example
+     * // Count the number of FeedPostComments
+     * const count = await prisma.feedPostComment.count({
+     *   where: {
+     *     // ... the filter for the FeedPostComments we want to count
+     *   }
+     * })
+    **/
+    count<T extends FeedPostCommentCountArgs>(
+      args?: Subset<T, FeedPostCommentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FeedPostCommentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FeedPostComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FeedPostCommentAggregateArgs>(args: Subset<T, FeedPostCommentAggregateArgs>): Prisma.PrismaPromise<GetFeedPostCommentAggregateType<T>>
+
+    /**
+     * Group by FeedPostComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostCommentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FeedPostCommentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FeedPostCommentGroupByArgs['orderBy'] }
+        : { orderBy?: FeedPostCommentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FeedPostCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFeedPostCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FeedPostComment model
+   */
+  readonly fields: FeedPostCommentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FeedPostComment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FeedPostCommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    feedPost<T extends FeedPostDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FeedPostDefaultArgs<ExtArgs>>): Prisma__FeedPostClient<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FeedPostComment model
+   */
+  interface FeedPostCommentFieldRefs {
+    readonly id: FieldRef<"FeedPostComment", 'String'>
+    readonly comment: FieldRef<"FeedPostComment", 'String'>
+    readonly createdAt: FieldRef<"FeedPostComment", 'DateTime'>
+    readonly userId: FieldRef<"FeedPostComment", 'String'>
+    readonly feedPostId: FieldRef<"FeedPostComment", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FeedPostComment findUnique
+   */
+  export type FeedPostCommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPostComment to fetch.
+     */
+    where: FeedPostCommentWhereUniqueInput
+  }
+
+  /**
+   * FeedPostComment findUniqueOrThrow
+   */
+  export type FeedPostCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPostComment to fetch.
+     */
+    where: FeedPostCommentWhereUniqueInput
+  }
+
+  /**
+   * FeedPostComment findFirst
+   */
+  export type FeedPostCommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPostComment to fetch.
+     */
+    where?: FeedPostCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeedPostComments to fetch.
+     */
+    orderBy?: FeedPostCommentOrderByWithRelationInput | FeedPostCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FeedPostComments.
+     */
+    cursor?: FeedPostCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeedPostComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeedPostComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FeedPostComments.
+     */
+    distinct?: FeedPostCommentScalarFieldEnum | FeedPostCommentScalarFieldEnum[]
+  }
+
+  /**
+   * FeedPostComment findFirstOrThrow
+   */
+  export type FeedPostCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPostComment to fetch.
+     */
+    where?: FeedPostCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeedPostComments to fetch.
+     */
+    orderBy?: FeedPostCommentOrderByWithRelationInput | FeedPostCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FeedPostComments.
+     */
+    cursor?: FeedPostCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeedPostComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeedPostComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FeedPostComments.
+     */
+    distinct?: FeedPostCommentScalarFieldEnum | FeedPostCommentScalarFieldEnum[]
+  }
+
+  /**
+   * FeedPostComment findMany
+   */
+  export type FeedPostCommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPostComments to fetch.
+     */
+    where?: FeedPostCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeedPostComments to fetch.
+     */
+    orderBy?: FeedPostCommentOrderByWithRelationInput | FeedPostCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FeedPostComments.
+     */
+    cursor?: FeedPostCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeedPostComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeedPostComments.
+     */
+    skip?: number
+    distinct?: FeedPostCommentScalarFieldEnum | FeedPostCommentScalarFieldEnum[]
+  }
+
+  /**
+   * FeedPostComment create
+   */
+  export type FeedPostCommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FeedPostComment.
+     */
+    data: XOR<FeedPostCommentCreateInput, FeedPostCommentUncheckedCreateInput>
+  }
+
+  /**
+   * FeedPostComment createMany
+   */
+  export type FeedPostCommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FeedPostComments.
+     */
+    data: FeedPostCommentCreateManyInput | FeedPostCommentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FeedPostComment createManyAndReturn
+   */
+  export type FeedPostCommentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * The data used to create many FeedPostComments.
+     */
+    data: FeedPostCommentCreateManyInput | FeedPostCommentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FeedPostComment update
+   */
+  export type FeedPostCommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FeedPostComment.
+     */
+    data: XOR<FeedPostCommentUpdateInput, FeedPostCommentUncheckedUpdateInput>
+    /**
+     * Choose, which FeedPostComment to update.
+     */
+    where: FeedPostCommentWhereUniqueInput
+  }
+
+  /**
+   * FeedPostComment updateMany
+   */
+  export type FeedPostCommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FeedPostComments.
+     */
+    data: XOR<FeedPostCommentUpdateManyMutationInput, FeedPostCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which FeedPostComments to update
+     */
+    where?: FeedPostCommentWhereInput
+    /**
+     * Limit how many FeedPostComments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FeedPostComment updateManyAndReturn
+   */
+  export type FeedPostCommentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * The data used to update FeedPostComments.
+     */
+    data: XOR<FeedPostCommentUpdateManyMutationInput, FeedPostCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which FeedPostComments to update
+     */
+    where?: FeedPostCommentWhereInput
+    /**
+     * Limit how many FeedPostComments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FeedPostComment upsert
+   */
+  export type FeedPostCommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FeedPostComment to update in case it exists.
+     */
+    where: FeedPostCommentWhereUniqueInput
+    /**
+     * In case the FeedPostComment found by the `where` argument doesn't exist, create a new FeedPostComment with this data.
+     */
+    create: XOR<FeedPostCommentCreateInput, FeedPostCommentUncheckedCreateInput>
+    /**
+     * In case the FeedPostComment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FeedPostCommentUpdateInput, FeedPostCommentUncheckedUpdateInput>
+  }
+
+  /**
+   * FeedPostComment delete
+   */
+  export type FeedPostCommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentInclude<ExtArgs> | null
+    /**
+     * Filter which FeedPostComment to delete.
+     */
+    where: FeedPostCommentWhereUniqueInput
+  }
+
+  /**
+   * FeedPostComment deleteMany
+   */
+  export type FeedPostCommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FeedPostComments to delete
+     */
+    where?: FeedPostCommentWhereInput
+    /**
+     * Limit how many FeedPostComments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FeedPostComment without action
+   */
+  export type FeedPostCommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostComment
+     */
+    select?: FeedPostCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostComment
+     */
+    omit?: FeedPostCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostCommentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FeedPostLike
+   */
+
+  export type AggregateFeedPostLike = {
+    _count: FeedPostLikeCountAggregateOutputType | null
+    _min: FeedPostLikeMinAggregateOutputType | null
+    _max: FeedPostLikeMaxAggregateOutputType | null
+  }
+
+  export type FeedPostLikeMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    feedPostId: string | null
+  }
+
+  export type FeedPostLikeMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    feedPostId: string | null
+  }
+
+  export type FeedPostLikeCountAggregateOutputType = {
+    id: number
+    userId: number
+    feedPostId: number
+    _all: number
+  }
+
+
+  export type FeedPostLikeMinAggregateInputType = {
+    id?: true
+    userId?: true
+    feedPostId?: true
+  }
+
+  export type FeedPostLikeMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    feedPostId?: true
+  }
+
+  export type FeedPostLikeCountAggregateInputType = {
+    id?: true
+    userId?: true
+    feedPostId?: true
+    _all?: true
+  }
+
+  export type FeedPostLikeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FeedPostLike to aggregate.
+     */
+    where?: FeedPostLikeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeedPostLikes to fetch.
+     */
+    orderBy?: FeedPostLikeOrderByWithRelationInput | FeedPostLikeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FeedPostLikeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeedPostLikes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeedPostLikes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FeedPostLikes
+    **/
+    _count?: true | FeedPostLikeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FeedPostLikeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FeedPostLikeMaxAggregateInputType
+  }
+
+  export type GetFeedPostLikeAggregateType<T extends FeedPostLikeAggregateArgs> = {
+        [P in keyof T & keyof AggregateFeedPostLike]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFeedPostLike[P]>
+      : GetScalarType<T[P], AggregateFeedPostLike[P]>
+  }
+
+
+
+
+  export type FeedPostLikeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeedPostLikeWhereInput
+    orderBy?: FeedPostLikeOrderByWithAggregationInput | FeedPostLikeOrderByWithAggregationInput[]
+    by: FeedPostLikeScalarFieldEnum[] | FeedPostLikeScalarFieldEnum
+    having?: FeedPostLikeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FeedPostLikeCountAggregateInputType | true
+    _min?: FeedPostLikeMinAggregateInputType
+    _max?: FeedPostLikeMaxAggregateInputType
+  }
+
+  export type FeedPostLikeGroupByOutputType = {
+    id: string
+    userId: string
+    feedPostId: string
+    _count: FeedPostLikeCountAggregateOutputType | null
+    _min: FeedPostLikeMinAggregateOutputType | null
+    _max: FeedPostLikeMaxAggregateOutputType | null
+  }
+
+  type GetFeedPostLikeGroupByPayload<T extends FeedPostLikeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FeedPostLikeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FeedPostLikeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FeedPostLikeGroupByOutputType[P]>
+            : GetScalarType<T[P], FeedPostLikeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FeedPostLikeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    feedPostId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    feedPost?: boolean | FeedPostDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["feedPostLike"]>
+
+  export type FeedPostLikeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    feedPostId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    feedPost?: boolean | FeedPostDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["feedPostLike"]>
+
+  export type FeedPostLikeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    feedPostId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    feedPost?: boolean | FeedPostDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["feedPostLike"]>
+
+  export type FeedPostLikeSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    feedPostId?: boolean
+  }
+
+  export type FeedPostLikeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "feedPostId", ExtArgs["result"]["feedPostLike"]>
+  export type FeedPostLikeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    feedPost?: boolean | FeedPostDefaultArgs<ExtArgs>
+  }
+  export type FeedPostLikeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    feedPost?: boolean | FeedPostDefaultArgs<ExtArgs>
+  }
+  export type FeedPostLikeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    feedPost?: boolean | FeedPostDefaultArgs<ExtArgs>
+  }
+
+  export type $FeedPostLikePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FeedPostLike"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      feedPost: Prisma.$FeedPostPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      feedPostId: string
+    }, ExtArgs["result"]["feedPostLike"]>
+    composites: {}
+  }
+
+  type FeedPostLikeGetPayload<S extends boolean | null | undefined | FeedPostLikeDefaultArgs> = $Result.GetResult<Prisma.$FeedPostLikePayload, S>
+
+  type FeedPostLikeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FeedPostLikeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FeedPostLikeCountAggregateInputType | true
+    }
+
+  export interface FeedPostLikeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FeedPostLike'], meta: { name: 'FeedPostLike' } }
+    /**
+     * Find zero or one FeedPostLike that matches the filter.
+     * @param {FeedPostLikeFindUniqueArgs} args - Arguments to find a FeedPostLike
+     * @example
+     * // Get one FeedPostLike
+     * const feedPostLike = await prisma.feedPostLike.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FeedPostLikeFindUniqueArgs>(args: SelectSubset<T, FeedPostLikeFindUniqueArgs<ExtArgs>>): Prisma__FeedPostLikeClient<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FeedPostLike that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FeedPostLikeFindUniqueOrThrowArgs} args - Arguments to find a FeedPostLike
+     * @example
+     * // Get one FeedPostLike
+     * const feedPostLike = await prisma.feedPostLike.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FeedPostLikeFindUniqueOrThrowArgs>(args: SelectSubset<T, FeedPostLikeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FeedPostLikeClient<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FeedPostLike that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostLikeFindFirstArgs} args - Arguments to find a FeedPostLike
+     * @example
+     * // Get one FeedPostLike
+     * const feedPostLike = await prisma.feedPostLike.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FeedPostLikeFindFirstArgs>(args?: SelectSubset<T, FeedPostLikeFindFirstArgs<ExtArgs>>): Prisma__FeedPostLikeClient<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FeedPostLike that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostLikeFindFirstOrThrowArgs} args - Arguments to find a FeedPostLike
+     * @example
+     * // Get one FeedPostLike
+     * const feedPostLike = await prisma.feedPostLike.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FeedPostLikeFindFirstOrThrowArgs>(args?: SelectSubset<T, FeedPostLikeFindFirstOrThrowArgs<ExtArgs>>): Prisma__FeedPostLikeClient<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FeedPostLikes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostLikeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FeedPostLikes
+     * const feedPostLikes = await prisma.feedPostLike.findMany()
+     * 
+     * // Get first 10 FeedPostLikes
+     * const feedPostLikes = await prisma.feedPostLike.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const feedPostLikeWithIdOnly = await prisma.feedPostLike.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FeedPostLikeFindManyArgs>(args?: SelectSubset<T, FeedPostLikeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FeedPostLike.
+     * @param {FeedPostLikeCreateArgs} args - Arguments to create a FeedPostLike.
+     * @example
+     * // Create one FeedPostLike
+     * const FeedPostLike = await prisma.feedPostLike.create({
+     *   data: {
+     *     // ... data to create a FeedPostLike
+     *   }
+     * })
+     * 
+     */
+    create<T extends FeedPostLikeCreateArgs>(args: SelectSubset<T, FeedPostLikeCreateArgs<ExtArgs>>): Prisma__FeedPostLikeClient<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FeedPostLikes.
+     * @param {FeedPostLikeCreateManyArgs} args - Arguments to create many FeedPostLikes.
+     * @example
+     * // Create many FeedPostLikes
+     * const feedPostLike = await prisma.feedPostLike.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FeedPostLikeCreateManyArgs>(args?: SelectSubset<T, FeedPostLikeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FeedPostLikes and returns the data saved in the database.
+     * @param {FeedPostLikeCreateManyAndReturnArgs} args - Arguments to create many FeedPostLikes.
+     * @example
+     * // Create many FeedPostLikes
+     * const feedPostLike = await prisma.feedPostLike.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FeedPostLikes and only return the `id`
+     * const feedPostLikeWithIdOnly = await prisma.feedPostLike.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FeedPostLikeCreateManyAndReturnArgs>(args?: SelectSubset<T, FeedPostLikeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FeedPostLike.
+     * @param {FeedPostLikeDeleteArgs} args - Arguments to delete one FeedPostLike.
+     * @example
+     * // Delete one FeedPostLike
+     * const FeedPostLike = await prisma.feedPostLike.delete({
+     *   where: {
+     *     // ... filter to delete one FeedPostLike
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FeedPostLikeDeleteArgs>(args: SelectSubset<T, FeedPostLikeDeleteArgs<ExtArgs>>): Prisma__FeedPostLikeClient<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FeedPostLike.
+     * @param {FeedPostLikeUpdateArgs} args - Arguments to update one FeedPostLike.
+     * @example
+     * // Update one FeedPostLike
+     * const feedPostLike = await prisma.feedPostLike.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FeedPostLikeUpdateArgs>(args: SelectSubset<T, FeedPostLikeUpdateArgs<ExtArgs>>): Prisma__FeedPostLikeClient<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FeedPostLikes.
+     * @param {FeedPostLikeDeleteManyArgs} args - Arguments to filter FeedPostLikes to delete.
+     * @example
+     * // Delete a few FeedPostLikes
+     * const { count } = await prisma.feedPostLike.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FeedPostLikeDeleteManyArgs>(args?: SelectSubset<T, FeedPostLikeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FeedPostLikes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostLikeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FeedPostLikes
+     * const feedPostLike = await prisma.feedPostLike.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FeedPostLikeUpdateManyArgs>(args: SelectSubset<T, FeedPostLikeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FeedPostLikes and returns the data updated in the database.
+     * @param {FeedPostLikeUpdateManyAndReturnArgs} args - Arguments to update many FeedPostLikes.
+     * @example
+     * // Update many FeedPostLikes
+     * const feedPostLike = await prisma.feedPostLike.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FeedPostLikes and only return the `id`
+     * const feedPostLikeWithIdOnly = await prisma.feedPostLike.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FeedPostLikeUpdateManyAndReturnArgs>(args: SelectSubset<T, FeedPostLikeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FeedPostLike.
+     * @param {FeedPostLikeUpsertArgs} args - Arguments to update or create a FeedPostLike.
+     * @example
+     * // Update or create a FeedPostLike
+     * const feedPostLike = await prisma.feedPostLike.upsert({
+     *   create: {
+     *     // ... data to create a FeedPostLike
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FeedPostLike we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FeedPostLikeUpsertArgs>(args: SelectSubset<T, FeedPostLikeUpsertArgs<ExtArgs>>): Prisma__FeedPostLikeClient<$Result.GetResult<Prisma.$FeedPostLikePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FeedPostLikes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostLikeCountArgs} args - Arguments to filter FeedPostLikes to count.
+     * @example
+     * // Count the number of FeedPostLikes
+     * const count = await prisma.feedPostLike.count({
+     *   where: {
+     *     // ... the filter for the FeedPostLikes we want to count
+     *   }
+     * })
+    **/
+    count<T extends FeedPostLikeCountArgs>(
+      args?: Subset<T, FeedPostLikeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FeedPostLikeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FeedPostLike.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostLikeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FeedPostLikeAggregateArgs>(args: Subset<T, FeedPostLikeAggregateArgs>): Prisma.PrismaPromise<GetFeedPostLikeAggregateType<T>>
+
+    /**
+     * Group by FeedPostLike.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeedPostLikeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FeedPostLikeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FeedPostLikeGroupByArgs['orderBy'] }
+        : { orderBy?: FeedPostLikeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FeedPostLikeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFeedPostLikeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FeedPostLike model
+   */
+  readonly fields: FeedPostLikeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FeedPostLike.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FeedPostLikeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    feedPost<T extends FeedPostDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FeedPostDefaultArgs<ExtArgs>>): Prisma__FeedPostClient<$Result.GetResult<Prisma.$FeedPostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FeedPostLike model
+   */
+  interface FeedPostLikeFieldRefs {
+    readonly id: FieldRef<"FeedPostLike", 'String'>
+    readonly userId: FieldRef<"FeedPostLike", 'String'>
+    readonly feedPostId: FieldRef<"FeedPostLike", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FeedPostLike findUnique
+   */
+  export type FeedPostLikeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPostLike to fetch.
+     */
+    where: FeedPostLikeWhereUniqueInput
+  }
+
+  /**
+   * FeedPostLike findUniqueOrThrow
+   */
+  export type FeedPostLikeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPostLike to fetch.
+     */
+    where: FeedPostLikeWhereUniqueInput
+  }
+
+  /**
+   * FeedPostLike findFirst
+   */
+  export type FeedPostLikeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPostLike to fetch.
+     */
+    where?: FeedPostLikeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeedPostLikes to fetch.
+     */
+    orderBy?: FeedPostLikeOrderByWithRelationInput | FeedPostLikeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FeedPostLikes.
+     */
+    cursor?: FeedPostLikeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeedPostLikes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeedPostLikes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FeedPostLikes.
+     */
+    distinct?: FeedPostLikeScalarFieldEnum | FeedPostLikeScalarFieldEnum[]
+  }
+
+  /**
+   * FeedPostLike findFirstOrThrow
+   */
+  export type FeedPostLikeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPostLike to fetch.
+     */
+    where?: FeedPostLikeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeedPostLikes to fetch.
+     */
+    orderBy?: FeedPostLikeOrderByWithRelationInput | FeedPostLikeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FeedPostLikes.
+     */
+    cursor?: FeedPostLikeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeedPostLikes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeedPostLikes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FeedPostLikes.
+     */
+    distinct?: FeedPostLikeScalarFieldEnum | FeedPostLikeScalarFieldEnum[]
+  }
+
+  /**
+   * FeedPostLike findMany
+   */
+  export type FeedPostLikeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeInclude<ExtArgs> | null
+    /**
+     * Filter, which FeedPostLikes to fetch.
+     */
+    where?: FeedPostLikeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeedPostLikes to fetch.
+     */
+    orderBy?: FeedPostLikeOrderByWithRelationInput | FeedPostLikeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FeedPostLikes.
+     */
+    cursor?: FeedPostLikeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeedPostLikes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeedPostLikes.
+     */
+    skip?: number
+    distinct?: FeedPostLikeScalarFieldEnum | FeedPostLikeScalarFieldEnum[]
+  }
+
+  /**
+   * FeedPostLike create
+   */
+  export type FeedPostLikeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FeedPostLike.
+     */
+    data: XOR<FeedPostLikeCreateInput, FeedPostLikeUncheckedCreateInput>
+  }
+
+  /**
+   * FeedPostLike createMany
+   */
+  export type FeedPostLikeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FeedPostLikes.
+     */
+    data: FeedPostLikeCreateManyInput | FeedPostLikeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FeedPostLike createManyAndReturn
+   */
+  export type FeedPostLikeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * The data used to create many FeedPostLikes.
+     */
+    data: FeedPostLikeCreateManyInput | FeedPostLikeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FeedPostLike update
+   */
+  export type FeedPostLikeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FeedPostLike.
+     */
+    data: XOR<FeedPostLikeUpdateInput, FeedPostLikeUncheckedUpdateInput>
+    /**
+     * Choose, which FeedPostLike to update.
+     */
+    where: FeedPostLikeWhereUniqueInput
+  }
+
+  /**
+   * FeedPostLike updateMany
+   */
+  export type FeedPostLikeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FeedPostLikes.
+     */
+    data: XOR<FeedPostLikeUpdateManyMutationInput, FeedPostLikeUncheckedUpdateManyInput>
+    /**
+     * Filter which FeedPostLikes to update
+     */
+    where?: FeedPostLikeWhereInput
+    /**
+     * Limit how many FeedPostLikes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FeedPostLike updateManyAndReturn
+   */
+  export type FeedPostLikeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * The data used to update FeedPostLikes.
+     */
+    data: XOR<FeedPostLikeUpdateManyMutationInput, FeedPostLikeUncheckedUpdateManyInput>
+    /**
+     * Filter which FeedPostLikes to update
+     */
+    where?: FeedPostLikeWhereInput
+    /**
+     * Limit how many FeedPostLikes to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FeedPostLike upsert
+   */
+  export type FeedPostLikeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FeedPostLike to update in case it exists.
+     */
+    where: FeedPostLikeWhereUniqueInput
+    /**
+     * In case the FeedPostLike found by the `where` argument doesn't exist, create a new FeedPostLike with this data.
+     */
+    create: XOR<FeedPostLikeCreateInput, FeedPostLikeUncheckedCreateInput>
+    /**
+     * In case the FeedPostLike was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FeedPostLikeUpdateInput, FeedPostLikeUncheckedUpdateInput>
+  }
+
+  /**
+   * FeedPostLike delete
+   */
+  export type FeedPostLikeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeInclude<ExtArgs> | null
+    /**
+     * Filter which FeedPostLike to delete.
+     */
+    where: FeedPostLikeWhereUniqueInput
+  }
+
+  /**
+   * FeedPostLike deleteMany
+   */
+  export type FeedPostLikeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FeedPostLikes to delete
+     */
+    where?: FeedPostLikeWhereInput
+    /**
+     * Limit how many FeedPostLikes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FeedPostLike without action
+   */
+  export type FeedPostLikeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeedPostLike
+     */
+    select?: FeedPostLikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeedPostLike
+     */
+    omit?: FeedPostLikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeedPostLikeInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -5817,6 +9476,38 @@ export namespace Prisma {
   };
 
   export type CollectionScalarFieldEnum = (typeof CollectionScalarFieldEnum)[keyof typeof CollectionScalarFieldEnum]
+
+
+  export const FeedPostScalarFieldEnum: {
+    id: 'id',
+    image: 'image',
+    caption: 'caption',
+    isPremium: 'isPremium',
+    userId: 'userId',
+    createdAt: 'createdAt'
+  };
+
+  export type FeedPostScalarFieldEnum = (typeof FeedPostScalarFieldEnum)[keyof typeof FeedPostScalarFieldEnum]
+
+
+  export const FeedPostCommentScalarFieldEnum: {
+    id: 'id',
+    comment: 'comment',
+    createdAt: 'createdAt',
+    userId: 'userId',
+    feedPostId: 'feedPostId'
+  };
+
+  export type FeedPostCommentScalarFieldEnum = (typeof FeedPostCommentScalarFieldEnum)[keyof typeof FeedPostCommentScalarFieldEnum]
+
+
+  export const FeedPostLikeScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    feedPostId: 'feedPostId'
+  };
+
+  export type FeedPostLikeScalarFieldEnum = (typeof FeedPostLikeScalarFieldEnum)[keyof typeof FeedPostLikeScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5951,6 +9642,9 @@ export namespace Prisma {
     followers?: FollowListRelationFilter
     following?: FollowListRelationFilter
     Collection?: CollectionListRelationFilter
+    FeedPost?: FeedPostListRelationFilter
+    FeedPostLike?: FeedPostLikeListRelationFilter
+    FeedPostComment?: FeedPostCommentListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -5973,6 +9667,9 @@ export namespace Prisma {
     followers?: FollowOrderByRelationAggregateInput
     following?: FollowOrderByRelationAggregateInput
     Collection?: CollectionOrderByRelationAggregateInput
+    FeedPost?: FeedPostOrderByRelationAggregateInput
+    FeedPostLike?: FeedPostLikeOrderByRelationAggregateInput
+    FeedPostComment?: FeedPostCommentOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -5998,6 +9695,9 @@ export namespace Prisma {
     followers?: FollowListRelationFilter
     following?: FollowListRelationFilter
     Collection?: CollectionListRelationFilter
+    FeedPost?: FeedPostListRelationFilter
+    FeedPostLike?: FeedPostLikeListRelationFilter
+    FeedPostComment?: FeedPostCommentListRelationFilter
   }, "id" | "address" | "username" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -6215,6 +9915,178 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Collection"> | Date | string
   }
 
+  export type FeedPostWhereInput = {
+    AND?: FeedPostWhereInput | FeedPostWhereInput[]
+    OR?: FeedPostWhereInput[]
+    NOT?: FeedPostWhereInput | FeedPostWhereInput[]
+    id?: StringFilter<"FeedPost"> | string
+    image?: StringNullableFilter<"FeedPost"> | string | null
+    caption?: StringNullableFilter<"FeedPost"> | string | null
+    isPremium?: BoolFilter<"FeedPost"> | boolean
+    userId?: StringFilter<"FeedPost"> | string
+    createdAt?: DateTimeFilter<"FeedPost"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    FeedPostComment?: FeedPostCommentListRelationFilter
+    FeedPostLike?: FeedPostLikeListRelationFilter
+  }
+
+  export type FeedPostOrderByWithRelationInput = {
+    id?: SortOrder
+    image?: SortOrderInput | SortOrder
+    caption?: SortOrderInput | SortOrder
+    isPremium?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    FeedPostComment?: FeedPostCommentOrderByRelationAggregateInput
+    FeedPostLike?: FeedPostLikeOrderByRelationAggregateInput
+  }
+
+  export type FeedPostWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FeedPostWhereInput | FeedPostWhereInput[]
+    OR?: FeedPostWhereInput[]
+    NOT?: FeedPostWhereInput | FeedPostWhereInput[]
+    image?: StringNullableFilter<"FeedPost"> | string | null
+    caption?: StringNullableFilter<"FeedPost"> | string | null
+    isPremium?: BoolFilter<"FeedPost"> | boolean
+    userId?: StringFilter<"FeedPost"> | string
+    createdAt?: DateTimeFilter<"FeedPost"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    FeedPostComment?: FeedPostCommentListRelationFilter
+    FeedPostLike?: FeedPostLikeListRelationFilter
+  }, "id">
+
+  export type FeedPostOrderByWithAggregationInput = {
+    id?: SortOrder
+    image?: SortOrderInput | SortOrder
+    caption?: SortOrderInput | SortOrder
+    isPremium?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    _count?: FeedPostCountOrderByAggregateInput
+    _max?: FeedPostMaxOrderByAggregateInput
+    _min?: FeedPostMinOrderByAggregateInput
+  }
+
+  export type FeedPostScalarWhereWithAggregatesInput = {
+    AND?: FeedPostScalarWhereWithAggregatesInput | FeedPostScalarWhereWithAggregatesInput[]
+    OR?: FeedPostScalarWhereWithAggregatesInput[]
+    NOT?: FeedPostScalarWhereWithAggregatesInput | FeedPostScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FeedPost"> | string
+    image?: StringNullableWithAggregatesFilter<"FeedPost"> | string | null
+    caption?: StringNullableWithAggregatesFilter<"FeedPost"> | string | null
+    isPremium?: BoolWithAggregatesFilter<"FeedPost"> | boolean
+    userId?: StringWithAggregatesFilter<"FeedPost"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"FeedPost"> | Date | string
+  }
+
+  export type FeedPostCommentWhereInput = {
+    AND?: FeedPostCommentWhereInput | FeedPostCommentWhereInput[]
+    OR?: FeedPostCommentWhereInput[]
+    NOT?: FeedPostCommentWhereInput | FeedPostCommentWhereInput[]
+    id?: StringFilter<"FeedPostComment"> | string
+    comment?: StringFilter<"FeedPostComment"> | string
+    createdAt?: DateTimeFilter<"FeedPostComment"> | Date | string
+    userId?: StringFilter<"FeedPostComment"> | string
+    feedPostId?: StringFilter<"FeedPostComment"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    feedPost?: XOR<FeedPostScalarRelationFilter, FeedPostWhereInput>
+  }
+
+  export type FeedPostCommentOrderByWithRelationInput = {
+    id?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    feedPostId?: SortOrder
+    user?: UserOrderByWithRelationInput
+    feedPost?: FeedPostOrderByWithRelationInput
+  }
+
+  export type FeedPostCommentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FeedPostCommentWhereInput | FeedPostCommentWhereInput[]
+    OR?: FeedPostCommentWhereInput[]
+    NOT?: FeedPostCommentWhereInput | FeedPostCommentWhereInput[]
+    comment?: StringFilter<"FeedPostComment"> | string
+    createdAt?: DateTimeFilter<"FeedPostComment"> | Date | string
+    userId?: StringFilter<"FeedPostComment"> | string
+    feedPostId?: StringFilter<"FeedPostComment"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    feedPost?: XOR<FeedPostScalarRelationFilter, FeedPostWhereInput>
+  }, "id">
+
+  export type FeedPostCommentOrderByWithAggregationInput = {
+    id?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    feedPostId?: SortOrder
+    _count?: FeedPostCommentCountOrderByAggregateInput
+    _max?: FeedPostCommentMaxOrderByAggregateInput
+    _min?: FeedPostCommentMinOrderByAggregateInput
+  }
+
+  export type FeedPostCommentScalarWhereWithAggregatesInput = {
+    AND?: FeedPostCommentScalarWhereWithAggregatesInput | FeedPostCommentScalarWhereWithAggregatesInput[]
+    OR?: FeedPostCommentScalarWhereWithAggregatesInput[]
+    NOT?: FeedPostCommentScalarWhereWithAggregatesInput | FeedPostCommentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FeedPostComment"> | string
+    comment?: StringWithAggregatesFilter<"FeedPostComment"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"FeedPostComment"> | Date | string
+    userId?: StringWithAggregatesFilter<"FeedPostComment"> | string
+    feedPostId?: StringWithAggregatesFilter<"FeedPostComment"> | string
+  }
+
+  export type FeedPostLikeWhereInput = {
+    AND?: FeedPostLikeWhereInput | FeedPostLikeWhereInput[]
+    OR?: FeedPostLikeWhereInput[]
+    NOT?: FeedPostLikeWhereInput | FeedPostLikeWhereInput[]
+    id?: StringFilter<"FeedPostLike"> | string
+    userId?: StringFilter<"FeedPostLike"> | string
+    feedPostId?: StringFilter<"FeedPostLike"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    feedPost?: XOR<FeedPostScalarRelationFilter, FeedPostWhereInput>
+  }
+
+  export type FeedPostLikeOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    feedPostId?: SortOrder
+    user?: UserOrderByWithRelationInput
+    feedPost?: FeedPostOrderByWithRelationInput
+  }
+
+  export type FeedPostLikeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FeedPostLikeWhereInput | FeedPostLikeWhereInput[]
+    OR?: FeedPostLikeWhereInput[]
+    NOT?: FeedPostLikeWhereInput | FeedPostLikeWhereInput[]
+    userId?: StringFilter<"FeedPostLike"> | string
+    feedPostId?: StringFilter<"FeedPostLike"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    feedPost?: XOR<FeedPostScalarRelationFilter, FeedPostWhereInput>
+  }, "id">
+
+  export type FeedPostLikeOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    feedPostId?: SortOrder
+    _count?: FeedPostLikeCountOrderByAggregateInput
+    _max?: FeedPostLikeMaxOrderByAggregateInput
+    _min?: FeedPostLikeMinOrderByAggregateInput
+  }
+
+  export type FeedPostLikeScalarWhereWithAggregatesInput = {
+    AND?: FeedPostLikeScalarWhereWithAggregatesInput | FeedPostLikeScalarWhereWithAggregatesInput[]
+    OR?: FeedPostLikeScalarWhereWithAggregatesInput[]
+    NOT?: FeedPostLikeScalarWhereWithAggregatesInput | FeedPostLikeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FeedPostLike"> | string
+    userId?: StringWithAggregatesFilter<"FeedPostLike"> | string
+    feedPostId?: StringWithAggregatesFilter<"FeedPostLike"> | string
+  }
+
   export type UserCreateInput = {
     id?: string
     address: string
@@ -6235,6 +10107,9 @@ export namespace Prisma {
     followers?: FollowCreateNestedManyWithoutFollowerInput
     following?: FollowCreateNestedManyWithoutFollowingInput
     Collection?: CollectionCreateNestedManyWithoutUserInput
+    FeedPost?: FeedPostCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -6257,6 +10132,9 @@ export namespace Prisma {
     followers?: FollowUncheckedCreateNestedManyWithoutFollowerInput
     following?: FollowUncheckedCreateNestedManyWithoutFollowingInput
     Collection?: CollectionUncheckedCreateNestedManyWithoutUserInput
+    FeedPost?: FeedPostUncheckedCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeUncheckedCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -6279,6 +10157,9 @@ export namespace Prisma {
     followers?: FollowUpdateManyWithoutFollowerNestedInput
     following?: FollowUpdateManyWithoutFollowingNestedInput
     Collection?: CollectionUpdateManyWithoutUserNestedInput
+    FeedPost?: FeedPostUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -6301,6 +10182,9 @@ export namespace Prisma {
     followers?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
     following?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
     Collection?: CollectionUncheckedUpdateManyWithoutUserNestedInput
+    FeedPost?: FeedPostUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -6515,6 +10399,170 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type FeedPostCreateInput = {
+    id?: string
+    image?: string | null
+    caption?: string | null
+    isPremium?: boolean
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutFeedPostInput
+    FeedPostComment?: FeedPostCommentCreateNestedManyWithoutFeedPostInput
+    FeedPostLike?: FeedPostLikeCreateNestedManyWithoutFeedPostInput
+  }
+
+  export type FeedPostUncheckedCreateInput = {
+    id?: string
+    image?: string | null
+    caption?: string | null
+    isPremium?: boolean
+    userId: string
+    createdAt?: Date | string
+    FeedPostComment?: FeedPostCommentUncheckedCreateNestedManyWithoutFeedPostInput
+    FeedPostLike?: FeedPostLikeUncheckedCreateNestedManyWithoutFeedPostInput
+  }
+
+  export type FeedPostUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFeedPostNestedInput
+    FeedPostComment?: FeedPostCommentUpdateManyWithoutFeedPostNestedInput
+    FeedPostLike?: FeedPostLikeUpdateManyWithoutFeedPostNestedInput
+  }
+
+  export type FeedPostUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FeedPostComment?: FeedPostCommentUncheckedUpdateManyWithoutFeedPostNestedInput
+    FeedPostLike?: FeedPostLikeUncheckedUpdateManyWithoutFeedPostNestedInput
+  }
+
+  export type FeedPostCreateManyInput = {
+    id?: string
+    image?: string | null
+    caption?: string | null
+    isPremium?: boolean
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type FeedPostUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FeedPostUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FeedPostCommentCreateInput = {
+    id?: string
+    comment: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutFeedPostCommentInput
+    feedPost: FeedPostCreateNestedOneWithoutFeedPostCommentInput
+  }
+
+  export type FeedPostCommentUncheckedCreateInput = {
+    id?: string
+    comment: string
+    createdAt?: Date | string
+    userId: string
+    feedPostId: string
+  }
+
+  export type FeedPostCommentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFeedPostCommentNestedInput
+    feedPost?: FeedPostUpdateOneRequiredWithoutFeedPostCommentNestedInput
+  }
+
+  export type FeedPostCommentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    feedPostId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FeedPostCommentCreateManyInput = {
+    id?: string
+    comment: string
+    createdAt?: Date | string
+    userId: string
+    feedPostId: string
+  }
+
+  export type FeedPostCommentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FeedPostCommentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    feedPostId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FeedPostLikeCreateInput = {
+    id?: string
+    user: UserCreateNestedOneWithoutFeedPostLikeInput
+    feedPost: FeedPostCreateNestedOneWithoutFeedPostLikeInput
+  }
+
+  export type FeedPostLikeUncheckedCreateInput = {
+    id?: string
+    userId: string
+    feedPostId: string
+  }
+
+  export type FeedPostLikeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneRequiredWithoutFeedPostLikeNestedInput
+    feedPost?: FeedPostUpdateOneRequiredWithoutFeedPostLikeNestedInput
+  }
+
+  export type FeedPostLikeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    feedPostId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FeedPostLikeCreateManyInput = {
+    id?: string
+    userId: string
+    feedPostId: string
+  }
+
+  export type FeedPostLikeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FeedPostLikeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    feedPostId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -6586,6 +10634,24 @@ export namespace Prisma {
     none?: CollectionWhereInput
   }
 
+  export type FeedPostListRelationFilter = {
+    every?: FeedPostWhereInput
+    some?: FeedPostWhereInput
+    none?: FeedPostWhereInput
+  }
+
+  export type FeedPostLikeListRelationFilter = {
+    every?: FeedPostLikeWhereInput
+    some?: FeedPostLikeWhereInput
+    none?: FeedPostLikeWhereInput
+  }
+
+  export type FeedPostCommentListRelationFilter = {
+    every?: FeedPostCommentWhereInput
+    some?: FeedPostCommentWhereInput
+    none?: FeedPostCommentWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -6600,6 +10666,18 @@ export namespace Prisma {
   }
 
   export type CollectionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FeedPostOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FeedPostLikeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FeedPostCommentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6850,6 +10928,80 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type FeedPostCountOrderByAggregateInput = {
+    id?: SortOrder
+    image?: SortOrder
+    caption?: SortOrder
+    isPremium?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FeedPostMaxOrderByAggregateInput = {
+    id?: SortOrder
+    image?: SortOrder
+    caption?: SortOrder
+    isPremium?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FeedPostMinOrderByAggregateInput = {
+    id?: SortOrder
+    image?: SortOrder
+    caption?: SortOrder
+    isPremium?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FeedPostScalarRelationFilter = {
+    is?: FeedPostWhereInput
+    isNot?: FeedPostWhereInput
+  }
+
+  export type FeedPostCommentCountOrderByAggregateInput = {
+    id?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    feedPostId?: SortOrder
+  }
+
+  export type FeedPostCommentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    feedPostId?: SortOrder
+  }
+
+  export type FeedPostCommentMinOrderByAggregateInput = {
+    id?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    feedPostId?: SortOrder
+  }
+
+  export type FeedPostLikeCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    feedPostId?: SortOrder
+  }
+
+  export type FeedPostLikeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    feedPostId?: SortOrder
+  }
+
+  export type FeedPostLikeMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    feedPostId?: SortOrder
+  }
+
   export type SocialCreateNestedManyWithoutUserInput = {
     create?: XOR<SocialCreateWithoutUserInput, SocialUncheckedCreateWithoutUserInput> | SocialCreateWithoutUserInput[] | SocialUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SocialCreateOrConnectWithoutUserInput | SocialCreateOrConnectWithoutUserInput[]
@@ -6878,6 +11030,27 @@ export namespace Prisma {
     connect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
   }
 
+  export type FeedPostCreateNestedManyWithoutUserInput = {
+    create?: XOR<FeedPostCreateWithoutUserInput, FeedPostUncheckedCreateWithoutUserInput> | FeedPostCreateWithoutUserInput[] | FeedPostUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedPostCreateOrConnectWithoutUserInput | FeedPostCreateOrConnectWithoutUserInput[]
+    createMany?: FeedPostCreateManyUserInputEnvelope
+    connect?: FeedPostWhereUniqueInput | FeedPostWhereUniqueInput[]
+  }
+
+  export type FeedPostLikeCreateNestedManyWithoutUserInput = {
+    create?: XOR<FeedPostLikeCreateWithoutUserInput, FeedPostLikeUncheckedCreateWithoutUserInput> | FeedPostLikeCreateWithoutUserInput[] | FeedPostLikeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedPostLikeCreateOrConnectWithoutUserInput | FeedPostLikeCreateOrConnectWithoutUserInput[]
+    createMany?: FeedPostLikeCreateManyUserInputEnvelope
+    connect?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+  }
+
+  export type FeedPostCommentCreateNestedManyWithoutUserInput = {
+    create?: XOR<FeedPostCommentCreateWithoutUserInput, FeedPostCommentUncheckedCreateWithoutUserInput> | FeedPostCommentCreateWithoutUserInput[] | FeedPostCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedPostCommentCreateOrConnectWithoutUserInput | FeedPostCommentCreateOrConnectWithoutUserInput[]
+    createMany?: FeedPostCommentCreateManyUserInputEnvelope
+    connect?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+  }
+
   export type SocialUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SocialCreateWithoutUserInput, SocialUncheckedCreateWithoutUserInput> | SocialCreateWithoutUserInput[] | SocialUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SocialCreateOrConnectWithoutUserInput | SocialCreateOrConnectWithoutUserInput[]
@@ -6904,6 +11077,27 @@ export namespace Prisma {
     connectOrCreate?: CollectionCreateOrConnectWithoutUserInput | CollectionCreateOrConnectWithoutUserInput[]
     createMany?: CollectionCreateManyUserInputEnvelope
     connect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
+  }
+
+  export type FeedPostUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<FeedPostCreateWithoutUserInput, FeedPostUncheckedCreateWithoutUserInput> | FeedPostCreateWithoutUserInput[] | FeedPostUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedPostCreateOrConnectWithoutUserInput | FeedPostCreateOrConnectWithoutUserInput[]
+    createMany?: FeedPostCreateManyUserInputEnvelope
+    connect?: FeedPostWhereUniqueInput | FeedPostWhereUniqueInput[]
+  }
+
+  export type FeedPostLikeUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<FeedPostLikeCreateWithoutUserInput, FeedPostLikeUncheckedCreateWithoutUserInput> | FeedPostLikeCreateWithoutUserInput[] | FeedPostLikeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedPostLikeCreateOrConnectWithoutUserInput | FeedPostLikeCreateOrConnectWithoutUserInput[]
+    createMany?: FeedPostLikeCreateManyUserInputEnvelope
+    connect?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+  }
+
+  export type FeedPostCommentUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<FeedPostCommentCreateWithoutUserInput, FeedPostCommentUncheckedCreateWithoutUserInput> | FeedPostCommentCreateWithoutUserInput[] | FeedPostCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedPostCommentCreateOrConnectWithoutUserInput | FeedPostCommentCreateOrConnectWithoutUserInput[]
+    createMany?: FeedPostCommentCreateManyUserInputEnvelope
+    connect?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -6982,6 +11176,48 @@ export namespace Prisma {
     deleteMany?: CollectionScalarWhereInput | CollectionScalarWhereInput[]
   }
 
+  export type FeedPostUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FeedPostCreateWithoutUserInput, FeedPostUncheckedCreateWithoutUserInput> | FeedPostCreateWithoutUserInput[] | FeedPostUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedPostCreateOrConnectWithoutUserInput | FeedPostCreateOrConnectWithoutUserInput[]
+    upsert?: FeedPostUpsertWithWhereUniqueWithoutUserInput | FeedPostUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FeedPostCreateManyUserInputEnvelope
+    set?: FeedPostWhereUniqueInput | FeedPostWhereUniqueInput[]
+    disconnect?: FeedPostWhereUniqueInput | FeedPostWhereUniqueInput[]
+    delete?: FeedPostWhereUniqueInput | FeedPostWhereUniqueInput[]
+    connect?: FeedPostWhereUniqueInput | FeedPostWhereUniqueInput[]
+    update?: FeedPostUpdateWithWhereUniqueWithoutUserInput | FeedPostUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FeedPostUpdateManyWithWhereWithoutUserInput | FeedPostUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FeedPostScalarWhereInput | FeedPostScalarWhereInput[]
+  }
+
+  export type FeedPostLikeUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FeedPostLikeCreateWithoutUserInput, FeedPostLikeUncheckedCreateWithoutUserInput> | FeedPostLikeCreateWithoutUserInput[] | FeedPostLikeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedPostLikeCreateOrConnectWithoutUserInput | FeedPostLikeCreateOrConnectWithoutUserInput[]
+    upsert?: FeedPostLikeUpsertWithWhereUniqueWithoutUserInput | FeedPostLikeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FeedPostLikeCreateManyUserInputEnvelope
+    set?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    disconnect?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    delete?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    connect?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    update?: FeedPostLikeUpdateWithWhereUniqueWithoutUserInput | FeedPostLikeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FeedPostLikeUpdateManyWithWhereWithoutUserInput | FeedPostLikeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FeedPostLikeScalarWhereInput | FeedPostLikeScalarWhereInput[]
+  }
+
+  export type FeedPostCommentUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FeedPostCommentCreateWithoutUserInput, FeedPostCommentUncheckedCreateWithoutUserInput> | FeedPostCommentCreateWithoutUserInput[] | FeedPostCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedPostCommentCreateOrConnectWithoutUserInput | FeedPostCommentCreateOrConnectWithoutUserInput[]
+    upsert?: FeedPostCommentUpsertWithWhereUniqueWithoutUserInput | FeedPostCommentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FeedPostCommentCreateManyUserInputEnvelope
+    set?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    disconnect?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    delete?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    connect?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    update?: FeedPostCommentUpdateWithWhereUniqueWithoutUserInput | FeedPostCommentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FeedPostCommentUpdateManyWithWhereWithoutUserInput | FeedPostCommentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FeedPostCommentScalarWhereInput | FeedPostCommentScalarWhereInput[]
+  }
+
   export type SocialUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SocialCreateWithoutUserInput, SocialUncheckedCreateWithoutUserInput> | SocialCreateWithoutUserInput[] | SocialUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SocialCreateOrConnectWithoutUserInput | SocialCreateOrConnectWithoutUserInput[]
@@ -7036,6 +11272,48 @@ export namespace Prisma {
     update?: CollectionUpdateWithWhereUniqueWithoutUserInput | CollectionUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: CollectionUpdateManyWithWhereWithoutUserInput | CollectionUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: CollectionScalarWhereInput | CollectionScalarWhereInput[]
+  }
+
+  export type FeedPostUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FeedPostCreateWithoutUserInput, FeedPostUncheckedCreateWithoutUserInput> | FeedPostCreateWithoutUserInput[] | FeedPostUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedPostCreateOrConnectWithoutUserInput | FeedPostCreateOrConnectWithoutUserInput[]
+    upsert?: FeedPostUpsertWithWhereUniqueWithoutUserInput | FeedPostUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FeedPostCreateManyUserInputEnvelope
+    set?: FeedPostWhereUniqueInput | FeedPostWhereUniqueInput[]
+    disconnect?: FeedPostWhereUniqueInput | FeedPostWhereUniqueInput[]
+    delete?: FeedPostWhereUniqueInput | FeedPostWhereUniqueInput[]
+    connect?: FeedPostWhereUniqueInput | FeedPostWhereUniqueInput[]
+    update?: FeedPostUpdateWithWhereUniqueWithoutUserInput | FeedPostUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FeedPostUpdateManyWithWhereWithoutUserInput | FeedPostUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FeedPostScalarWhereInput | FeedPostScalarWhereInput[]
+  }
+
+  export type FeedPostLikeUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FeedPostLikeCreateWithoutUserInput, FeedPostLikeUncheckedCreateWithoutUserInput> | FeedPostLikeCreateWithoutUserInput[] | FeedPostLikeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedPostLikeCreateOrConnectWithoutUserInput | FeedPostLikeCreateOrConnectWithoutUserInput[]
+    upsert?: FeedPostLikeUpsertWithWhereUniqueWithoutUserInput | FeedPostLikeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FeedPostLikeCreateManyUserInputEnvelope
+    set?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    disconnect?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    delete?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    connect?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    update?: FeedPostLikeUpdateWithWhereUniqueWithoutUserInput | FeedPostLikeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FeedPostLikeUpdateManyWithWhereWithoutUserInput | FeedPostLikeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FeedPostLikeScalarWhereInput | FeedPostLikeScalarWhereInput[]
+  }
+
+  export type FeedPostCommentUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FeedPostCommentCreateWithoutUserInput, FeedPostCommentUncheckedCreateWithoutUserInput> | FeedPostCommentCreateWithoutUserInput[] | FeedPostCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedPostCommentCreateOrConnectWithoutUserInput | FeedPostCommentCreateOrConnectWithoutUserInput[]
+    upsert?: FeedPostCommentUpsertWithWhereUniqueWithoutUserInput | FeedPostCommentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FeedPostCommentCreateManyUserInputEnvelope
+    set?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    disconnect?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    delete?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    connect?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    update?: FeedPostCommentUpdateWithWhereUniqueWithoutUserInput | FeedPostCommentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FeedPostCommentUpdateManyWithWhereWithoutUserInput | FeedPostCommentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FeedPostCommentScalarWhereInput | FeedPostCommentScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutFollowersInput = {
@@ -7100,6 +11378,160 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutCollectionInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCollectionInput, UserUpdateWithoutCollectionInput>, UserUncheckedUpdateWithoutCollectionInput>
+  }
+
+  export type UserCreateNestedOneWithoutFeedPostInput = {
+    create?: XOR<UserCreateWithoutFeedPostInput, UserUncheckedCreateWithoutFeedPostInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFeedPostInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type FeedPostCommentCreateNestedManyWithoutFeedPostInput = {
+    create?: XOR<FeedPostCommentCreateWithoutFeedPostInput, FeedPostCommentUncheckedCreateWithoutFeedPostInput> | FeedPostCommentCreateWithoutFeedPostInput[] | FeedPostCommentUncheckedCreateWithoutFeedPostInput[]
+    connectOrCreate?: FeedPostCommentCreateOrConnectWithoutFeedPostInput | FeedPostCommentCreateOrConnectWithoutFeedPostInput[]
+    createMany?: FeedPostCommentCreateManyFeedPostInputEnvelope
+    connect?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+  }
+
+  export type FeedPostLikeCreateNestedManyWithoutFeedPostInput = {
+    create?: XOR<FeedPostLikeCreateWithoutFeedPostInput, FeedPostLikeUncheckedCreateWithoutFeedPostInput> | FeedPostLikeCreateWithoutFeedPostInput[] | FeedPostLikeUncheckedCreateWithoutFeedPostInput[]
+    connectOrCreate?: FeedPostLikeCreateOrConnectWithoutFeedPostInput | FeedPostLikeCreateOrConnectWithoutFeedPostInput[]
+    createMany?: FeedPostLikeCreateManyFeedPostInputEnvelope
+    connect?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+  }
+
+  export type FeedPostCommentUncheckedCreateNestedManyWithoutFeedPostInput = {
+    create?: XOR<FeedPostCommentCreateWithoutFeedPostInput, FeedPostCommentUncheckedCreateWithoutFeedPostInput> | FeedPostCommentCreateWithoutFeedPostInput[] | FeedPostCommentUncheckedCreateWithoutFeedPostInput[]
+    connectOrCreate?: FeedPostCommentCreateOrConnectWithoutFeedPostInput | FeedPostCommentCreateOrConnectWithoutFeedPostInput[]
+    createMany?: FeedPostCommentCreateManyFeedPostInputEnvelope
+    connect?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+  }
+
+  export type FeedPostLikeUncheckedCreateNestedManyWithoutFeedPostInput = {
+    create?: XOR<FeedPostLikeCreateWithoutFeedPostInput, FeedPostLikeUncheckedCreateWithoutFeedPostInput> | FeedPostLikeCreateWithoutFeedPostInput[] | FeedPostLikeUncheckedCreateWithoutFeedPostInput[]
+    connectOrCreate?: FeedPostLikeCreateOrConnectWithoutFeedPostInput | FeedPostLikeCreateOrConnectWithoutFeedPostInput[]
+    createMany?: FeedPostLikeCreateManyFeedPostInputEnvelope
+    connect?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutFeedPostNestedInput = {
+    create?: XOR<UserCreateWithoutFeedPostInput, UserUncheckedCreateWithoutFeedPostInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFeedPostInput
+    upsert?: UserUpsertWithoutFeedPostInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFeedPostInput, UserUpdateWithoutFeedPostInput>, UserUncheckedUpdateWithoutFeedPostInput>
+  }
+
+  export type FeedPostCommentUpdateManyWithoutFeedPostNestedInput = {
+    create?: XOR<FeedPostCommentCreateWithoutFeedPostInput, FeedPostCommentUncheckedCreateWithoutFeedPostInput> | FeedPostCommentCreateWithoutFeedPostInput[] | FeedPostCommentUncheckedCreateWithoutFeedPostInput[]
+    connectOrCreate?: FeedPostCommentCreateOrConnectWithoutFeedPostInput | FeedPostCommentCreateOrConnectWithoutFeedPostInput[]
+    upsert?: FeedPostCommentUpsertWithWhereUniqueWithoutFeedPostInput | FeedPostCommentUpsertWithWhereUniqueWithoutFeedPostInput[]
+    createMany?: FeedPostCommentCreateManyFeedPostInputEnvelope
+    set?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    disconnect?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    delete?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    connect?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    update?: FeedPostCommentUpdateWithWhereUniqueWithoutFeedPostInput | FeedPostCommentUpdateWithWhereUniqueWithoutFeedPostInput[]
+    updateMany?: FeedPostCommentUpdateManyWithWhereWithoutFeedPostInput | FeedPostCommentUpdateManyWithWhereWithoutFeedPostInput[]
+    deleteMany?: FeedPostCommentScalarWhereInput | FeedPostCommentScalarWhereInput[]
+  }
+
+  export type FeedPostLikeUpdateManyWithoutFeedPostNestedInput = {
+    create?: XOR<FeedPostLikeCreateWithoutFeedPostInput, FeedPostLikeUncheckedCreateWithoutFeedPostInput> | FeedPostLikeCreateWithoutFeedPostInput[] | FeedPostLikeUncheckedCreateWithoutFeedPostInput[]
+    connectOrCreate?: FeedPostLikeCreateOrConnectWithoutFeedPostInput | FeedPostLikeCreateOrConnectWithoutFeedPostInput[]
+    upsert?: FeedPostLikeUpsertWithWhereUniqueWithoutFeedPostInput | FeedPostLikeUpsertWithWhereUniqueWithoutFeedPostInput[]
+    createMany?: FeedPostLikeCreateManyFeedPostInputEnvelope
+    set?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    disconnect?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    delete?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    connect?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    update?: FeedPostLikeUpdateWithWhereUniqueWithoutFeedPostInput | FeedPostLikeUpdateWithWhereUniqueWithoutFeedPostInput[]
+    updateMany?: FeedPostLikeUpdateManyWithWhereWithoutFeedPostInput | FeedPostLikeUpdateManyWithWhereWithoutFeedPostInput[]
+    deleteMany?: FeedPostLikeScalarWhereInput | FeedPostLikeScalarWhereInput[]
+  }
+
+  export type FeedPostCommentUncheckedUpdateManyWithoutFeedPostNestedInput = {
+    create?: XOR<FeedPostCommentCreateWithoutFeedPostInput, FeedPostCommentUncheckedCreateWithoutFeedPostInput> | FeedPostCommentCreateWithoutFeedPostInput[] | FeedPostCommentUncheckedCreateWithoutFeedPostInput[]
+    connectOrCreate?: FeedPostCommentCreateOrConnectWithoutFeedPostInput | FeedPostCommentCreateOrConnectWithoutFeedPostInput[]
+    upsert?: FeedPostCommentUpsertWithWhereUniqueWithoutFeedPostInput | FeedPostCommentUpsertWithWhereUniqueWithoutFeedPostInput[]
+    createMany?: FeedPostCommentCreateManyFeedPostInputEnvelope
+    set?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    disconnect?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    delete?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    connect?: FeedPostCommentWhereUniqueInput | FeedPostCommentWhereUniqueInput[]
+    update?: FeedPostCommentUpdateWithWhereUniqueWithoutFeedPostInput | FeedPostCommentUpdateWithWhereUniqueWithoutFeedPostInput[]
+    updateMany?: FeedPostCommentUpdateManyWithWhereWithoutFeedPostInput | FeedPostCommentUpdateManyWithWhereWithoutFeedPostInput[]
+    deleteMany?: FeedPostCommentScalarWhereInput | FeedPostCommentScalarWhereInput[]
+  }
+
+  export type FeedPostLikeUncheckedUpdateManyWithoutFeedPostNestedInput = {
+    create?: XOR<FeedPostLikeCreateWithoutFeedPostInput, FeedPostLikeUncheckedCreateWithoutFeedPostInput> | FeedPostLikeCreateWithoutFeedPostInput[] | FeedPostLikeUncheckedCreateWithoutFeedPostInput[]
+    connectOrCreate?: FeedPostLikeCreateOrConnectWithoutFeedPostInput | FeedPostLikeCreateOrConnectWithoutFeedPostInput[]
+    upsert?: FeedPostLikeUpsertWithWhereUniqueWithoutFeedPostInput | FeedPostLikeUpsertWithWhereUniqueWithoutFeedPostInput[]
+    createMany?: FeedPostLikeCreateManyFeedPostInputEnvelope
+    set?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    disconnect?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    delete?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    connect?: FeedPostLikeWhereUniqueInput | FeedPostLikeWhereUniqueInput[]
+    update?: FeedPostLikeUpdateWithWhereUniqueWithoutFeedPostInput | FeedPostLikeUpdateWithWhereUniqueWithoutFeedPostInput[]
+    updateMany?: FeedPostLikeUpdateManyWithWhereWithoutFeedPostInput | FeedPostLikeUpdateManyWithWhereWithoutFeedPostInput[]
+    deleteMany?: FeedPostLikeScalarWhereInput | FeedPostLikeScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutFeedPostCommentInput = {
+    create?: XOR<UserCreateWithoutFeedPostCommentInput, UserUncheckedCreateWithoutFeedPostCommentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFeedPostCommentInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type FeedPostCreateNestedOneWithoutFeedPostCommentInput = {
+    create?: XOR<FeedPostCreateWithoutFeedPostCommentInput, FeedPostUncheckedCreateWithoutFeedPostCommentInput>
+    connectOrCreate?: FeedPostCreateOrConnectWithoutFeedPostCommentInput
+    connect?: FeedPostWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFeedPostCommentNestedInput = {
+    create?: XOR<UserCreateWithoutFeedPostCommentInput, UserUncheckedCreateWithoutFeedPostCommentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFeedPostCommentInput
+    upsert?: UserUpsertWithoutFeedPostCommentInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFeedPostCommentInput, UserUpdateWithoutFeedPostCommentInput>, UserUncheckedUpdateWithoutFeedPostCommentInput>
+  }
+
+  export type FeedPostUpdateOneRequiredWithoutFeedPostCommentNestedInput = {
+    create?: XOR<FeedPostCreateWithoutFeedPostCommentInput, FeedPostUncheckedCreateWithoutFeedPostCommentInput>
+    connectOrCreate?: FeedPostCreateOrConnectWithoutFeedPostCommentInput
+    upsert?: FeedPostUpsertWithoutFeedPostCommentInput
+    connect?: FeedPostWhereUniqueInput
+    update?: XOR<XOR<FeedPostUpdateToOneWithWhereWithoutFeedPostCommentInput, FeedPostUpdateWithoutFeedPostCommentInput>, FeedPostUncheckedUpdateWithoutFeedPostCommentInput>
+  }
+
+  export type UserCreateNestedOneWithoutFeedPostLikeInput = {
+    create?: XOR<UserCreateWithoutFeedPostLikeInput, UserUncheckedCreateWithoutFeedPostLikeInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFeedPostLikeInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type FeedPostCreateNestedOneWithoutFeedPostLikeInput = {
+    create?: XOR<FeedPostCreateWithoutFeedPostLikeInput, FeedPostUncheckedCreateWithoutFeedPostLikeInput>
+    connectOrCreate?: FeedPostCreateOrConnectWithoutFeedPostLikeInput
+    connect?: FeedPostWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFeedPostLikeNestedInput = {
+    create?: XOR<UserCreateWithoutFeedPostLikeInput, UserUncheckedCreateWithoutFeedPostLikeInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFeedPostLikeInput
+    upsert?: UserUpsertWithoutFeedPostLikeInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFeedPostLikeInput, UserUpdateWithoutFeedPostLikeInput>, UserUncheckedUpdateWithoutFeedPostLikeInput>
+  }
+
+  export type FeedPostUpdateOneRequiredWithoutFeedPostLikeNestedInput = {
+    create?: XOR<FeedPostCreateWithoutFeedPostLikeInput, FeedPostUncheckedCreateWithoutFeedPostLikeInput>
+    connectOrCreate?: FeedPostCreateOrConnectWithoutFeedPostLikeInput
+    upsert?: FeedPostUpsertWithoutFeedPostLikeInput
+    connect?: FeedPostWhereUniqueInput
+    update?: XOR<XOR<FeedPostUpdateToOneWithWhereWithoutFeedPostLikeInput, FeedPostUpdateWithoutFeedPostLikeInput>, FeedPostUncheckedUpdateWithoutFeedPostLikeInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -7359,6 +11791,80 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type FeedPostCreateWithoutUserInput = {
+    id?: string
+    image?: string | null
+    caption?: string | null
+    isPremium?: boolean
+    createdAt?: Date | string
+    FeedPostComment?: FeedPostCommentCreateNestedManyWithoutFeedPostInput
+    FeedPostLike?: FeedPostLikeCreateNestedManyWithoutFeedPostInput
+  }
+
+  export type FeedPostUncheckedCreateWithoutUserInput = {
+    id?: string
+    image?: string | null
+    caption?: string | null
+    isPremium?: boolean
+    createdAt?: Date | string
+    FeedPostComment?: FeedPostCommentUncheckedCreateNestedManyWithoutFeedPostInput
+    FeedPostLike?: FeedPostLikeUncheckedCreateNestedManyWithoutFeedPostInput
+  }
+
+  export type FeedPostCreateOrConnectWithoutUserInput = {
+    where: FeedPostWhereUniqueInput
+    create: XOR<FeedPostCreateWithoutUserInput, FeedPostUncheckedCreateWithoutUserInput>
+  }
+
+  export type FeedPostCreateManyUserInputEnvelope = {
+    data: FeedPostCreateManyUserInput | FeedPostCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FeedPostLikeCreateWithoutUserInput = {
+    id?: string
+    feedPost: FeedPostCreateNestedOneWithoutFeedPostLikeInput
+  }
+
+  export type FeedPostLikeUncheckedCreateWithoutUserInput = {
+    id?: string
+    feedPostId: string
+  }
+
+  export type FeedPostLikeCreateOrConnectWithoutUserInput = {
+    where: FeedPostLikeWhereUniqueInput
+    create: XOR<FeedPostLikeCreateWithoutUserInput, FeedPostLikeUncheckedCreateWithoutUserInput>
+  }
+
+  export type FeedPostLikeCreateManyUserInputEnvelope = {
+    data: FeedPostLikeCreateManyUserInput | FeedPostLikeCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FeedPostCommentCreateWithoutUserInput = {
+    id?: string
+    comment: string
+    createdAt?: Date | string
+    feedPost: FeedPostCreateNestedOneWithoutFeedPostCommentInput
+  }
+
+  export type FeedPostCommentUncheckedCreateWithoutUserInput = {
+    id?: string
+    comment: string
+    createdAt?: Date | string
+    feedPostId: string
+  }
+
+  export type FeedPostCommentCreateOrConnectWithoutUserInput = {
+    where: FeedPostCommentWhereUniqueInput
+    create: XOR<FeedPostCommentCreateWithoutUserInput, FeedPostCommentUncheckedCreateWithoutUserInput>
+  }
+
+  export type FeedPostCommentCreateManyUserInputEnvelope = {
+    data: FeedPostCommentCreateManyUserInput | FeedPostCommentCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SocialUpsertWithWhereUniqueWithoutUserInput = {
     where: SocialWhereUniqueInput
     update: XOR<SocialUpdateWithoutUserInput, SocialUncheckedUpdateWithoutUserInput>
@@ -7456,6 +11962,86 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Collection"> | Date | string
   }
 
+  export type FeedPostUpsertWithWhereUniqueWithoutUserInput = {
+    where: FeedPostWhereUniqueInput
+    update: XOR<FeedPostUpdateWithoutUserInput, FeedPostUncheckedUpdateWithoutUserInput>
+    create: XOR<FeedPostCreateWithoutUserInput, FeedPostUncheckedCreateWithoutUserInput>
+  }
+
+  export type FeedPostUpdateWithWhereUniqueWithoutUserInput = {
+    where: FeedPostWhereUniqueInput
+    data: XOR<FeedPostUpdateWithoutUserInput, FeedPostUncheckedUpdateWithoutUserInput>
+  }
+
+  export type FeedPostUpdateManyWithWhereWithoutUserInput = {
+    where: FeedPostScalarWhereInput
+    data: XOR<FeedPostUpdateManyMutationInput, FeedPostUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type FeedPostScalarWhereInput = {
+    AND?: FeedPostScalarWhereInput | FeedPostScalarWhereInput[]
+    OR?: FeedPostScalarWhereInput[]
+    NOT?: FeedPostScalarWhereInput | FeedPostScalarWhereInput[]
+    id?: StringFilter<"FeedPost"> | string
+    image?: StringNullableFilter<"FeedPost"> | string | null
+    caption?: StringNullableFilter<"FeedPost"> | string | null
+    isPremium?: BoolFilter<"FeedPost"> | boolean
+    userId?: StringFilter<"FeedPost"> | string
+    createdAt?: DateTimeFilter<"FeedPost"> | Date | string
+  }
+
+  export type FeedPostLikeUpsertWithWhereUniqueWithoutUserInput = {
+    where: FeedPostLikeWhereUniqueInput
+    update: XOR<FeedPostLikeUpdateWithoutUserInput, FeedPostLikeUncheckedUpdateWithoutUserInput>
+    create: XOR<FeedPostLikeCreateWithoutUserInput, FeedPostLikeUncheckedCreateWithoutUserInput>
+  }
+
+  export type FeedPostLikeUpdateWithWhereUniqueWithoutUserInput = {
+    where: FeedPostLikeWhereUniqueInput
+    data: XOR<FeedPostLikeUpdateWithoutUserInput, FeedPostLikeUncheckedUpdateWithoutUserInput>
+  }
+
+  export type FeedPostLikeUpdateManyWithWhereWithoutUserInput = {
+    where: FeedPostLikeScalarWhereInput
+    data: XOR<FeedPostLikeUpdateManyMutationInput, FeedPostLikeUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type FeedPostLikeScalarWhereInput = {
+    AND?: FeedPostLikeScalarWhereInput | FeedPostLikeScalarWhereInput[]
+    OR?: FeedPostLikeScalarWhereInput[]
+    NOT?: FeedPostLikeScalarWhereInput | FeedPostLikeScalarWhereInput[]
+    id?: StringFilter<"FeedPostLike"> | string
+    userId?: StringFilter<"FeedPostLike"> | string
+    feedPostId?: StringFilter<"FeedPostLike"> | string
+  }
+
+  export type FeedPostCommentUpsertWithWhereUniqueWithoutUserInput = {
+    where: FeedPostCommentWhereUniqueInput
+    update: XOR<FeedPostCommentUpdateWithoutUserInput, FeedPostCommentUncheckedUpdateWithoutUserInput>
+    create: XOR<FeedPostCommentCreateWithoutUserInput, FeedPostCommentUncheckedCreateWithoutUserInput>
+  }
+
+  export type FeedPostCommentUpdateWithWhereUniqueWithoutUserInput = {
+    where: FeedPostCommentWhereUniqueInput
+    data: XOR<FeedPostCommentUpdateWithoutUserInput, FeedPostCommentUncheckedUpdateWithoutUserInput>
+  }
+
+  export type FeedPostCommentUpdateManyWithWhereWithoutUserInput = {
+    where: FeedPostCommentScalarWhereInput
+    data: XOR<FeedPostCommentUpdateManyMutationInput, FeedPostCommentUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type FeedPostCommentScalarWhereInput = {
+    AND?: FeedPostCommentScalarWhereInput | FeedPostCommentScalarWhereInput[]
+    OR?: FeedPostCommentScalarWhereInput[]
+    NOT?: FeedPostCommentScalarWhereInput | FeedPostCommentScalarWhereInput[]
+    id?: StringFilter<"FeedPostComment"> | string
+    comment?: StringFilter<"FeedPostComment"> | string
+    createdAt?: DateTimeFilter<"FeedPostComment"> | Date | string
+    userId?: StringFilter<"FeedPostComment"> | string
+    feedPostId?: StringFilter<"FeedPostComment"> | string
+  }
+
   export type UserCreateWithoutFollowersInput = {
     id?: string
     address: string
@@ -7475,6 +12061,9 @@ export namespace Prisma {
     socials?: SocialCreateNestedManyWithoutUserInput
     following?: FollowCreateNestedManyWithoutFollowingInput
     Collection?: CollectionCreateNestedManyWithoutUserInput
+    FeedPost?: FeedPostCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFollowersInput = {
@@ -7496,6 +12085,9 @@ export namespace Prisma {
     socials?: SocialUncheckedCreateNestedManyWithoutUserInput
     following?: FollowUncheckedCreateNestedManyWithoutFollowingInput
     Collection?: CollectionUncheckedCreateNestedManyWithoutUserInput
+    FeedPost?: FeedPostUncheckedCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeUncheckedCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFollowersInput = {
@@ -7522,6 +12114,9 @@ export namespace Prisma {
     socials?: SocialCreateNestedManyWithoutUserInput
     followers?: FollowCreateNestedManyWithoutFollowerInput
     Collection?: CollectionCreateNestedManyWithoutUserInput
+    FeedPost?: FeedPostCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFollowingInput = {
@@ -7543,6 +12138,9 @@ export namespace Prisma {
     socials?: SocialUncheckedCreateNestedManyWithoutUserInput
     followers?: FollowUncheckedCreateNestedManyWithoutFollowerInput
     Collection?: CollectionUncheckedCreateNestedManyWithoutUserInput
+    FeedPost?: FeedPostUncheckedCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeUncheckedCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFollowingInput = {
@@ -7580,6 +12178,9 @@ export namespace Prisma {
     socials?: SocialUpdateManyWithoutUserNestedInput
     following?: FollowUpdateManyWithoutFollowingNestedInput
     Collection?: CollectionUpdateManyWithoutUserNestedInput
+    FeedPost?: FeedPostUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowersInput = {
@@ -7601,6 +12202,9 @@ export namespace Prisma {
     socials?: SocialUncheckedUpdateManyWithoutUserNestedInput
     following?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
     Collection?: CollectionUncheckedUpdateManyWithoutUserNestedInput
+    FeedPost?: FeedPostUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutFollowingInput = {
@@ -7633,6 +12237,9 @@ export namespace Prisma {
     socials?: SocialUpdateManyWithoutUserNestedInput
     followers?: FollowUpdateManyWithoutFollowerNestedInput
     Collection?: CollectionUpdateManyWithoutUserNestedInput
+    FeedPost?: FeedPostUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowingInput = {
@@ -7654,6 +12261,9 @@ export namespace Prisma {
     socials?: SocialUncheckedUpdateManyWithoutUserNestedInput
     followers?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
     Collection?: CollectionUncheckedUpdateManyWithoutUserNestedInput
+    FeedPost?: FeedPostUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSocialsInput = {
@@ -7675,6 +12285,9 @@ export namespace Prisma {
     followers?: FollowCreateNestedManyWithoutFollowerInput
     following?: FollowCreateNestedManyWithoutFollowingInput
     Collection?: CollectionCreateNestedManyWithoutUserInput
+    FeedPost?: FeedPostCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSocialsInput = {
@@ -7696,6 +12309,9 @@ export namespace Prisma {
     followers?: FollowUncheckedCreateNestedManyWithoutFollowerInput
     following?: FollowUncheckedCreateNestedManyWithoutFollowingInput
     Collection?: CollectionUncheckedCreateNestedManyWithoutUserInput
+    FeedPost?: FeedPostUncheckedCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeUncheckedCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSocialsInput = {
@@ -7733,6 +12349,9 @@ export namespace Prisma {
     followers?: FollowUpdateManyWithoutFollowerNestedInput
     following?: FollowUpdateManyWithoutFollowingNestedInput
     Collection?: CollectionUpdateManyWithoutUserNestedInput
+    FeedPost?: FeedPostUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSocialsInput = {
@@ -7754,6 +12373,9 @@ export namespace Prisma {
     followers?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
     following?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
     Collection?: CollectionUncheckedUpdateManyWithoutUserNestedInput
+    FeedPost?: FeedPostUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutCollectionInput = {
@@ -7775,6 +12397,9 @@ export namespace Prisma {
     socials?: SocialCreateNestedManyWithoutUserInput
     followers?: FollowCreateNestedManyWithoutFollowerInput
     following?: FollowCreateNestedManyWithoutFollowingInput
+    FeedPost?: FeedPostCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCollectionInput = {
@@ -7796,6 +12421,9 @@ export namespace Prisma {
     socials?: SocialUncheckedCreateNestedManyWithoutUserInput
     followers?: FollowUncheckedCreateNestedManyWithoutFollowerInput
     following?: FollowUncheckedCreateNestedManyWithoutFollowingInput
+    FeedPost?: FeedPostUncheckedCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeUncheckedCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCollectionInput = {
@@ -7833,6 +12461,9 @@ export namespace Prisma {
     socials?: SocialUpdateManyWithoutUserNestedInput
     followers?: FollowUpdateManyWithoutFollowerNestedInput
     following?: FollowUpdateManyWithoutFollowingNestedInput
+    FeedPost?: FeedPostUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCollectionInput = {
@@ -7854,6 +12485,533 @@ export namespace Prisma {
     socials?: SocialUncheckedUpdateManyWithoutUserNestedInput
     followers?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
     following?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
+    FeedPost?: FeedPostUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutFeedPostInput = {
+    id?: string
+    address: string
+    name?: string | null
+    username: string
+    email?: string | null
+    website?: string | null
+    avatar?: string
+    bio?: string | null
+    coverImage?: string
+    language?: string
+    timezone?: string
+    accountType?: $Enums.AccountType
+    featured?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    socials?: SocialCreateNestedManyWithoutUserInput
+    followers?: FollowCreateNestedManyWithoutFollowerInput
+    following?: FollowCreateNestedManyWithoutFollowingInput
+    Collection?: CollectionCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFeedPostInput = {
+    id?: string
+    address: string
+    name?: string | null
+    username: string
+    email?: string | null
+    website?: string | null
+    avatar?: string
+    bio?: string | null
+    coverImage?: string
+    language?: string
+    timezone?: string
+    accountType?: $Enums.AccountType
+    featured?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    socials?: SocialUncheckedCreateNestedManyWithoutUserInput
+    followers?: FollowUncheckedCreateNestedManyWithoutFollowerInput
+    following?: FollowUncheckedCreateNestedManyWithoutFollowingInput
+    Collection?: CollectionUncheckedCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeUncheckedCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFeedPostInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFeedPostInput, UserUncheckedCreateWithoutFeedPostInput>
+  }
+
+  export type FeedPostCommentCreateWithoutFeedPostInput = {
+    id?: string
+    comment: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutFeedPostCommentInput
+  }
+
+  export type FeedPostCommentUncheckedCreateWithoutFeedPostInput = {
+    id?: string
+    comment: string
+    createdAt?: Date | string
+    userId: string
+  }
+
+  export type FeedPostCommentCreateOrConnectWithoutFeedPostInput = {
+    where: FeedPostCommentWhereUniqueInput
+    create: XOR<FeedPostCommentCreateWithoutFeedPostInput, FeedPostCommentUncheckedCreateWithoutFeedPostInput>
+  }
+
+  export type FeedPostCommentCreateManyFeedPostInputEnvelope = {
+    data: FeedPostCommentCreateManyFeedPostInput | FeedPostCommentCreateManyFeedPostInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FeedPostLikeCreateWithoutFeedPostInput = {
+    id?: string
+    user: UserCreateNestedOneWithoutFeedPostLikeInput
+  }
+
+  export type FeedPostLikeUncheckedCreateWithoutFeedPostInput = {
+    id?: string
+    userId: string
+  }
+
+  export type FeedPostLikeCreateOrConnectWithoutFeedPostInput = {
+    where: FeedPostLikeWhereUniqueInput
+    create: XOR<FeedPostLikeCreateWithoutFeedPostInput, FeedPostLikeUncheckedCreateWithoutFeedPostInput>
+  }
+
+  export type FeedPostLikeCreateManyFeedPostInputEnvelope = {
+    data: FeedPostLikeCreateManyFeedPostInput | FeedPostLikeCreateManyFeedPostInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutFeedPostInput = {
+    update: XOR<UserUpdateWithoutFeedPostInput, UserUncheckedUpdateWithoutFeedPostInput>
+    create: XOR<UserCreateWithoutFeedPostInput, UserUncheckedCreateWithoutFeedPostInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFeedPostInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFeedPostInput, UserUncheckedUpdateWithoutFeedPostInput>
+  }
+
+  export type UserUpdateWithoutFeedPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: StringFieldUpdateOperationsInput | string
+    language?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    featured?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    socials?: SocialUpdateManyWithoutUserNestedInput
+    followers?: FollowUpdateManyWithoutFollowerNestedInput
+    following?: FollowUpdateManyWithoutFollowingNestedInput
+    Collection?: CollectionUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFeedPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: StringFieldUpdateOperationsInput | string
+    language?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    featured?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    socials?: SocialUncheckedUpdateManyWithoutUserNestedInput
+    followers?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
+    following?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
+    Collection?: CollectionUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type FeedPostCommentUpsertWithWhereUniqueWithoutFeedPostInput = {
+    where: FeedPostCommentWhereUniqueInput
+    update: XOR<FeedPostCommentUpdateWithoutFeedPostInput, FeedPostCommentUncheckedUpdateWithoutFeedPostInput>
+    create: XOR<FeedPostCommentCreateWithoutFeedPostInput, FeedPostCommentUncheckedCreateWithoutFeedPostInput>
+  }
+
+  export type FeedPostCommentUpdateWithWhereUniqueWithoutFeedPostInput = {
+    where: FeedPostCommentWhereUniqueInput
+    data: XOR<FeedPostCommentUpdateWithoutFeedPostInput, FeedPostCommentUncheckedUpdateWithoutFeedPostInput>
+  }
+
+  export type FeedPostCommentUpdateManyWithWhereWithoutFeedPostInput = {
+    where: FeedPostCommentScalarWhereInput
+    data: XOR<FeedPostCommentUpdateManyMutationInput, FeedPostCommentUncheckedUpdateManyWithoutFeedPostInput>
+  }
+
+  export type FeedPostLikeUpsertWithWhereUniqueWithoutFeedPostInput = {
+    where: FeedPostLikeWhereUniqueInput
+    update: XOR<FeedPostLikeUpdateWithoutFeedPostInput, FeedPostLikeUncheckedUpdateWithoutFeedPostInput>
+    create: XOR<FeedPostLikeCreateWithoutFeedPostInput, FeedPostLikeUncheckedCreateWithoutFeedPostInput>
+  }
+
+  export type FeedPostLikeUpdateWithWhereUniqueWithoutFeedPostInput = {
+    where: FeedPostLikeWhereUniqueInput
+    data: XOR<FeedPostLikeUpdateWithoutFeedPostInput, FeedPostLikeUncheckedUpdateWithoutFeedPostInput>
+  }
+
+  export type FeedPostLikeUpdateManyWithWhereWithoutFeedPostInput = {
+    where: FeedPostLikeScalarWhereInput
+    data: XOR<FeedPostLikeUpdateManyMutationInput, FeedPostLikeUncheckedUpdateManyWithoutFeedPostInput>
+  }
+
+  export type UserCreateWithoutFeedPostCommentInput = {
+    id?: string
+    address: string
+    name?: string | null
+    username: string
+    email?: string | null
+    website?: string | null
+    avatar?: string
+    bio?: string | null
+    coverImage?: string
+    language?: string
+    timezone?: string
+    accountType?: $Enums.AccountType
+    featured?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    socials?: SocialCreateNestedManyWithoutUserInput
+    followers?: FollowCreateNestedManyWithoutFollowerInput
+    following?: FollowCreateNestedManyWithoutFollowingInput
+    Collection?: CollectionCreateNestedManyWithoutUserInput
+    FeedPost?: FeedPostCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFeedPostCommentInput = {
+    id?: string
+    address: string
+    name?: string | null
+    username: string
+    email?: string | null
+    website?: string | null
+    avatar?: string
+    bio?: string | null
+    coverImage?: string
+    language?: string
+    timezone?: string
+    accountType?: $Enums.AccountType
+    featured?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    socials?: SocialUncheckedCreateNestedManyWithoutUserInput
+    followers?: FollowUncheckedCreateNestedManyWithoutFollowerInput
+    following?: FollowUncheckedCreateNestedManyWithoutFollowingInput
+    Collection?: CollectionUncheckedCreateNestedManyWithoutUserInput
+    FeedPost?: FeedPostUncheckedCreateNestedManyWithoutUserInput
+    FeedPostLike?: FeedPostLikeUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFeedPostCommentInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFeedPostCommentInput, UserUncheckedCreateWithoutFeedPostCommentInput>
+  }
+
+  export type FeedPostCreateWithoutFeedPostCommentInput = {
+    id?: string
+    image?: string | null
+    caption?: string | null
+    isPremium?: boolean
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutFeedPostInput
+    FeedPostLike?: FeedPostLikeCreateNestedManyWithoutFeedPostInput
+  }
+
+  export type FeedPostUncheckedCreateWithoutFeedPostCommentInput = {
+    id?: string
+    image?: string | null
+    caption?: string | null
+    isPremium?: boolean
+    userId: string
+    createdAt?: Date | string
+    FeedPostLike?: FeedPostLikeUncheckedCreateNestedManyWithoutFeedPostInput
+  }
+
+  export type FeedPostCreateOrConnectWithoutFeedPostCommentInput = {
+    where: FeedPostWhereUniqueInput
+    create: XOR<FeedPostCreateWithoutFeedPostCommentInput, FeedPostUncheckedCreateWithoutFeedPostCommentInput>
+  }
+
+  export type UserUpsertWithoutFeedPostCommentInput = {
+    update: XOR<UserUpdateWithoutFeedPostCommentInput, UserUncheckedUpdateWithoutFeedPostCommentInput>
+    create: XOR<UserCreateWithoutFeedPostCommentInput, UserUncheckedCreateWithoutFeedPostCommentInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFeedPostCommentInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFeedPostCommentInput, UserUncheckedUpdateWithoutFeedPostCommentInput>
+  }
+
+  export type UserUpdateWithoutFeedPostCommentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: StringFieldUpdateOperationsInput | string
+    language?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    featured?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    socials?: SocialUpdateManyWithoutUserNestedInput
+    followers?: FollowUpdateManyWithoutFollowerNestedInput
+    following?: FollowUpdateManyWithoutFollowingNestedInput
+    Collection?: CollectionUpdateManyWithoutUserNestedInput
+    FeedPost?: FeedPostUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFeedPostCommentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: StringFieldUpdateOperationsInput | string
+    language?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    featured?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    socials?: SocialUncheckedUpdateManyWithoutUserNestedInput
+    followers?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
+    following?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
+    Collection?: CollectionUncheckedUpdateManyWithoutUserNestedInput
+    FeedPost?: FeedPostUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostLike?: FeedPostLikeUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type FeedPostUpsertWithoutFeedPostCommentInput = {
+    update: XOR<FeedPostUpdateWithoutFeedPostCommentInput, FeedPostUncheckedUpdateWithoutFeedPostCommentInput>
+    create: XOR<FeedPostCreateWithoutFeedPostCommentInput, FeedPostUncheckedCreateWithoutFeedPostCommentInput>
+    where?: FeedPostWhereInput
+  }
+
+  export type FeedPostUpdateToOneWithWhereWithoutFeedPostCommentInput = {
+    where?: FeedPostWhereInput
+    data: XOR<FeedPostUpdateWithoutFeedPostCommentInput, FeedPostUncheckedUpdateWithoutFeedPostCommentInput>
+  }
+
+  export type FeedPostUpdateWithoutFeedPostCommentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFeedPostNestedInput
+    FeedPostLike?: FeedPostLikeUpdateManyWithoutFeedPostNestedInput
+  }
+
+  export type FeedPostUncheckedUpdateWithoutFeedPostCommentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FeedPostLike?: FeedPostLikeUncheckedUpdateManyWithoutFeedPostNestedInput
+  }
+
+  export type UserCreateWithoutFeedPostLikeInput = {
+    id?: string
+    address: string
+    name?: string | null
+    username: string
+    email?: string | null
+    website?: string | null
+    avatar?: string
+    bio?: string | null
+    coverImage?: string
+    language?: string
+    timezone?: string
+    accountType?: $Enums.AccountType
+    featured?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    socials?: SocialCreateNestedManyWithoutUserInput
+    followers?: FollowCreateNestedManyWithoutFollowerInput
+    following?: FollowCreateNestedManyWithoutFollowingInput
+    Collection?: CollectionCreateNestedManyWithoutUserInput
+    FeedPost?: FeedPostCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFeedPostLikeInput = {
+    id?: string
+    address: string
+    name?: string | null
+    username: string
+    email?: string | null
+    website?: string | null
+    avatar?: string
+    bio?: string | null
+    coverImage?: string
+    language?: string
+    timezone?: string
+    accountType?: $Enums.AccountType
+    featured?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    socials?: SocialUncheckedCreateNestedManyWithoutUserInput
+    followers?: FollowUncheckedCreateNestedManyWithoutFollowerInput
+    following?: FollowUncheckedCreateNestedManyWithoutFollowingInput
+    Collection?: CollectionUncheckedCreateNestedManyWithoutUserInput
+    FeedPost?: FeedPostUncheckedCreateNestedManyWithoutUserInput
+    FeedPostComment?: FeedPostCommentUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFeedPostLikeInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFeedPostLikeInput, UserUncheckedCreateWithoutFeedPostLikeInput>
+  }
+
+  export type FeedPostCreateWithoutFeedPostLikeInput = {
+    id?: string
+    image?: string | null
+    caption?: string | null
+    isPremium?: boolean
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutFeedPostInput
+    FeedPostComment?: FeedPostCommentCreateNestedManyWithoutFeedPostInput
+  }
+
+  export type FeedPostUncheckedCreateWithoutFeedPostLikeInput = {
+    id?: string
+    image?: string | null
+    caption?: string | null
+    isPremium?: boolean
+    userId: string
+    createdAt?: Date | string
+    FeedPostComment?: FeedPostCommentUncheckedCreateNestedManyWithoutFeedPostInput
+  }
+
+  export type FeedPostCreateOrConnectWithoutFeedPostLikeInput = {
+    where: FeedPostWhereUniqueInput
+    create: XOR<FeedPostCreateWithoutFeedPostLikeInput, FeedPostUncheckedCreateWithoutFeedPostLikeInput>
+  }
+
+  export type UserUpsertWithoutFeedPostLikeInput = {
+    update: XOR<UserUpdateWithoutFeedPostLikeInput, UserUncheckedUpdateWithoutFeedPostLikeInput>
+    create: XOR<UserCreateWithoutFeedPostLikeInput, UserUncheckedCreateWithoutFeedPostLikeInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFeedPostLikeInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFeedPostLikeInput, UserUncheckedUpdateWithoutFeedPostLikeInput>
+  }
+
+  export type UserUpdateWithoutFeedPostLikeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: StringFieldUpdateOperationsInput | string
+    language?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    featured?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    socials?: SocialUpdateManyWithoutUserNestedInput
+    followers?: FollowUpdateManyWithoutFollowerNestedInput
+    following?: FollowUpdateManyWithoutFollowingNestedInput
+    Collection?: CollectionUpdateManyWithoutUserNestedInput
+    FeedPost?: FeedPostUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFeedPostLikeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: StringFieldUpdateOperationsInput | string
+    language?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    accountType?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    featured?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    socials?: SocialUncheckedUpdateManyWithoutUserNestedInput
+    followers?: FollowUncheckedUpdateManyWithoutFollowerNestedInput
+    following?: FollowUncheckedUpdateManyWithoutFollowingNestedInput
+    Collection?: CollectionUncheckedUpdateManyWithoutUserNestedInput
+    FeedPost?: FeedPostUncheckedUpdateManyWithoutUserNestedInput
+    FeedPostComment?: FeedPostCommentUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type FeedPostUpsertWithoutFeedPostLikeInput = {
+    update: XOR<FeedPostUpdateWithoutFeedPostLikeInput, FeedPostUncheckedUpdateWithoutFeedPostLikeInput>
+    create: XOR<FeedPostCreateWithoutFeedPostLikeInput, FeedPostUncheckedCreateWithoutFeedPostLikeInput>
+    where?: FeedPostWhereInput
+  }
+
+  export type FeedPostUpdateToOneWithWhereWithoutFeedPostLikeInput = {
+    where?: FeedPostWhereInput
+    data: XOR<FeedPostUpdateWithoutFeedPostLikeInput, FeedPostUncheckedUpdateWithoutFeedPostLikeInput>
+  }
+
+  export type FeedPostUpdateWithoutFeedPostLikeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFeedPostNestedInput
+    FeedPostComment?: FeedPostCommentUpdateManyWithoutFeedPostNestedInput
+  }
+
+  export type FeedPostUncheckedUpdateWithoutFeedPostLikeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FeedPostComment?: FeedPostCommentUncheckedUpdateManyWithoutFeedPostNestedInput
   }
 
   export type SocialCreateManyUserInput = {
@@ -7881,6 +13039,26 @@ export namespace Prisma {
     coverImage?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type FeedPostCreateManyUserInput = {
+    id?: string
+    image?: string | null
+    caption?: string | null
+    isPremium?: boolean
+    createdAt?: Date | string
+  }
+
+  export type FeedPostLikeCreateManyUserInput = {
+    id?: string
+    feedPostId: string
+  }
+
+  export type FeedPostCommentCreateManyUserInput = {
+    id?: string
+    comment: string
+    createdAt?: Date | string
+    feedPostId: string
   }
 
   export type SocialUpdateWithoutUserInput = {
@@ -7959,6 +13137,118 @@ export namespace Prisma {
     coverImage?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FeedPostUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FeedPostComment?: FeedPostCommentUpdateManyWithoutFeedPostNestedInput
+    FeedPostLike?: FeedPostLikeUpdateManyWithoutFeedPostNestedInput
+  }
+
+  export type FeedPostUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FeedPostComment?: FeedPostCommentUncheckedUpdateManyWithoutFeedPostNestedInput
+    FeedPostLike?: FeedPostLikeUncheckedUpdateManyWithoutFeedPostNestedInput
+  }
+
+  export type FeedPostUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    isPremium?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FeedPostLikeUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    feedPost?: FeedPostUpdateOneRequiredWithoutFeedPostLikeNestedInput
+  }
+
+  export type FeedPostLikeUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    feedPostId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FeedPostLikeUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    feedPostId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FeedPostCommentUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    feedPost?: FeedPostUpdateOneRequiredWithoutFeedPostCommentNestedInput
+  }
+
+  export type FeedPostCommentUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    feedPostId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FeedPostCommentUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    feedPostId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FeedPostCommentCreateManyFeedPostInput = {
+    id?: string
+    comment: string
+    createdAt?: Date | string
+    userId: string
+  }
+
+  export type FeedPostLikeCreateManyFeedPostInput = {
+    id?: string
+    userId: string
+  }
+
+  export type FeedPostCommentUpdateWithoutFeedPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFeedPostCommentNestedInput
+  }
+
+  export type FeedPostCommentUncheckedUpdateWithoutFeedPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FeedPostCommentUncheckedUpdateManyWithoutFeedPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FeedPostLikeUpdateWithoutFeedPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneRequiredWithoutFeedPostLikeNestedInput
+  }
+
+  export type FeedPostLikeUncheckedUpdateWithoutFeedPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FeedPostLikeUncheckedUpdateManyWithoutFeedPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
 

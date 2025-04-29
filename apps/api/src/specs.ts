@@ -8,6 +8,8 @@ import collectionDocs from './docs/collection.json';
 import creatorDocs from './docs/creator.json';
 // @ts-ignore
 import userDocs from './docs/user.json';
+// @ts-ignore
+import feedDocs from './docs/feed.json';
 
 const app = express();
 
@@ -42,12 +44,17 @@ const openApiDocs = {
       name: 'Collection',
       description: 'Operations related to collections',
     },
+    {
+      name: 'Feed',
+      description: 'Operations related to feed',
+    },
   ],
   paths: {
     ...aiDocs,
     ...collectionDocs,
     ...creatorDocs,
     ...userDocs,
+    ...feedDocs,
   },
 };
 
