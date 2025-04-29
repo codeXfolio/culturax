@@ -1,0 +1,83 @@
+{
+  "/api/creator": {
+    "get": {
+      "tags": ["Creator"],
+      "summary": "Get all creators",
+      "description": "Retrieves a list of all creators",
+      "responses": {
+        "200": {
+          "description": "Successful response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "username": {
+                          "type": "string",
+                          "example": "johndoe"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "example": "https://example.com/avatar.jpg"
+                        },
+                        "coverImage": {
+                          "type": "string",
+                          "example": "https://example.com/cover.jpg"
+                        },
+                        "totalFollowers": {
+                          "type": "integer",
+                          "example": 1000
+                        },
+                        "featured": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Internal Server Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

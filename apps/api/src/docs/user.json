@@ -1,0 +1,459 @@
+{
+  "/api/user/{address}": {
+    "get": {
+      "tags": ["User"],
+      "summary": "Get user details",
+      "description": "Retrieves details for a user by their blockchain address",
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "description": "Blockchain address of the user",
+          "schema": {
+            "type": "string"
+          },
+          "example": "0x1234567890abcdef"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Successful response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                      },
+                      "username": {
+                        "type": "string",
+                        "example": "johndoe"
+                      },
+                      "address": {
+                        "type": "string",
+                        "example": "0x1234567890abcdef"
+                      },
+                      "accountType": {
+                        "type": "string",
+                        "example": "USER"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "User not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Internal Server Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "patch": {
+      "tags": ["User"],
+      "summary": "Update user details",
+      "description": "Updates user details by their blockchain address",
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "description": "Blockchain address of the user",
+          "schema": {
+            "type": "string"
+          },
+          "example": "0x1234567890abcdef"
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "John Doe"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "johndoe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
+                },
+                "website": {
+                  "type": "string",
+                  "example": "https://johndoe.com"
+                },
+                "bio": {
+                  "type": "string",
+                  "example": "Digital artist and creator"
+                },
+                "language": {
+                  "type": "string",
+                  "example": "en"
+                },
+                "timezone": {
+                  "type": "string",
+                  "example": "UTC"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "User updated successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                      },
+                      "username": {
+                        "type": "string",
+                        "example": "johndoe"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                      },
+                      "website": {
+                        "type": "string",
+                        "example": "https://johndoe.com"
+                      },
+                      "bio": {
+                        "type": "string",
+                        "example": "Digital artist and creator"
+                      },
+                      "language": {
+                        "type": "string",
+                        "example": "en"
+                      },
+                      "timezone": {
+                        "type": "string",
+                        "example": "UTC"
+                      },
+                      "address": {
+                        "type": "string",
+                        "example": "0x1234567890abcdef"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Invalid input data"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "User not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/user/register": {
+    "post": {
+      "tags": ["User"],
+      "summary": "Register a new user",
+      "description": "Registers a new user with the provided email, name, username, and address",
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "John Doe"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "johndoe"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "0x1234567890abcdef"
+                },
+                "accountType": {
+                  "type": "string",
+                  "example": "USER"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Successful response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                      },
+                      "username": {
+                        "type": "string",
+                        "example": "johndoe"
+                      },
+                      "address": {
+                        "type": "string",
+                        "example": "0x1234567890abcdef"
+                      },
+                      "accountType": {
+                        "type": "string",
+                        "example": "USER"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Invalid input data"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/user/follow": {
+    "post": {
+      "tags": ["User"],
+      "summary": "Follow a user",
+      "description": "Allows a user to follow another user",
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userAddress": {
+                  "type": "string",
+                  "example": "0x1234567890abcdef"
+                },
+                "targetAddress": {
+                  "type": "string",
+                  "example": "0xabcdef1234567890"
+                }
+              },
+              "required": ["userAddress", "targetAddress"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Successful response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "followerId": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "followingId": {
+                        "type": "string",
+                        "example": "987fdebc-a654-3210-9876-543210987654"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2021-01-01T00:00:00Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
