@@ -204,5 +204,439 @@
         }
       }
     }
+  },
+  "/api/feed/comment": {
+    "post": {
+      "tags": ["Feed"],
+      "summary": "Add a comment to a feed post",
+      "description": "Adds a comment to a specific feed post",
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["userId", "feedPostId", "comment"],
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "description": "ID of the user commenting"
+                },
+                "feedPostId": {
+                  "type": "string",
+                  "description": "ID of the post being commented on"
+                },
+                "comment": {
+                  "type": "string",
+                  "description": "The comment text"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Comment added successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "comment": {
+                        "type": "string",
+                        "example": "Great post!"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "example": "987fdebc-a654-3210-9876-543210987654"
+                      },
+                      "feedPostId": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "987fdebc-a654-3210-9876-543210987654"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "John Doe"
+                          },
+                          "username": {
+                            "type": "string",
+                            "example": "johndoe"
+                          },
+                          "avatar": {
+                            "type": "string",
+                            "example": "/uploads/avatars/0x1234567890abcdef/avatar.jpg"
+                          }
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/feed/comment/{id}": {
+    "delete": {
+      "tags": ["Feed"],
+      "summary": "Delete a comment",
+      "description": "Deletes a comment by its ID",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Comment ID",
+          "schema": {
+            "type": "string"
+          },
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Comment deleted successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Comment deleted successfully"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/feed/like": {
+    "post": {
+      "tags": ["Feed"],
+      "summary": "Like a feed post",
+      "description": "Adds a like to a specific feed post",
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["userId", "feedPostId"],
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "description": "ID of the user liking the post"
+                },
+                "feedPostId": {
+                  "type": "string",
+                  "description": "ID of the post being liked"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Post liked successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "example": "987fdebc-a654-3210-9876-543210987654"
+                      },
+                      "feedPostId": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "987fdebc-a654-3210-9876-543210987654"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "John Doe"
+                          },
+                          "username": {
+                            "type": "string",
+                            "example": "johndoe"
+                          },
+                          "avatar": {
+                            "type": "string",
+                            "example": "/uploads/avatars/0x1234567890abcdef/avatar.jpg"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/feed/unlike": {
+    "post": {
+      "tags": ["Feed"],
+      "summary": "Unlike a feed post",
+      "description": "Removes a like from a specific feed post",
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["userId", "feedPostId"],
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "description": "ID of the user unliking the post"
+                },
+                "feedPostId": {
+                  "type": "string",
+                  "description": "ID of the post being unliked"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Post unliked successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Post unliked successfully"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/feed/{feedPostId}/likes": {
+    "get": {
+      "tags": ["Feed"],
+      "summary": "Get post likes",
+      "description": "Retrieves all likes for a specific feed post",
+      "parameters": [
+        {
+          "name": "feedPostId",
+          "in": "path",
+          "required": true,
+          "description": "Post ID",
+          "schema": {
+            "type": "string"
+          },
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Likes retrieved successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "example": "987fdebc-a654-3210-9876-543210987654"
+                        },
+                        "feedPostId": {
+                          "type": "string",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "987fdebc-a654-3210-9876-543210987654"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John Doe"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "johndoe"
+                            },
+                            "avatar": {
+                              "type": "string",
+                              "example": "/uploads/avatars/0x1234567890abcdef/avatar.jpg"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/feed/{feedPostId}/comments": {
+    "get": {
+      "tags": ["Feed"],
+      "summary": "Get post comments",
+      "description": "Retrieves all comments for a specific feed post",
+      "parameters": [
+        {
+          "name": "feedPostId",
+          "in": "path",
+          "required": true,
+          "description": "Post ID",
+          "schema": {
+            "type": "string"
+          },
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Comments retrieved successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "example": "Great post!"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "example": "987fdebc-a654-3210-9876-543210987654"
+                        },
+                        "feedPostId": {
+                          "type": "string",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "987fdebc-a654-3210-9876-543210987654"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John Doe"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "johndoe"
+                            },
+                            "avatar": {
+                              "type": "string",
+                              "example": "/uploads/avatars/0x1234567890abcdef/avatar.jpg"
+                            }
+                          }
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-01-01T00:00:00Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

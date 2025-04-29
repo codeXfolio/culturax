@@ -100,3 +100,132 @@ export const deleteFeedPost = async (id: string) => {
 
   return post;
 };
+
+export interface CreateCommentInput {
+  userId: string;
+  feedPostId: string;
+  comment: string;
+}
+
+export const createComment = async (input: CreateCommentInput) => {
+  const prisma = new PrismaClient();
+
+  const comment = await prisma.feedPostComment.create({
+    data: {
+      userId: input.userId,
+      feedPostId: input.feedPostId,
+      comment: input.comment,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+
+  return comment;
+};
+
+export const deleteComment = async (id: string) => {
+  const prisma = new PrismaClient();
+
+  const comment = await prisma.feedPostComment.delete({
+    where: { id },
+  });
+
+  return comment;
+};
+
+export const likePost = async (userId: string, feedPostId: string) => {
+  const prisma = new PrismaClient();
+
+  const like = await prisma.feedPostLike.create({
+    data: {
+      userId,
+      feedPostId,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+
+  return like;
+};
+
+export const unlikePost = async (userId: string, feedPostId: string) => {
+  const prisma = new PrismaClient();
+
+  const like = await prisma.feedPostLike.findFirst({
+    where: {
+      userId,
+      feedPostId,
+    },
+  });
+
+  if (!like) {
+    throw new Error('Like not found');
+  }
+
+  await prisma.feedPostLike.delete({
+    where: {
+      id: like.id,
+    },
+  });
+
+  return like;
+};
+
+export const getPostLikes = async (feedPostId: string) => {
+  const prisma = new PrismaClient();
+
+  const likes = await prisma.feedPostLike.findMany({
+    where: { feedPostId },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+
+  return likes;
+};
+
+export const getPostComments = async (feedPostId: string) => {
+  const prisma = new PrismaClient();
+
+  const comments = await prisma.feedPostComment.findMany({
+    where: { feedPostId },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          avatar: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return comments;
+};
