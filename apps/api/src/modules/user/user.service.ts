@@ -196,3 +196,69 @@ export const getFollowing = async (userId: string) => {
 
   return following;
 };
+
+export const updateCoverImage = async (
+  userId: string,
+  coverImage: Express.Multer.File,
+) => {
+  const prisma = new PrismaClient();
+
+  let coverImagePath: string | undefined = undefined;
+
+  // Handle cover image upload
+  if (coverImage) {
+    try {
+      // Ensure the base uploads directory exists
+      const baseUploadDir = join(process.cwd(), 'uploads');
+      try {
+        await access(baseUploadDir);
+      } catch {
+        await mkdir(baseUploadDir, { recursive: true });
+      }
+
+      // Ensure the covers directory exists
+      const coversDir = join(baseUploadDir, 'covers');
+      try {
+        await access(coversDir);
+      } catch {
+        await mkdir(coversDir, { recursive: true });
+      }
+
+      // Create user-specific directory
+      const userUploadDir = join(coversDir, userId);
+      await mkdir(userUploadDir, { recursive: true });
+
+      // Generate unique filename
+      const fileExtension = coverImage.originalname.split('.').pop();
+      const fileName = `cover.${fileExtension}`;
+      const filePath = join(userUploadDir, fileName);
+
+      // Write the file
+      await writeFile(filePath, coverImage.buffer);
+
+      // Store the relative path
+      coverImagePath = `/uploads/covers/${userId}/${fileName}`;
+    } catch (error) {
+      console.error('Error handling cover image upload:', error);
+      throw new Error('Failed to process cover image upload');
+    }
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      coverImage: coverImagePath,
+    },
+    select: {
+      id: true,
+      name: true,
+      username: true,
+      avatar: true,
+      coverImage: true,
+      address: true,
+      accountType: true,
+    },
+  });
+
+  return updatedUser;
+};

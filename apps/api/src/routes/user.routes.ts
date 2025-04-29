@@ -35,11 +35,20 @@ const getFollowingHandler: RequestHandler = async (req, res) => {
   await userController.getFollowing(req, res);
 };
 
+const updateCoverImageHandler: RequestHandler = async (req, res) => {
+  await userController.updateCoverImage(req, res);
+};
+
 router.post('/register', upload.single('avatar'), registerHandler);
 router.get('/:address', getUserHandler);
 router.post('/follow', followHandler);
 router.patch('/:address', updateHandler);
 router.get('/:userId/followers', getFollowersHandler);
 router.get('/:userId/following', getFollowingHandler);
+router.patch(
+  '/:userId/cover',
+  upload.single('coverImage'),
+  updateCoverImageHandler,
+);
 
 export default router;

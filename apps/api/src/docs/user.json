@@ -677,5 +677,112 @@
         }
       }
     }
+  },
+  "/api/user/{userId}/cover": {
+    "patch": {
+      "tags": ["User"],
+      "summary": "Update user's cover image",
+      "description": "Updates the cover image for a user",
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "ID of the user",
+          "schema": {
+            "type": "string"
+          },
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "required": ["coverImage"],
+              "properties": {
+                "coverImage": {
+                  "type": "string",
+                  "format": "binary",
+                  "description": "User's cover image"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Cover image updated successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                      },
+                      "username": {
+                        "type": "string",
+                        "example": "johndoe"
+                      },
+                      "avatar": {
+                        "type": "string",
+                        "example": "/uploads/avatars/0x1234567890abcdef/avatar.jpg"
+                      },
+                      "coverImage": {
+                        "type": "string",
+                        "example": "/uploads/covers/0x1234567890abcdef/cover.jpg"
+                      },
+                      "address": {
+                        "type": "string",
+                        "example": "0x1234567890abcdef"
+                      },
+                      "accountType": {
+                        "type": "string",
+                        "example": "USER"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Cover image is required"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

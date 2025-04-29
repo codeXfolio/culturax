@@ -8,6 +8,7 @@ import {
   UpdateUserInput,
   getFollowers,
   getFollowing,
+  updateCoverImage,
 } from './user.service';
 
 class UserController {
@@ -162,6 +163,46 @@ class UserController {
       });
     } catch (error) {
       console.error('Error getting following:', error);
+      if (error instanceof Error) {
+        return res.status(400).json({
+          success: false,
+          error: error.message,
+        });
+      }
+      return res.status(500).json({
+        success: false,
+        error: 'Internal server error',
+      });
+    }
+  }
+
+  async updateCoverImage(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+      const coverImage = req.file;
+
+      if (!userId) {
+        return res.status(400).json({
+          success: false,
+          error: 'User ID is required',
+        });
+      }
+
+      if (!coverImage) {
+        return res.status(400).json({
+          success: false,
+          error: 'Cover image is required',
+        });
+      }
+
+      const updatedUser = await updateCoverImage(userId, coverImage);
+
+      return res.status(200).json({
+        success: true,
+        data: updatedUser,
+      });
+    } catch (error) {
+      console.error('Error updating cover image:', error);
       if (error instanceof Error) {
         return res.status(400).json({
           success: false,
