@@ -142,3 +142,57 @@ export const updateUser = async (address: string, input: UpdateUserInput) => {
 
   return user;
 };
+
+export const getFollowers = async (userId: string) => {
+  const prisma = new PrismaClient();
+
+  const followers = await prisma.follow.findMany({
+    where: {
+      followingId: userId,
+    },
+    include: {
+      follower: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          avatar: true,
+          address: true,
+          accountType: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return followers;
+};
+
+export const getFollowing = async (userId: string) => {
+  const prisma = new PrismaClient();
+
+  const following = await prisma.follow.findMany({
+    where: {
+      followerId: userId,
+    },
+    include: {
+      following: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          avatar: true,
+          address: true,
+          accountType: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return following;
+};

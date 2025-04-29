@@ -6,6 +6,8 @@ import {
   followUser,
   updateUser,
   UpdateUserInput,
+  getFollowers,
+  getFollowing,
 } from './user.service';
 
 class UserController {
@@ -106,6 +108,70 @@ class UserController {
           .status(500)
           .json({ success: false, error: 'Internal server error' });
       }
+    }
+  }
+
+  async getFollowers(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+
+      if (!userId) {
+        return res.status(400).json({
+          success: false,
+          error: 'User ID is required',
+        });
+      }
+
+      const followers = await getFollowers(userId);
+
+      return res.status(200).json({
+        success: true,
+        data: followers,
+      });
+    } catch (error) {
+      console.error('Error getting followers:', error);
+      if (error instanceof Error) {
+        return res.status(400).json({
+          success: false,
+          error: error.message,
+        });
+      }
+      return res.status(500).json({
+        success: false,
+        error: 'Internal server error',
+      });
+    }
+  }
+
+  async getFollowing(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+
+      if (!userId) {
+        return res.status(400).json({
+          success: false,
+          error: 'User ID is required',
+        });
+      }
+
+      const following = await getFollowing(userId);
+
+      return res.status(200).json({
+        success: true,
+        data: following,
+      });
+    } catch (error) {
+      console.error('Error getting following:', error);
+      if (error instanceof Error) {
+        return res.status(400).json({
+          success: false,
+          error: error.message,
+        });
+      }
+      return res.status(500).json({
+        success: false,
+        error: 'Internal server error',
+      });
     }
   }
 }

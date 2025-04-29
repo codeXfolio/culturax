@@ -27,9 +27,19 @@ const updateHandler: RequestHandler = async (req, res) => {
   await userController.update(req, res);
 };
 
+const getFollowersHandler: RequestHandler = async (req, res) => {
+  await userController.getFollowers(req, res);
+};
+
+const getFollowingHandler: RequestHandler = async (req, res) => {
+  await userController.getFollowing(req, res);
+};
+
 router.post('/register', upload.single('avatar'), registerHandler);
 router.get('/:address', getUserHandler);
 router.post('/follow', followHandler);
 router.patch('/:address', updateHandler);
+router.get('/:userId/followers', getFollowersHandler);
+router.get('/:userId/following', getFollowingHandler);
 
 export default router;
