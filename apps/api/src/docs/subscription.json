@@ -1,0 +1,618 @@
+{
+  "/api/subscription/create": {
+    "post": {
+      "tags": ["Subscription"],
+      "summary": "Create a new subscription",
+      "description": "Creates a new subscription between a subscriber and a creator using the creator's monetization settings price",
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["subscriberId", "creatorId"],
+              "properties": {
+                "subscriberId": {
+                  "type": "string",
+                  "description": "ID of the subscriber",
+                  "example": "123e4567-e89b-12d3-a456-426614174000"
+                },
+                "creatorId": {
+                  "type": "string",
+                  "description": "ID of the creator",
+                  "example": "987fdebc-a654-3210-9876-543210987654"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Subscription created successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "Subscription amount from creator's monetization settings",
+                        "example": 10.99
+                      },
+                      "subscriberId": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "creatorId": {
+                        "type": "string",
+                        "example": "987fdebc-a654-3210-9876-543210987654"
+                      },
+                      "subscriber": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "123e4567-e89b-12d3-a456-426614174000"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "John Doe"
+                          },
+                          "username": {
+                            "type": "string",
+                            "example": "johndoe"
+                          },
+                          "avatar": {
+                            "type": "string",
+                            "example": "/uploads/avatars/0x1234567890abcdef/avatar.jpg"
+                          }
+                        }
+                      },
+                      "creator": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "987fdebc-a654-3210-9876-543210987654"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Jane Smith"
+                          },
+                          "username": {
+                            "type": "string",
+                            "example": "janesmith"
+                          },
+                          "avatar": {
+                            "type": "string",
+                            "example": "/uploads/avatars/0x9876543210fedcba/avatar.jpg"
+                          }
+                        }
+                      },
+                      "startDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                      },
+                      "status": {
+                        "type": "string",
+                        "example": "ACTIVE"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Creator has not set up monetization settings"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/subscription/user/{userId}": {
+    "get": {
+      "tags": ["Subscription"],
+      "summary": "Get user subscriptions",
+      "description": "Retrieves all subscriptions for a specific user (both as subscriber and creator)",
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "User ID",
+          "schema": {
+            "type": "string"
+          },
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Subscriptions retrieved successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "amount": {
+                          "type": "number",
+                          "description": "Subscription amount from creator's monetization settings",
+                          "example": 10.99
+                        },
+                        "subscriberId": {
+                          "type": "string",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "creatorId": {
+                          "type": "string",
+                          "example": "987fdebc-a654-3210-9876-543210987654"
+                        },
+                        "subscriber": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "123e4567-e89b-12d3-a456-426614174000"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John Doe"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "johndoe"
+                            },
+                            "avatar": {
+                              "type": "string",
+                              "example": "/uploads/avatars/0x1234567890abcdef/avatar.jpg"
+                            }
+                          }
+                        },
+                        "creator": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "987fdebc-a654-3210-9876-543210987654"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Jane Smith"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "janesmith"
+                            },
+                            "avatar": {
+                              "type": "string",
+                              "example": "/uploads/avatars/0x9876543210fedcba/avatar.jpg"
+                            }
+                          }
+                        },
+                        "startDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-01-01T00:00:00Z"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "ACTIVE"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/subscription/monetization/settings": {
+    "post": {
+      "tags": ["Subscription"],
+      "summary": "Set monetization settings",
+      "description": "Sets or updates monetization settings for a creator",
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["userId", "price"],
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "description": "ID of the creator",
+                  "example": "123e4567-e89b-12d3-a456-426614174000"
+                },
+                "price": {
+                  "type": "number",
+                  "description": "Subscription price",
+                  "example": 10.99
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description of the subscription benefits",
+                  "example": "Get access to exclusive content and early releases"
+                },
+                "perks": {
+                  "type": "string",
+                  "description": "List of perks for subscribers",
+                  "example": "Early access, Exclusive content, Direct messaging"
+                },
+                "payoutSchedule": {
+                  "type": "string",
+                  "enum": ["MONTHLY", "WEEKLY", "BIWEEKLY"],
+                  "description": "Payout schedule for earnings",
+                  "example": "MONTHLY"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Monetization settings updated successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": 10.99
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Get access to exclusive content and early releases"
+                      },
+                      "perks": {
+                        "type": "string",
+                        "example": "Early access, Exclusive content, Direct messaging"
+                      },
+                      "payoutSchedule": {
+                        "type": "string",
+                        "example": "MONTHLY"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Only creators can edit monetization settings"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Monetization settings not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Monetization settings not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "tags": ["Subscription"],
+      "summary": "Edit monetization settings",
+      "description": "Updates existing monetization settings for a creator",
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["userId", "price"],
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "description": "ID of the creator",
+                  "example": "123e4567-e89b-12d3-a456-426614174000"
+                },
+                "price": {
+                  "type": "number",
+                  "description": "Subscription price",
+                  "example": 10.99
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description of the subscription benefits",
+                  "example": "Get access to exclusive content and early releases"
+                },
+                "perks": {
+                  "type": "string",
+                  "description": "List of perks for subscribers",
+                  "example": "Early access, Exclusive content, Direct messaging"
+                },
+                "payoutSchedule": {
+                  "type": "string",
+                  "enum": ["MONTHLY", "WEEKLY", "BIWEEKLY"],
+                  "description": "Payout schedule for earnings",
+                  "example": "MONTHLY"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Monetization settings updated successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": 10.99
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Get access to exclusive content and early releases"
+                      },
+                      "perks": {
+                        "type": "string",
+                        "example": "Early access, Exclusive content, Direct messaging"
+                      },
+                      "payoutSchedule": {
+                        "type": "string",
+                        "example": "MONTHLY"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Only creators can edit monetization settings"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Monetization settings not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Monetization settings not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/subscription/monetization/settings/{userId}": {
+    "get": {
+      "tags": ["Subscription"],
+      "summary": "Get monetization settings",
+      "description": "Retrieves monetization settings for a creator",
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "Creator ID",
+          "schema": {
+            "type": "string"
+          },
+          "example": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Monetization settings retrieved successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": 10.99
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Get access to exclusive content and early releases"
+                      },
+                      "perks": {
+                        "type": "string",
+                        "example": "Early access, Exclusive content, Direct messaging"
+                      },
+                      "payoutSchedule": {
+                        "type": "string",
+                        "example": "MONTHLY"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Monetization settings not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Monetization settings not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

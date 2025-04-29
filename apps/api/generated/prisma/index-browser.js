@@ -171,15 +171,46 @@ exports.Prisma.FeedPostScalarFieldEnum = {
 exports.Prisma.FeedPostCommentScalarFieldEnum = {
   id: 'id',
   comment: 'comment',
-  createdAt: 'createdAt',
   userId: 'userId',
-  feedPostId: 'feedPostId'
+  feedPostId: 'feedPostId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.FeedPostLikeScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  feedPostId: 'feedPostId'
+  feedPostId: 'feedPostId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.SubscriptionScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  subscriberId: 'subscriberId',
+  creatorId: 'creatorId',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  status: 'status',
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt'
+};
+
+exports.Prisma.TransactionScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  type: 'type',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.MonetizationSettingsScalarFieldEnum = {
+  id: 'id',
+  price: 'price',
+  description: 'description',
+  perks: 'perks',
+  userId: 'userId',
+  payoutSchedule: 'payoutSchedule',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -202,6 +233,26 @@ exports.AccountType = exports.$Enums.AccountType = {
   ADMIN: 'ADMIN'
 };
 
+exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
+  ACTIVE: 'ACTIVE',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
+};
+
+exports.TransactionType = exports.$Enums.TransactionType = {
+  SUBSCRIPTION: 'SUBSCRIPTION',
+  TIP: 'TIP',
+  PURCHASE: 'PURCHASE',
+  WITHDRAWAL: 'WITHDRAWAL',
+  REFUND: 'REFUND'
+};
+
+exports.PayoutSchedule = exports.$Enums.PayoutSchedule = {
+  MONTHLY: 'MONTHLY',
+  WEEKLY: 'WEEKLY',
+  BIWEEKLY: 'BIWEEKLY'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Follow: 'Follow',
@@ -209,7 +260,10 @@ exports.Prisma.ModelName = {
   Collection: 'Collection',
   FeedPost: 'FeedPost',
   FeedPostComment: 'FeedPostComment',
-  FeedPostLike: 'FeedPostLike'
+  FeedPostLike: 'FeedPostLike',
+  Subscription: 'Subscription',
+  Transaction: 'Transaction',
+  MonetizationSettings: 'MonetizationSettings'
 };
 
 /**

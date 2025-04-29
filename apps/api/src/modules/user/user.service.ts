@@ -87,8 +87,8 @@ export const getUserByAddress = async (address: string) => {
 };
 
 export const followUser = async (
-  userAddress: string,
   targetAddress: string,
+  userAddress: string,
 ) => {
   const prisma = new PrismaClient();
 

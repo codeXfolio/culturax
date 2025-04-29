@@ -15,28 +15,32 @@ datasource db {
 }
 
 model User {
-  id              String            @id @default(uuid())
-  address         String            @unique
-  name            String?
-  username        String            @unique
-  email           String?           @unique
-  website         String?
-  avatar          String            @default("https://placehold.co/150x150")
-  bio             String?
-  coverImage      String            @default("https://placehold.co/1200x400")
-  language        String            @default("en")
-  timezone        String            @default("UTC")
-  accountType     AccountType       @default(USER)
-  featured        Boolean           @default(false)
-  socials         Social[]
-  followers       Follow[]          @relation("follower")
-  following       Follow[]          @relation("following")
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  Collection      Collection[]
-  FeedPost        FeedPost[]
-  FeedPostLike    FeedPostLike[]
-  FeedPostComment FeedPostComment[]
+  id                   String                 @id @default(uuid())
+  address              String                 @unique
+  name                 String?
+  username             String                 @unique
+  email                String?                @unique
+  website              String?
+  avatar               String                 @default("https://placehold.co/150x150")
+  bio                  String?
+  coverImage           String                 @default("https://placehold.co/1200x400")
+  language             String                 @default("en")
+  timezone             String                 @default("UTC")
+  accountType          AccountType            @default(USER)
+  featured             Boolean                @default(false)
+  socials              Social[]
+  followers            Follow[]               @relation("follower")
+  following            Follow[]               @relation("following")
+  Collection           Collection[]
+  FeedPost             FeedPost[]
+  FeedPostLike         FeedPostLike[]
+  FeedPostComment      FeedPostComment[]
+  Subscriptions        Subscription[]         @relation("CreatorRelation")
+  Subscribers          Subscription[]         @relation("SubscriberRelation")
+  MonetizationSettings MonetizationSettings[]
+  Transactions         Transaction[]
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
 }
 
 model Follow {
@@ -76,19 +80,19 @@ model FeedPost {
   isPremium       Boolean           @default(false)
   userId          String
   user            User              @relation(fields: [userId], references: [id])
-  createdAt       DateTime          @default(now())
   FeedPostComment FeedPostComment[]
   FeedPostLike    FeedPostLike[]
+  createdAt       DateTime          @default(now())
 }
 
 model FeedPostComment {
   id         String   @id @default(uuid())
   comment    String
-  createdAt  DateTime @default(now())
   userId     String
   user       User     @relation(fields: [userId], references: [id])
   feedPostId String
   feedPost   FeedPost @relation(fields: [feedPostId], references: [id])
+  createdAt  DateTime @default(now())
 }
 
 model FeedPostLike {
@@ -97,6 +101,61 @@ model FeedPostLike {
   user       User     @relation(fields: [userId], references: [id])
   feedPostId String
   feedPost   FeedPost @relation(fields: [feedPostId], references: [id])
+  createdAt  DateTime @default(now())
+}
+
+model Subscription {
+  id           String             @id @default(uuid())
+  amount       Float
+  subscriberId String
+  subscriber   User               @relation("SubscriberRelation", fields: [subscriberId], references: [id])
+  creatorId    String
+  creator      User               @relation("CreatorRelation", fields: [creatorId], references: [id])
+  startDate    DateTime           @default(now())
+  endDate      DateTime?
+  status       SubscriptionStatus @default(ACTIVE)
+  createdAt    DateTime           @default(now())
+  expiresAt    DateTime?
+}
+
+model Transaction {
+  id        String          @id @default(uuid())
+  amount    Float
+  type      TransactionType
+  userId    String
+  user      User            @relation(fields: [userId], references: [id])
+  createdAt DateTime        @default(now())
+}
+
+model MonetizationSettings {
+  id             String         @id @default(uuid())
+  price          Float          @default(10)
+  description    String?
+  perks          String?
+  userId         String
+  payoutSchedule PayoutSchedule @default(MONTHLY)
+  user           User           @relation(fields: [userId], references: [id])
+  createdAt      DateTime       @default(now())
+}
+
+enum PayoutSchedule {
+  MONTHLY
+  WEEKLY
+  BIWEEKLY
+}
+
+enum TransactionType {
+  SUBSCRIPTION
+  TIP
+  PURCHASE
+  WITHDRAWAL
+  REFUND
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
 }
 
 enum AccountType {

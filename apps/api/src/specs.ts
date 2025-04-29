@@ -10,6 +10,8 @@ import creatorDocs from './docs/creator.json';
 import userDocs from './docs/user.json';
 // @ts-ignore
 import feedDocs from './docs/feed.json';
+// @ts-ignore
+import subscriptionDocs from './docs/subscription.json';
 
 const app = express();
 
@@ -48,6 +50,10 @@ const openApiDocs = {
       name: 'Feed',
       description: 'Operations related to feed',
     },
+    {
+      name: 'Subscription',
+      description: 'Operations related to subscriptions',
+    },
   ],
   paths: {
     ...aiDocs,
@@ -55,6 +61,7 @@ const openApiDocs = {
     ...creatorDocs,
     ...userDocs,
     ...feedDocs,
+    ...subscriptionDocs,
   },
 };
 
