@@ -12,6 +12,7 @@ class UserController {
   async register(req: Request, res: Response) {
     try {
       const input = req.body as unknown as RegisterUserInput;
+      input.avatar = req.file;
 
       //   Check if user already exists
       const user = await getUserByAddress(input.address);
@@ -29,9 +30,16 @@ class UserController {
       }
 
       const newUser = await inputUser(input);
-      res.json(newUser);
+      res.json({ success: true, data: newUser });
     } catch (error) {
-      res.status(400).json({ success: false, error: 'Invalid input data' });
+      console.error('Error in user registration:', error);
+      if (error instanceof Error) {
+        res.status(400).json({ success: false, error: error.message });
+      } else {
+        res
+          .status(500)
+          .json({ success: false, error: 'Internal server error' });
+      }
     }
   }
 

@@ -269,12 +269,19 @@
     "post": {
       "tags": ["User"],
       "summary": "Register a new user",
-      "description": "Registers a new user with the provided email, name, username, and address",
+      "description": "Registers a new user with the provided email, name, username, address, and optional avatar",
       "requestBody": {
         "content": {
-          "application/json": {
+          "multipart/form-data": {
             "schema": {
               "type": "object",
+              "required": [
+                "email",
+                "name",
+                "username",
+                "address",
+                "accountType"
+              ],
               "properties": {
                 "email": {
                   "type": "string",
@@ -295,6 +302,11 @@
                 "accountType": {
                   "type": "string",
                   "example": "USER"
+                },
+                "avatar": {
+                  "type": "string",
+                  "format": "binary",
+                  "description": "User's avatar image (optional)"
                 }
               }
             }
@@ -339,6 +351,10 @@
                       "accountType": {
                         "type": "string",
                         "example": "USER"
+                      },
+                      "avatar": {
+                        "type": "string",
+                        "example": "/uploads/avatars/0x1234567890abcdef/avatar.jpg"
                       }
                     }
                   }
