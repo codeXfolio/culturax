@@ -30,6 +30,7 @@ const CREATORS = [
     bio: 'Travel blogger exploring hidden gems and sharing local experiences',
     avatar: 'https://placehold.co/150x150',
     coverImage: 'https://placehold.co/1200x400',
+    featured: true,
   },
   {
     name: 'Alex Thompson',
@@ -38,6 +39,7 @@ const CREATORS = [
     bio: 'Music producer and DJ sharing my creative process and latest tracks',
     avatar: 'https://placehold.co/150x150',
     coverImage: 'https://placehold.co/1200x400',
+    featured: true,
   },
   {
     name: 'Sophia Lee',
@@ -46,6 +48,7 @@ const CREATORS = [
     bio: 'Fashion designer showcasing my latest collections and design process',
     avatar: 'https://placehold.co/150x150',
     coverImage: 'https://placehold.co/1200x400',
+    featured: true,
   },
 ];
 
@@ -491,16 +494,63 @@ async function seed() {
         .slice(0, subscriberCount);
 
       await Promise.all(
-        subscribers.map((user) =>
-          prisma.subscription.create({
+        subscribers.map(async (user) => {
+          const subscription = await prisma.subscription.create({
             data: {
               subscriberId: user.id,
               creatorId: creator.id,
               amount: 9.99,
               status: 'ACTIVE',
             },
-          }),
-        ),
+          });
+
+          // Create transaction record for the subscription
+          await prisma.transaction.create({
+            data: {
+              userId: user.id,
+              amount: subscription.amount,
+              type: 'SUBSCRIPTION',
+            },
+          });
+
+          return subscription;
+        }),
+      );
+    }
+
+    // Create some random tips and purchases
+    for (const creator of creators) {
+      // Randomly select users who might tip or make purchases (10-30% of users)
+      const potentialSupporters = allUsers
+        .sort(() => 0.5 - Math.random())
+        .slice(0, Math.floor(allUsers.length * (0.1 + Math.random() * 0.2)));
+
+      await Promise.all(
+        potentialSupporters.map(async (user) => {
+          // Randomly decide if this user will tip
+          if (Math.random() > 0.7) {
+            const tipAmount = Math.floor(Math.random() * 50) + 5; // Random tip between $5 and $55
+            await prisma.transaction.create({
+              data: {
+                userId: user.id,
+                amount: tipAmount,
+                type: 'TIP',
+              },
+            });
+          }
+
+          // Randomly decide if this user will make a purchase
+          if (Math.random() > 0.8) {
+            const purchaseAmount = Math.floor(Math.random() * 100) + 10; // Random purchase between $10 and $110
+            await prisma.transaction.create({
+              data: {
+                userId: user.id,
+                amount: purchaseAmount,
+                type: 'SUBSCRIPTION',
+              },
+            });
+          }
+        }),
       );
     }
 

@@ -1,10 +1,13 @@
 import { PrismaClient } from '../../../generated/prisma';
 
-export const getCreators = async () => {
+export const getCreators = async (page: number = 1, limit: number = 9) => {
   const prisma = new PrismaClient();
-  const creators = await prisma.user.findMany({
+
+  // Get featured creators (limited to 3)
+  const featuredCreators = await prisma.user.findMany({
     where: {
       accountType: 'CREATOR',
+      featured: true,
     },
     select: {
       id: true,
@@ -15,6 +18,60 @@ export const getCreators = async () => {
       followers: true,
       featured: true,
     },
+    take: 3,
   });
-  return creators;
+
+  // Get regular creators with pagination
+  const regularCreators = await prisma.user.findMany({
+    where: {
+      accountType: 'CREATOR',
+      featured: false,
+    },
+    select: {
+      id: true,
+      name: true,
+      username: true,
+      avatar: true,
+      coverImage: true,
+      followers: true,
+      featured: true,
+    },
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+
+  // Get total count for pagination
+  const totalCreators = await prisma.user.count({
+    where: {
+      accountType: 'CREATOR',
+      featured: false,
+    },
+  });
+
+  return {
+    featured: featuredCreators.map((creator) => ({
+      id: creator.id,
+      name: creator.name,
+      username: creator.username,
+      avatar: creator.avatar,
+      coverImage: creator.coverImage,
+      totalFollowers: creator.followers.length,
+      featured: creator.featured,
+    })),
+    regular: regularCreators.map((creator) => ({
+      id: creator.id,
+      name: creator.name,
+      username: creator.username,
+      avatar: creator.avatar,
+      coverImage: creator.coverImage,
+      totalFollowers: creator.followers.length,
+      featured: creator.featured,
+    })),
+    pagination: {
+      currentPage: page,
+      totalPages: Math.ceil(totalCreators / limit),
+      totalItems: totalCreators,
+      itemsPerPage: limit,
+    },
+  };
 };

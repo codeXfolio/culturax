@@ -3,7 +3,19 @@
     "get": {
       "tags": ["Creator"],
       "summary": "Get all creators",
-      "description": "Retrieves a list of all creators",
+      "description": "Retrieves a list of all creators with pagination and featured creators",
+      "parameters": [
+        {
+          "name": "page",
+          "in": "query",
+          "description": "Page number",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "default": 1
+          }
+        }
+      ],
       "responses": {
         "200": {
           "description": "Successful response",
@@ -17,37 +29,99 @@
                     "example": true
                   },
                   "data": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "example": "123e4567-e89b-12d3-a456-426614174000"
-                        },
-                        "name": {
-                          "type": "string",
-                          "example": "John Doe"
-                        },
-                        "username": {
-                          "type": "string",
-                          "example": "johndoe"
-                        },
-                        "avatar": {
-                          "type": "string",
-                          "example": "https://example.com/avatar.jpg"
-                        },
-                        "coverImage": {
-                          "type": "string",
-                          "example": "https://example.com/cover.jpg"
-                        },
-                        "totalFollowers": {
-                          "type": "integer",
-                          "example": 1000
-                        },
-                        "featured": {
-                          "type": "boolean",
-                          "example": true
+                    "type": "object",
+                    "properties": {
+                      "featured": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "123e4567-e89b-12d3-a456-426614174000"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John Doe"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "johndoe"
+                            },
+                            "avatar": {
+                              "type": "string",
+                              "example": "https://example.com/avatar.jpg"
+                            },
+                            "coverImage": {
+                              "type": "string",
+                              "example": "https://example.com/cover.jpg"
+                            },
+                            "totalFollowers": {
+                              "type": "integer",
+                              "example": 1000
+                            },
+                            "featured": {
+                              "type": "boolean",
+                              "example": true
+                            }
+                          }
+                        }
+                      },
+                      "regular": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "123e4567-e89b-12d3-a456-426614174000"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John Doe"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "johndoe"
+                            },
+                            "avatar": {
+                              "type": "string",
+                              "example": "https://example.com/avatar.jpg"
+                            },
+                            "coverImage": {
+                              "type": "string",
+                              "example": "https://example.com/cover.jpg"
+                            },
+                            "totalFollowers": {
+                              "type": "integer",
+                              "example": 1000
+                            },
+                            "featured": {
+                              "type": "boolean",
+                              "example": false
+                            }
+                          }
+                        }
+                      },
+                      "pagination": {
+                        "type": "object",
+                        "properties": {
+                          "currentPage": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "totalPages": {
+                            "type": "integer",
+                            "example": 5
+                          },
+                          "totalItems": {
+                            "type": "integer",
+                            "example": 45
+                          },
+                          "itemsPerPage": {
+                            "type": "integer",
+                            "example": 9
+                          }
                         }
                       }
                     }
