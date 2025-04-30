@@ -13,6 +13,11 @@ const feedController = new FeedController();
 
 const routes: RouteConfig[] = [
   {
+    path: '/',
+    method: 'get',
+    handler: feedController.getAll,
+  },
+  {
     path: '/create',
     method: 'post',
     handler: feedController.create,

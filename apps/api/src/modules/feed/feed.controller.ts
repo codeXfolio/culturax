@@ -9,6 +9,8 @@ import {
   unlikePost,
   getPostLikes,
   getPostComments,
+  getFeedPosts,
+  GetFeedPostsInput,
 } from './feed.service';
 
 class FeedController {
@@ -248,6 +250,35 @@ class FeedController {
       });
     } catch (error) {
       console.error('Error getting comments:', error);
+      if (error instanceof Error) {
+        return res.status(400).json({
+          success: false,
+          error: error.message,
+        });
+      }
+      return res.status(500).json({
+        success: false,
+        error: 'Internal server error',
+      });
+    }
+  }
+
+  async getAll(req: Request, res: Response) {
+    try {
+      const { page } = req.query;
+      const input: GetFeedPostsInput = {
+        page: page ? parseInt(page as string) : undefined,
+        limit: 8,
+      };
+
+      const result = await getFeedPosts(input);
+      return res.status(200).json({
+        success: true,
+        data: result.posts,
+        pagination: result.pagination,
+      });
+    } catch (error) {
+      console.error('Error getting feed posts:', error);
       if (error instanceof Error) {
         return res.status(400).json({
           success: false,
