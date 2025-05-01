@@ -10,11 +10,8 @@ async function generateSignature() {
     // Sign the welcome message
     const signature = await wallet.signMessage(WELCOME_MESSAGE);
 
-    console.log('\nš Test Credentials Generated:\n');
-    console.log('š Private Key:', wallet.privateKey);
-    console.log('š Address:', wallet.address);
+    console.log('š Test Credentials Generated:\n');
 
-    console.log('\nš To use in API requests, set these headers:');
     console.log('x-eth-address:', wallet.address);
     console.log('x-eth-signature:', signature);
 

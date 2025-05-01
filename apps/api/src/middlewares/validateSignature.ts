@@ -35,6 +35,9 @@ const validateSignature = (
       return;
     }
 
+    // Attach the verified address to the request object
+    req.ethAddress = signerAddr;
+
     next();
   } catch (error) {
     res.status(401).json({
