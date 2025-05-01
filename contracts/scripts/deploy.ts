@@ -23,10 +23,10 @@ async function main() {
    const token = await CulturaXToken.deploy(
       "CulturaX Token", // name
       "CX", // symbol
-      ethers.parseEther("1000000"), // initial supply: 1,000,000 tokens
-      ethers.parseEther("1000"), // max transaction amount: 1,000 tokens
-      ethers.parseEther("10000"), // max wallet balance: 10,000 tokens
-      60 // cooldown period: 60 seconds
+      ethers.parseEther("100000000"), // initial supply: 100,000,000 tokens
+      ethers.parseEther("1000000"), // max transaction amount: 1,000,000 tokens
+      ethers.parseEther("10000000"), // max wallet balance: 10,000,000 tokens
+      0 // cooldown period: 0 seconds
    );
    await token.waitForDeployment();
    console.log("CulturaXToken deployed to:", await token.getAddress());

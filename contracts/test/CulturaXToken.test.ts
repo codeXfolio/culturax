@@ -11,10 +11,10 @@ describe("CulturaXToken", function () {
 
    const NAME = "CulturaX Token";
    const SYMBOL = "CX";
-   const INITIAL_SUPPLY = ethers.parseEther("1000000");
-   const MAX_TRANSACTION = ethers.parseEther("1000");
-   const MAX_WALLET = ethers.parseEther("10000");
-   const COOLDOWN_PERIOD = 60; // 1 minute in seconds
+   const INITIAL_SUPPLY = ethers.parseEther("100000000");
+   const MAX_TRANSACTION = ethers.parseEther("1000000");
+   const MAX_WALLET = ethers.parseEther("10000000");
+   const COOLDOWN_PERIOD = 10; // 10 seconds
 
    beforeEach(async function () {
       [owner, user1, user2] = await ethers.getSigners();

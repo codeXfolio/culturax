@@ -6,12 +6,38 @@ interface Deployment {
    chainId: string;
    CulturaXToken: string;
    NFTGenerator: string;
+   SubscriptionManager: string;
    deployer: string;
    timestamp: string;
 }
 
 interface DeploymentHistory {
    deployments: Deployment[];
+}
+
+async function verifyContract(
+   name: string,
+   address: string,
+   constructorArguments: any[] = []
+) {
+   console.log(`\nVerifying ${name}...`);
+   try {
+      await run("verify:verify", {
+         address,
+         constructorArguments,
+      });
+      console.log(`${name} verified successfully!`);
+   } catch (error) {
+      if (error instanceof Error) {
+         if (error.message.includes("Already Verified")) {
+            console.log(`${name} is already verified`);
+         } else {
+            console.error(`Error verifying ${name}:`, error.message);
+         }
+      } else {
+         console.error(`Unknown error verifying ${name}`);
+      }
+   }
 }
 
 async function main() {
@@ -48,32 +74,27 @@ async function main() {
    console.log("Verifying contracts on network:", deployment.network);
 
    // Verify CulturaXToken
-   console.log("\nVerifying CulturaXToken...");
-   await run("verify:verify", {
-      address: deployment.CulturaXToken,
-      constructorArguments: [
-         "CulturaX Token",
-         "CX",
-         ethers.parseEther("1000000").toString(),
-         ethers.parseEther("1000").toString(),
-         ethers.parseEther("10000").toString(),
-         "60",
-      ],
-   });
+   await verifyContract("CulturaXToken", deployment.CulturaXToken, [
+      "CulturaX Token",
+      "CX",
+      ethers.parseEther("1000000").toString(),
+      ethers.parseEther("1000").toString(),
+      ethers.parseEther("10000").toString(),
+      "60",
+   ]);
 
    // Verify NFTGenerator
-   console.log("\nVerifying NFTGenerator...");
-   await run("verify:verify", {
-      address: deployment.NFTGenerator,
-      constructorArguments: [],
-   });
+   await verifyContract("NFTGenerator", deployment.NFTGenerator);
 
-   console.log("\nVerification completed successfully!");
+   // Verify SubscriptionManager
+   await verifyContract("SubscriptionManager", deployment.SubscriptionManager);
+
+   console.log("\nVerification process completed!");
 }
 
 main()
    .then(() => process.exit(0))
    .catch((error) => {
-      console.error(error);
+      console.error("Verification failed:", error);
       process.exit(1);
    });
