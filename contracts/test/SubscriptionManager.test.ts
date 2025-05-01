@@ -27,8 +27,6 @@ describe("SubscriptionManager", function () {
       it("should allow creator to set their settings", async function () {
          await subscriptionManager.connect(creator).setCreatorSettings(
             MONTHLY_PRICE,
-            "Monthly subscription",
-            "Exclusive content, Early access",
             0 // MONTHLY
          );
 
@@ -36,8 +34,6 @@ describe("SubscriptionManager", function () {
             creator.address
          );
          expect(settings.price).to.equal(MONTHLY_PRICE);
-         expect(settings.description).to.equal("Monthly subscription");
-         expect(settings.perks).to.equal("Exclusive content, Early access");
          expect(settings.payoutSchedule).to.equal(0); // MONTHLY
          expect(settings.isActive).to.be.true;
       });
@@ -46,11 +42,19 @@ describe("SubscriptionManager", function () {
          await expect(
             subscriptionManager.connect(creator).setCreatorSettings(
                0,
-               "Monthly subscription",
-               "Exclusive content",
                0 // MONTHLY
             )
          ).to.be.revertedWith("Price must be greater than 0");
+      });
+
+      it("should not allow price above maximum", async function () {
+         const maxPrice = ethers.parseEther("1001"); // Above MAX_PRICE
+         await expect(
+            subscriptionManager.connect(creator).setCreatorSettings(
+               maxPrice,
+               0 // MONTHLY
+            )
+         ).to.be.revertedWith("Price exceeds maximum limit");
       });
    });
 
@@ -59,8 +63,6 @@ describe("SubscriptionManager", function () {
          // Set up creator settings
          await subscriptionManager.connect(creator).setCreatorSettings(
             MONTHLY_PRICE,
-            "Monthly subscription",
-            "Exclusive content",
             0 // MONTHLY
          );
       });
@@ -89,6 +91,14 @@ describe("SubscriptionManager", function () {
                value: insufficientPayment,
             })
          ).to.be.revertedWith("Insufficient payment");
+      });
+
+      it("should not allow self-subscription", async function () {
+         await expect(
+            subscriptionManager.connect(creator).subscribe(creator.address, {
+               value: MONTHLY_PRICE,
+            })
+         ).to.be.revertedWith("Cannot subscribe to self");
       });
 
       it("should allow subscriber to cancel subscription", async function () {
@@ -121,8 +131,6 @@ describe("SubscriptionManager", function () {
          // Set up creator settings
          await subscriptionManager.connect(creator).setCreatorSettings(
             MONTHLY_PRICE,
-            "Monthly subscription",
-            "Exclusive content",
             0 // MONTHLY
          );
 
@@ -164,8 +172,6 @@ describe("SubscriptionManager", function () {
       it("should handle weekly subscriptions", async function () {
          await subscriptionManager.connect(creator).setCreatorSettings(
             WEEKLY_PRICE,
-            "Weekly subscription",
-            "Weekly content",
             1 // WEEKLY
          );
 
@@ -184,8 +190,6 @@ describe("SubscriptionManager", function () {
       it("should handle biweekly subscriptions", async function () {
          await subscriptionManager.connect(creator).setCreatorSettings(
             BIWEEKLY_PRICE,
-            "Biweekly subscription",
-            "Biweekly content",
             2 // BIWEEKLY
          );
 
@@ -207,8 +211,6 @@ describe("SubscriptionManager", function () {
          // Set up creator settings
          await subscriptionManager.connect(creator).setCreatorSettings(
             MONTHLY_PRICE,
-            "Monthly subscription",
-            "Exclusive content",
             0 // MONTHLY
          );
       });
@@ -256,8 +258,6 @@ describe("SubscriptionManager", function () {
          const smallAmount = MIN_WITHDRAWAL - BigInt(1);
          await subscriptionManager.connect(creator).setCreatorSettings(
             smallAmount,
-            "Small subscription",
-            "Small content",
             0 // MONTHLY
          );
 
@@ -285,6 +285,36 @@ describe("SubscriptionManager", function () {
          await expect(
             subscriptionManager.connect(otherUser).withdraw()
          ).to.be.revertedWith("Insufficient earnings for withdrawal");
+      });
+   });
+
+   describe("Pausable", function () {
+      it("should allow owner to pause and unpause", async function () {
+         await subscriptionManager.connect(owner).pause();
+         expect(await subscriptionManager.paused()).to.be.true;
+
+         await subscriptionManager.connect(owner).unpause();
+         expect(await subscriptionManager.paused()).to.be.false;
+      });
+
+      it("should not allow non-owner to pause", async function () {
+         await expect(
+            subscriptionManager.connect(creator).pause()
+         ).to.be.revertedWithCustomError(
+            subscriptionManager,
+            "OwnableUnauthorizedAccount"
+         );
+      });
+
+      it("should not allow operations when paused", async function () {
+         await subscriptionManager.connect(owner).pause();
+
+         await expect(
+            subscriptionManager.connect(creator).setCreatorSettings(
+               MONTHLY_PRICE,
+               0 // MONTHLY
+            )
+         ).to.be.revertedWithCustomError(subscriptionManager, "EnforcedPause");
       });
    });
 });

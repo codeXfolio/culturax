@@ -37,9 +37,7 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
         uint128 price; // 16 bytes
         PayoutSchedule payoutSchedule; // 1 byte
         bool isActive; // 1 byte
-        string description; // 32 bytes (pointer)
-        string perks; // 32 bytes (pointer)
-        // Total: 82 bytes (3 slots)
+        // Total: 18 bytes (1 slot)
     }
 
     // Mapping from creator address to their settings
@@ -94,19 +92,13 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
     // Function to set or update creator settings
     function setCreatorSettings(
         uint256 _price,
-        string memory _description,
-        string memory _perks,
         PayoutSchedule _payoutSchedule
     ) external whenNotPaused {
         require(_price > 0, "Price must be greater than 0");
         require(_price <= MAX_PRICE, "Price exceeds maximum limit");
-        require(bytes(_description).length > 0, "Description cannot be empty");
-        require(bytes(_perks).length > 0, "Perks cannot be empty");
 
         _creatorSettings[msg.sender] = CreatorSettings({
             price: uint128(_price),
-            description: _description,
-            perks: _perks,
             payoutSchedule: _payoutSchedule,
             isActive: true
         });
