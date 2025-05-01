@@ -29,6 +29,28 @@ const openApiDocs = {
       description: 'Local Development',
     },
   ],
+  components: {
+    securitySchemes: {
+      ethSignature: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'x-eth-signature',
+        description: 'Ethereum signature of the message "Welcome to CulturaX"',
+      },
+      ethAddress: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'x-eth-address',
+        description: 'Ethereum address of the signer',
+      },
+    },
+  },
+  security: [
+    {
+      ethSignature: [],
+      ethAddress: [],
+    },
+  ],
   tags: [
     {
       name: 'Creator',

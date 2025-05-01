@@ -4,7 +4,8 @@
     "start": "node dist/server.js",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'tsx' src/server.ts",
     "clean": "rm -rf dist",
-    "specs": "nodemon --watch 'src/**/*.ts' --exec 'tsx' src/specs.ts"
+    "specs": "nodemon --watch 'src/**/*.ts' --exec 'tsx' src/specs.ts",
+    "generate-signature": "tsx scripts/generateSignature.ts"
   },
   "dependencies": {
     "@prisma/client": "6.6.0",
@@ -12,6 +13,7 @@
     "@types/multer": "^1.4.12",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
+    "ethers": "^6.13.7",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.0",
     "multer": "1.4.5-lts.2",
