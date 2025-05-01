@@ -83,6 +83,7 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
     );
     event Withdrawal(
         address indexed creator,
+        address indexed destination,
         uint256 amount,
         uint256 timestamp
     );
@@ -187,7 +188,8 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
     }
 
     // Function to withdraw earnings
-    function withdraw() external nonReentrant whenNotPaused {
+    function withdraw(address destination) external nonReentrant whenNotPaused {
+        require(destination != address(0), "Invalid destination address");
         uint256 earnings = _creatorEarnings[msg.sender];
         require(
             earnings >= MIN_WITHDRAWAL_AMOUNT,
@@ -198,9 +200,9 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
         _creatorEarnings[msg.sender] = 0;
 
         // Transfer funds using safe transfer
-        payable(msg.sender).sendValue(earnings);
+        payable(destination).sendValue(earnings);
 
-        emit Withdrawal(msg.sender, earnings, block.timestamp);
+        emit Withdrawal(msg.sender, destination, earnings, block.timestamp);
     }
 
     // Function to check if a subscription is valid

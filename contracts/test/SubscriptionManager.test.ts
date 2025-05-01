@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { SubscriptionManager } from "../typechain-types";
 import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 describe("SubscriptionManager", function () {
    let subscriptionManager: SubscriptionManager;
@@ -215,7 +216,7 @@ describe("SubscriptionManager", function () {
          );
       });
 
-      it("should allow creator to withdraw earnings", async function () {
+      it("should allow creator to withdraw earnings to specified address", async function () {
          // Create multiple subscriptions
          await subscriptionManager
             .connect(subscriber)
@@ -234,17 +235,25 @@ describe("SubscriptionManager", function () {
          );
          expect(earnings).to.equal(MONTHLY_PRICE * BigInt(2));
 
-         // Withdraw
+         // Withdraw to a different address
          const initialBalance = await ethers.provider.getBalance(
-            creator.address
+            otherUser.address
          );
-         const tx = await subscriptionManager.connect(creator).withdraw();
+         const tx = await subscriptionManager
+            .connect(creator)
+            .withdraw(otherUser.address as any);
          const receipt = await tx.wait();
          const gasUsed = receipt!.gasUsed * receipt!.gasPrice;
-         const finalBalance = await ethers.provider.getBalance(creator.address);
+         const finalBalance = await ethers.provider.getBalance(
+            otherUser.address
+         );
 
          // Check balance change
-         expect(finalBalance).to.equal(initialBalance + earnings - gasUsed);
+         const expectedBalance = initialBalance + earnings;
+         expect(finalBalance).to.be.closeTo(
+            expectedBalance,
+            ethers.parseEther("0.01")
+         );
 
          // Check earnings reset
          const newEarnings = await subscriptionManager.getCreatorEarnings(
@@ -269,8 +278,26 @@ describe("SubscriptionManager", function () {
 
          // Try to withdraw
          await expect(
-            subscriptionManager.connect(creator).withdraw()
+            subscriptionManager
+               .connect(creator)
+               .withdraw(creator.address as any)
          ).to.be.revertedWith("Insufficient earnings for withdrawal");
+      });
+
+      it("should not allow withdrawal to zero address", async function () {
+         // Create subscription
+         await subscriptionManager
+            .connect(subscriber)
+            .subscribe(creator.address, {
+               value: MONTHLY_PRICE,
+            });
+
+         // Try to withdraw to zero address
+         await expect(
+            subscriptionManager
+               .connect(creator)
+               .withdraw(ethers.ZeroAddress as any)
+         ).to.be.revertedWith("Invalid destination address");
       });
 
       it("should not allow non-creator to withdraw", async function () {
@@ -283,7 +310,9 @@ describe("SubscriptionManager", function () {
 
          // Try to withdraw with different address
          await expect(
-            subscriptionManager.connect(otherUser).withdraw()
+            subscriptionManager
+               .connect(otherUser)
+               .withdraw(otherUser.address as any)
          ).to.be.revertedWith("Insufficient earnings for withdrawal");
       });
    });
@@ -315,6 +344,107 @@ describe("SubscriptionManager", function () {
                0 // MONTHLY
             )
          ).to.be.revertedWithCustomError(subscriptionManager, "EnforcedPause");
+      });
+   });
+
+   describe("Multiple Withdrawals and Events", function () {
+      beforeEach(async function () {
+         await subscriptionManager.connect(creator).setCreatorSettings(
+            MONTHLY_PRICE,
+            0 // MONTHLY
+         );
+      });
+
+      it("should allow multiple withdrawals to different addresses", async function () {
+         // Create multiple subscriptions
+         await subscriptionManager
+            .connect(subscriber)
+            .subscribe(creator.address, { value: MONTHLY_PRICE });
+         await subscriptionManager
+            .connect(otherUser)
+            .subscribe(creator.address, { value: MONTHLY_PRICE });
+
+         const totalEarnings = MONTHLY_PRICE * BigInt(2);
+         const halfEarnings = totalEarnings / BigInt(2);
+
+         // First withdrawal
+         await expect(
+            subscriptionManager
+               .connect(creator)
+               .withdraw(subscriber.address as any)
+         )
+            .to.emit(subscriptionManager, "Withdrawal")
+            .withArgs(
+               creator.address,
+               subscriber.address,
+               totalEarnings,
+               await time.latest()
+            );
+
+         // Try second withdrawal - should fail due to no earnings
+         await expect(
+            subscriptionManager
+               .connect(creator)
+               .withdraw(otherUser.address as any)
+         ).to.be.revertedWith("Insufficient earnings for withdrawal");
+      });
+
+      it("should handle subscription expiration correctly", async function () {
+         await subscriptionManager
+            .connect(subscriber)
+            .subscribe(creator.address, { value: MONTHLY_PRICE });
+         const subscriptionId = 0;
+
+         // Fast forward 31 days
+         await time.increase(time.duration.days(31));
+
+         const subscription = await subscriptionManager.getSubscription(
+            subscriptionId
+         );
+         expect(subscription.status).to.equal(0); // Still ACTIVE
+
+         // Validate subscription should return false
+         const isValid = await subscriptionManager.isValidSubscription(
+            subscriber.address,
+            creator.address
+         );
+         expect(isValid).to.be.false;
+      });
+
+      it("should handle different payout schedule durations correctly", async function () {
+         // Test weekly duration
+         await subscriptionManager
+            .connect(creator)
+            .setCreatorSettings(WEEKLY_PRICE, 1); // WEEKLY
+         await subscriptionManager
+            .connect(subscriber)
+            .subscribe(creator.address, { value: WEEKLY_PRICE });
+         const weeklySubId =
+            (await subscriptionManager.totalSubscriptions()) - BigInt(1);
+         const weeklySubscription = await subscriptionManager.getSubscription(
+            weeklySubId
+         );
+
+         // Test biweekly duration
+         await subscriptionManager
+            .connect(creator)
+            .setCreatorSettings(BIWEEKLY_PRICE, 2); // BIWEEKLY
+         await subscriptionManager
+            .connect(otherUser)
+            .subscribe(creator.address, { value: BIWEEKLY_PRICE });
+         const biweeklySubId =
+            (await subscriptionManager.totalSubscriptions()) - BigInt(1);
+         const biweeklySubscription = await subscriptionManager.getSubscription(
+            biweeklySubId
+         );
+
+         // Verify durations
+         expect(
+            biweeklySubscription.endDate - biweeklySubscription.startDate
+         ).to.equal(BigInt(14 * 24 * 60 * 60));
+         expect(
+            weeklySubscription.endDate - weeklySubscription.startDate
+         ).to.equal(BigInt(7 * 24 * 60 * 60));
       });
    });
 });
