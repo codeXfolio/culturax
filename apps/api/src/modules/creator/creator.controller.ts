@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getCreators } from './creator.service';
+import { getCreators, getTopCreators } from './creator.service';
 
 class CreatorController {
   async getCreators(req: Request, res: Response) {
@@ -16,6 +16,22 @@ class CreatorController {
           regular: data.regular,
           pagination: data.pagination,
         },
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: 'Internal Server Error',
+      });
+    }
+  }
+
+  async getTopCreators(req: Request, res: Response) {
+    try {
+      const data = await getTopCreators();
+
+      res.json({
+        success: true,
+        data,
       });
     } catch (error) {
       res.status(500).json({

@@ -75,3 +75,38 @@ export const getCreators = async (page: number = 1, limit: number = 9) => {
     },
   };
 };
+
+export const getTopCreators = async () => {
+  const prisma = new PrismaClient();
+
+  const topCreators = await prisma.user.findMany({
+    where: {
+      accountType: 'CREATOR',
+    },
+    select: {
+      id: true,
+      name: true,
+      username: true,
+      avatar: true,
+      coverImage: true,
+      followers: true,
+      featured: true,
+    },
+    orderBy: {
+      followers: {
+        _count: 'desc',
+      },
+    },
+    take: 3,
+  });
+
+  return topCreators.map((creator) => ({
+    id: creator.id,
+    name: creator.name,
+    username: creator.username,
+    avatar: creator.avatar,
+    coverImage: creator.coverImage,
+    totalFollowers: creator.followers.length,
+    featured: creator.featured,
+  }));
+};

@@ -15,6 +15,11 @@ const validateSignature = async (
     const signature = req.headers['x-eth-signature'];
     const address = req.headers['x-eth-address'];
 
+    if (req.path === '/top') {
+      next();
+      return;
+    }
+
     if (!signature || !address) {
       res.status(401).json({
         success: false,

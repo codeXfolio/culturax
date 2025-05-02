@@ -11,6 +11,11 @@ const routes: RouteConfig[] = [
     method: 'get',
     handler: creatorController.getCreators,
   },
+  {
+    path: '/top',
+    method: 'get',
+    handler: creatorController.getTopCreators,
+  },
 ];
 
 // Register routes
