@@ -3,7 +3,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-
+import { PrivyProvider } from "@privy-io/react-auth";
+import { soneiumMinato } from "viem/chains";
+import Privy from "@/context/privy";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,14 +22,16 @@ export default function RootLayout({
    return (
       <html lang="en" suppressHydrationWarning>
          <body className={inter.className}>
-            <ThemeProvider
-               attribute="class"
-               defaultTheme="dark"
-               enableSystem
-               disableTransitionOnChange
-            >
-               {children}
-            </ThemeProvider>
+            <Privy>
+               <ThemeProvider
+                  attribute="class"
+                  defaultTheme="dark"
+                  enableSystem
+                  disableTransitionOnChange
+               >
+                  {children}
+               </ThemeProvider>
+            </Privy>
          </body>
       </html>
    );
