@@ -36,10 +36,10 @@ function Header() {
                   Creators
                </Link>
                <Link
-                  href="/login"
+                  href="/register"
                   className="text-sm font-medium hover:text-primary transition-colors"
                >
-                  Login
+                  Register
                </Link>
             </nav>
             <div className="flex items-center gap-4">

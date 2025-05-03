@@ -21,7 +21,7 @@ import {
    createPaymasterClient,
    GetPaymasterDataParameters,
 } from "viem/account-abstraction";
-import { Wallet } from "lucide-react";
+import { LogIn, LogOut, Wallet } from "lucide-react";
 
 const {
    MOCK_ATTESTER_ADDRESS,
@@ -102,6 +102,12 @@ export function SmartWallet() {
       }
    }, [nexusClient]);
 
+   const handleLogout = async () => {
+      localStorage.removeItem("authSignature");
+      localStorage.removeItem("authAddress");
+      await logout();
+   };
+
    const getSmartAccountInstance = async () => {
       const provider = await wallets[0].getEthereumProvider();
 
@@ -164,17 +170,23 @@ export function SmartWallet() {
 
          setNexusClient(nexusClientInstance);
 
-         if (!localStorage.getItem("authSignature")) {
+         if (
+            !localStorage.getItem("authSignature") ||
+            !localStorage.getItem("authAddress")
+         ) {
             const provider = await wallets[0].getEthereumProvider();
+            const address = wallets[0].address as `0x${string}`;
             const walletClient = createWalletClient({
-               account: wallets[0].address as `0x${string}`,
+               account: address,
                chain: soneiumMinato,
                transport: custom(provider),
             });
             const signature = await walletClient.signMessage({
                message: "Welcome to CulturaX",
             });
+
             localStorage.setItem("authSignature", signature);
+            localStorage.setItem("authAddress", address);
          }
       } catch (error) {
          console.error("Error initializing kernel client", error);
@@ -184,15 +196,20 @@ export function SmartWallet() {
    return (
       <>
          {isLoggedIn ? (
-            <Button onClick={logout}>Logout</Button>
+            <Button
+               variant="outline"
+               className="bg-primary text-white"
+               onClick={handleLogout}
+            >
+               <LogOut className="h-4 w-4" /> Logout
+            </Button>
          ) : (
             <Button
                variant="outline"
-               size="sm"
-               className="gap-2 hidden md:flex"
+               className="gap-2 hidden md:flex w-full bg-primary text-white"
                onClick={login}
             >
-               <Wallet className="h-4 w-4" /> Connect Wallet
+               <LogIn className="h-4 w-4" /> Connect Account
             </Button>
          )}
       </>

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PrismaClient } from '../generated/prisma';
 import { join } from 'path';
 import { copyFile, mkdir, writeFile } from 'fs/promises';
@@ -12,8 +13,10 @@ const CREATORS = [
     username: 'sarahj',
     email: 'sarah.johnson@example.com',
     bio: 'Digital artist and content creator passionate about sharing my creative journey',
-    avatar: 'https://placehold.co/150x150',
-    coverImage: 'https://placehold.co/1200x400',
+    avatar:
+      'https://pbs.twimg.com/profile_images/1893803697185910784/Na5lOWi5_400x400.jpg',
+    coverImage:
+      'https://pbs.twimg.com/profile_banners/44196397/1739948056/1500x500',
   },
   {
     name: 'Michael Chen',
@@ -30,8 +33,10 @@ const CREATORS = [
     username: 'emmar',
     email: 'emma.rodriguez@example.com',
     bio: 'Travel blogger exploring hidden gems and sharing local experiences',
-    avatar: 'https://placehold.co/150x150',
-    coverImage: 'https://placehold.co/1200x400',
+    avatar:
+      'https://pbs.twimg.com/profile_images/1676527368008073217/0zXnASfM_400x400.jpg',
+    coverImage:
+      'https://pbs.twimg.com/profile_banners/166739404/1688550249/1500x500',
     featured: true,
   },
   {
@@ -39,8 +44,10 @@ const CREATORS = [
     username: 'alext',
     email: 'alex.thompson@example.com',
     bio: 'Music producer and DJ sharing my creative process and latest tracks',
-    avatar: 'https://placehold.co/150x150',
-    coverImage: 'https://placehold.co/1200x400',
+    avatar:
+      'https://pbs.twimg.com/profile_images/1842418655537352704/wAqbvEak_400x400.jpg',
+    coverImage:
+      'https://pbs.twimg.com/profile_banners/851277718368829443/1711791962/1500x500',
     featured: true,
   },
   {
@@ -48,8 +55,10 @@ const CREATORS = [
     username: 'sophial',
     email: 'sophia.lee@example.com',
     bio: 'Fashion designer showcasing my latest collections and design process',
-    avatar: 'https://placehold.co/150x150',
-    coverImage: 'https://placehold.co/1200x400',
+    avatar:
+      'https://pbs.twimg.com/profile_images/701284466023485440/Ds24Whb8_400x400.jpg',
+    coverImage:
+      'https://pbs.twimg.com/profile_banners/106658148/1722706112/1500x500',
     featured: true,
   },
 ];
@@ -295,7 +304,7 @@ async function copyDummyImage(
   await mkdir(postUploadDir, { recursive: true });
 
   // Copy the dummy image
-  const fileName = `image${sourcePath.split('.').pop()}`;
+  const fileName = `image${sourcePath.split('.').pop()}.png`;
   const targetPath = join(postUploadDir, fileName);
   await copyFile(sourcePath, targetPath);
 

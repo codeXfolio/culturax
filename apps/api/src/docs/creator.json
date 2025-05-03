@@ -52,6 +52,10 @@
                               "type": "string",
                               "example": "https://example.com/avatar.jpg"
                             },
+                            "bio": {
+                              "type": "string",
+                              "example": "I am a creator"
+                            },
                             "coverImage": {
                               "type": "string",
                               "example": "https://example.com/cover.jpg"

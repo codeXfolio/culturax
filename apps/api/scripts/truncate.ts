@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PrismaClient } from '../generated/prisma';
 import { rm } from 'fs/promises';
 import { join } from 'path';

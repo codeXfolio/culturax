@@ -1,159 +1,248 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ModeToggle } from "@/components/mode-toggle"
-import { Wallet, Mail } from "lucide-react"
-import Link from "next/link"
-
+import { Button } from "@/components/ui/button";
+import {
+   Card,
+   CardContent,
+   CardDescription,
+   CardFooter,
+   CardHeader,
+   CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Wallet, Mail } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { SmartWallet } from "../SmartWallet";
+import Image from "next/image";
 export function RegisterForm() {
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-background to-muted/30">
-      <div className="absolute top-4 right-4">
-        <ModeToggle />
+   const router = useRouter();
+   const [isLoading, setIsLoading] = useState(false);
+   const [formData, setFormData] = useState({
+      name: "",
+      email: "",
+      username: "",
+      accountType: "creator",
+      bio: "",
+      termsAccepted: false,
+   });
+
+   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value, checked } = e.target;
+      setFormData((prev) => ({
+         ...prev,
+         [name]: name === "termsAccepted" ? checked : value,
+      }));
+   };
+
+   const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsLoading(true);
+
+      try {
+         const authSignature = localStorage.getItem("authSignature");
+         const authAddress = localStorage.getItem("authAddress");
+
+         if (!authSignature || !authAddress) {
+            toast.error("Please connect your wallet first");
+            return;
+         }
+
+         const formDataObj = new FormData();
+         formDataObj.append("name", formData.name);
+         formDataObj.append("email", formData.email);
+         formDataObj.append("username", formData.username);
+         formDataObj.append("accountType", formData.accountType.toUpperCase());
+         formDataObj.append("address", authAddress);
+         formDataObj.append("bio", formData.bio);
+
+         const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/user/register`,
+            {
+               method: "POST",
+               body: formDataObj,
+               headers: {
+                  "x-eth-signature": authSignature,
+                  "x-eth-address": authAddress,
+               },
+            }
+         );
+
+         const data: {
+            success: boolean;
+            error?: string;
+            data: { id: string };
+         } = await response.json();
+
+         if (data.success) {
+            toast.success("Registration successful!");
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("userId", data.data.id);
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            router.push("/feed");
+         } else {
+            toast.error(data.error || "Registration failed");
+         }
+      } catch (error) {
+         console.error("Registration error:", error);
+         toast.error("An error occurred during registration");
+      } finally {
+         setIsLoading(false);
+      }
+   };
+
+   return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-muted/30">
+         <Link href="/" className="flex items-center gap-2 mb-8 pt-4">
+            <Image src="/logo.png" alt="CulturaX" width={32} height={32} />
+            <span className="font-bold text-xl">CulturaX</span>
+         </Link>
+
+         <Card className="w-full max-w-md border-0 shadow-xl mb-5">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg opacity-20 blur-sm w-full"></div>
+            <CardHeader className="relative">
+               <CardTitle className="text-2xl text-center">
+                  Create Your CulturaX Account
+               </CardTitle>
+               <CardDescription className="text-center">
+                  Join the Web3 creator ecosystem
+               </CardDescription>
+            </CardHeader>
+            <form onSubmit={handleSubmit}>
+               <CardContent className="relative space-y-6">
+                  <div className="space-y-2">
+                     <h3 className="text-sm font-medium">
+                        Step 1: Connect Wallet
+                     </h3>
+                     <SmartWallet />
+                  </div>
+
+                  <div className="space-y-4">
+                     <h3 className="text-sm font-medium">
+                        Step 2: Complete Profile
+                     </h3>
+
+                     <div className="space-y-2">
+                        <Label htmlFor="name">Full Name</Label>
+                        <Input
+                           id="name"
+                           name="name"
+                           placeholder="Enter your full name"
+                           value={formData.name}
+                           onChange={handleInputChange}
+                           required
+                        />
+                     </div>
+
+                     <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                           id="email"
+                           name="email"
+                           type="email"
+                           placeholder="Enter your email"
+                           value={formData.email}
+                           onChange={handleInputChange}
+                           required
+                        />
+                     </div>
+
+                     <div className="space-y-2">
+                        <Label htmlFor="username">Username</Label>
+                        <Input
+                           id="username"
+                           name="username"
+                           placeholder="Choose a unique username"
+                           value={formData.username}
+                           onChange={handleInputChange}
+                           required
+                        />
+                     </div>
+
+                     <div className="space-y-2">
+                        <Label>I am a</Label>
+                        <RadioGroup
+                           defaultValue="creator"
+                           className="flex gap-4"
+                           onValueChange={(value) =>
+                              setFormData((prev) => ({
+                                 ...prev,
+                                 accountType: value,
+                              }))
+                           }
+                        >
+                           <div className="flex items-center space-x-2">
+                              <RadioGroupItem
+                                 value="creator"
+                                 id="wallet-creator"
+                              />
+                              <Label htmlFor="wallet-creator">Creator</Label>
+                           </div>
+                           <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="user" id="wallet-fan" />
+                              <Label htmlFor="wallet-fan">Fan</Label>
+                           </div>
+                        </RadioGroup>
+                     </div>
+
+                     <div className="space-y-2">
+                        <Label htmlFor="bio">Bio (Optional)</Label>
+                        <Input
+                           id="bio"
+                           name="bio"
+                           placeholder="Tell us about yourself"
+                           value={formData.bio}
+                           onChange={handleInputChange}
+                        />
+                     </div>
+
+                     <div className="flex items-center space-x-2">
+                        <Checkbox
+                           id="terms"
+                           name="termsAccepted"
+                           checked={formData.termsAccepted}
+                           onCheckedChange={(checked) =>
+                              setFormData((prev) => ({
+                                 ...prev,
+                                 termsAccepted: checked as boolean,
+                              }))
+                           }
+                        />
+                        <Label htmlFor="terms" className="text-sm">
+                           I agree to the{" "}
+                           <Link
+                              href="/terms"
+                              className="text-primary hover:underline"
+                           >
+                              Terms of Service
+                           </Link>{" "}
+                           and{" "}
+                           <Link
+                              href="/privacy"
+                              className="text-primary hover:underline"
+                           >
+                              Privacy Policy
+                           </Link>
+                        </Label>
+                     </div>
+                  </div>
+               </CardContent>
+               <CardFooter className="relative flex flex-col gap-4">
+                  <Button
+                     type="submit"
+                     className="w-full"
+                     disabled={isLoading || !formData.termsAccepted}
+                  >
+                     {isLoading ? "Registering..." : "Sign & Register"}
+                  </Button>
+               </CardFooter>
+            </form>
+         </Card>
       </div>
-
-      <Link href="/" className="flex items-center gap-2 mb-8">
-        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center">
-          <span className="font-bold text-white">CX</span>
-        </div>
-        <span className="font-bold text-xl">CreatorX</span>
-      </Link>
-
-      <Card className="w-full max-w-md border-0 shadow-lg">
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg opacity-20 blur-sm"></div>
-        <CardHeader className="relative">
-          <CardTitle className="text-2xl text-center">Create Your CreatorX Account</CardTitle>
-          <CardDescription className="text-center">Join the Web3 creator ecosystem</CardDescription>
-        </CardHeader>
-        <CardContent className="relative space-y-6">
-          <Tabs defaultValue="email" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-4">
-              <TabsTrigger value="email" className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                <span>Email</span>
-              </TabsTrigger>
-              <TabsTrigger value="wallet" className="flex items-center gap-2">
-                <Wallet className="h-4 w-4" />
-                <span>Wallet</span>
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="email" className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email-username">Username</Label>
-                <Input id="email-username" placeholder="Choose a unique username" />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email-address">Email</Label>
-                <Input id="email-address" type="email" placeholder="Enter your email" />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email-password">Password</Label>
-                <Input id="email-password" type="password" placeholder="Create a password" />
-              </div>
-
-              <div className="space-y-2">
-                <Label>I am a</Label>
-                <RadioGroup defaultValue="creator" className="flex gap-4">
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="creator" id="email-creator" />
-                    <Label htmlFor="email-creator">Creator</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="fan" id="email-fan" />
-                    <Label htmlFor="email-fan">Fan</Label>
-                  </div>
-                </RadioGroup>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox id="email-terms" />
-                <Label htmlFor="email-terms" className="text-sm">
-                  I agree to the{" "}
-                  <Link href="#" className="text-primary hover:underline">
-                    Terms of Service
-                  </Link>{" "}
-                  and{" "}
-                  <Link href="#" className="text-primary hover:underline">
-                    Privacy Policy
-                  </Link>
-                </Label>
-              </div>
-
-              <Button className="w-full">Create Account</Button>
-            </TabsContent>
-
-            <TabsContent value="wallet" className="space-y-6">
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium">Step 1: Connect Wallet</h3>
-                <Button className="w-full gap-2" size="lg">
-                  <Wallet className="h-5 w-5" />
-                  Connect with MetaMask
-                </Button>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-sm font-medium">Step 2: Complete Profile</h3>
-
-                <div className="space-y-2">
-                  <Label htmlFor="wallet-username">Username</Label>
-                  <Input id="wallet-username" placeholder="Choose a unique username" />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>I am a</Label>
-                  <RadioGroup defaultValue="creator" className="flex gap-4">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="creator" id="wallet-creator" />
-                      <Label htmlFor="wallet-creator">Creator</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="fan" id="wallet-fan" />
-                      <Label htmlFor="wallet-fan">Fan</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="wallet-bio">Bio (Optional)</Label>
-                  <Input id="wallet-bio" placeholder="Tell us about yourself" />
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="wallet-terms" />
-                  <Label htmlFor="wallet-terms" className="text-sm">
-                    I agree to the{" "}
-                    <Link href="#" className="text-primary hover:underline">
-                      Terms of Service
-                    </Link>{" "}
-                    and{" "}
-                    <Link href="#" className="text-primary hover:underline">
-                      Privacy Policy
-                    </Link>
-                  </Label>
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-        <CardFooter className="relative flex flex-col gap-4">
-          <Button className="w-full">Sign & Register</Button>
-          <div className="text-center text-sm">
-            <span className="text-muted-foreground">Already have an account? </span>
-            <Link href="/login" className="text-primary hover:underline">
-              Login here
-            </Link>
-          </div>
-        </CardFooter>
-      </Card>
-    </div>
-  )
+   );
 }

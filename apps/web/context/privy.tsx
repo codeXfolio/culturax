@@ -14,7 +14,7 @@ function Privy({ children }: { children: React.ReactNode }) {
          appId="cma6diu3t026eky0mugki537p"
          config={{
             // Display email and wallet as login methods
-            loginMethods: ["email", "google", "wallet"],
+            loginMethods: ["email", "google", "wallet", "twitter", "farcaster"],
             appearance: {
                theme: "light",
                accentColor: "#8b5cf6",

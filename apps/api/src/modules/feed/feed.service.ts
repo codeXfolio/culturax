@@ -257,6 +257,17 @@ export const getFeedPosts = async (input: GetFeedPostsInput = {}) => {
             avatar: true,
           },
         },
+        FeedPostLike: {
+          select: {
+            userId: true,
+          },
+        },
+        FeedPostComment: {
+          select: {
+            id: true,
+            comment: true,
+          },
+        },
       },
     }),
     prisma.feedPost.count(),

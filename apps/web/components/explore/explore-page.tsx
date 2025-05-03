@@ -28,120 +28,118 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Header } from "@/components/navigation/header";
 import { Sidebar } from "@/components/navigation/sidebar";
 
+interface Creator {
+   id: number;
+   name: string;
+   username: string;
+   avatar: string;
+   coverImage: string;
+   category: string;
+   bio: string;
+   followers: string;
+   verified: boolean;
+   featured?: boolean;
+}
+
+interface CreatorsData {
+   featured: Creator[];
+   regular: Creator[];
+   pagination: {
+      currentPage: number;
+      totalPages: number;
+      totalItems: number;
+      itemsPerPage: number;
+   };
+}
+
 export function ExplorePage() {
    const [category, setCategory] = useState("all");
+   const [currentPage, setCurrentPage] = useState(1);
+   const [isLoading, setIsLoading] = useState(true);
+   const [creators, setCreators] = useState<CreatorsData>({
+      featured: [],
+      regular: [],
+      pagination: {
+         currentPage: 1,
+         totalPages: 1,
+         totalItems: 0,
+         itemsPerPage: 9,
+      },
+   });
 
-   // Sample creators data
-   const creators = [
-      {
-         id: 1,
-         name: "Alex Rivera",
-         username: "alexrivera",
-         avatar: "/placeholder.svg?height=200&width=200",
-         coverImage: "/placeholder.svg?height=400&width=800",
-         category: "Digital Art",
-         bio: "Digital artist specializing in futuristic landscapes and NFT collections.",
-         followers: "24.5K",
-         verified: true,
-         featured: true,
-      },
-      {
-         id: 2,
-         name: "Sarah Johnson",
-         username: "sarahjcreates",
-         avatar: "/placeholder.svg?height=200&width=200",
-         coverImage: "/placeholder.svg?height=400&width=800",
-         category: "Photography",
-         bio: "Capturing moments and emotions through the lens. NFT photographer and visual storyteller.",
-         followers: "18.2K",
-         verified: true,
-         featured: false,
-      },
-      {
-         id: 3,
-         name: "Michael Chen",
-         username: "michaelchenmusic",
-         avatar: "/placeholder.svg?height=200&width=200",
-         coverImage: "/placeholder.svg?height=400&width=800",
-         category: "Music",
-         bio: "Electronic music producer and sound designer. Creating audio NFTs and immersive experiences.",
-         followers: "32.1K",
-         verified: false,
-         featured: true,
-      },
-      {
-         id: 4,
-         name: "Emma Wilson",
-         username: "emmawilsonart",
-         avatar: "/placeholder.svg?height=200&width=200",
-         coverImage: "/placeholder.svg?height=400&width=800",
-         category: "Tutorials",
-         bio: "Digital art educator sharing techniques and tutorials for aspiring creators.",
-         followers: "15.8K",
-         verified: true,
-         featured: false,
-      },
-      {
-         id: 5,
-         name: "David Kim",
-         username: "davidkimdesign",
-         avatar: "/placeholder.svg?height=200&width=200",
-         coverImage: "/placeholder.svg?height=400&width=800",
-         category: "UI Design",
-         bio: "UI/UX designer creating interfaces for Web3 applications and digital experiences.",
-         followers: "12.3K",
-         verified: false,
-         featured: false,
-      },
-      {
-         id: 6,
-         name: "Sophia Martinez",
-         username: "sophiam",
-         avatar: "/placeholder.svg?height=200&width=200",
-         coverImage: "/placeholder.svg?height=400&width=800",
-         category: "3D Art",
-         bio: "3D artist and animator creating immersive digital sculptures and environments.",
-         followers: "9.7K",
-         verified: true,
-         featured: true,
-      },
-      {
-         id: 7,
-         name: "James Wilson",
-         username: "jameswilson",
-         avatar: "/placeholder.svg?height=200&width=200",
-         coverImage: "/placeholder.svg?height=400&width=800",
-         category: "Writing",
-         bio: "Author and storyteller exploring the intersection of narrative and blockchain technology.",
-         followers: "7.5K",
-         verified: false,
-         featured: false,
-      },
-      {
-         id: 8,
-         name: "Olivia Taylor",
-         username: "oliviataylor",
-         avatar: "/placeholder.svg?height=200&width=200",
-         coverImage: "/placeholder.svg?height=400&width=800",
-         category: "Fashion",
-         bio: "Digital fashion designer creating wearable NFTs and virtual clothing collections.",
-         followers: "14.2K",
-         verified: true,
-         featured: false,
-      },
-   ];
+   useEffect(() => {
+      const fetchCreators = async () => {
+         try {
+            setIsLoading(true);
+            const authSignature = localStorage.getItem("authSignature");
+            const authAddress = localStorage.getItem("authAddress");
+
+            const headers: HeadersInit = {
+               "Content-Type": "application/json",
+            };
+
+            if (authSignature && authAddress) {
+               headers["x-eth-signature"] = authSignature;
+               headers["x-eth-address"] = authAddress;
+            }
+
+            const response = await fetch(
+               `${process.env.NEXT_PUBLIC_API_URL}/api/creator?page=${currentPage}`,
+               {
+                  headers,
+               }
+            );
+            const data = await response.json();
+            console.log(data);
+            if (data.success) {
+               // Transform the API response to match the expected format
+               const transformedData = {
+                  featured: data.data.featured.map((creator: any) => ({
+                     id: parseInt(creator.id),
+                     name: creator.name,
+                     username: creator.username,
+                     avatar: creator.avatar,
+                     coverImage: creator.coverImage,
+                     category: creator.category || "Uncategorized",
+                     bio: creator.bio || "",
+                     followers: creator.totalFollowers.toString(),
+                     verified: creator.featured,
+                     featured: creator.featured,
+                  })),
+                  regular: data.data.regular.map((creator: any) => ({
+                     id: parseInt(creator.id),
+                     name: creator.name,
+                     username: creator.username,
+                     avatar: creator.avatar,
+                     coverImage: creator.coverImage,
+                     category: creator.category || "Uncategorized",
+                     bio: creator.bio || "",
+                     followers: creator.totalFollowers.toString(),
+                     verified: creator.featured,
+                     featured: creator.featured,
+                  })),
+                  pagination: data.data.pagination,
+               };
+               setCreators(transformedData);
+            }
+         } catch (error) {
+            console.error("Error fetching creators:", error);
+         } finally {
+            setIsLoading(false);
+         }
+      };
+
+      fetchCreators();
+   }, [currentPage]);
 
    // Filter creators based on selected category
    const filteredCreators =
       category === "all"
-         ? creators
-         : creators.filter(
+         ? creators.regular
+         : creators.regular.filter(
               (creator) =>
-                 creator.category.toLowerCase() === category.toLowerCase()
+                 creator.category?.toLowerCase() === category.toLowerCase()
            );
-
-   // Get featured creators
-   const featuredCreators = creators.filter((creator) => creator.featured);
 
    return (
       <div className="min-h-screen bg-background">
@@ -208,22 +206,24 @@ export function ExplorePage() {
                   </div>
 
                   {/* Featured Creators */}
-                  {category === "all" && (
-                     <div className="mb-8">
-                        <h2 className="text-lg font-medium mb-4">
-                           Featured Creators
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                           {featuredCreators.map((creator) => (
-                              <CreatorCard
-                                 key={creator.id}
-                                 creator={creator}
-                                 featured
-                              />
-                           ))}
+                  {category === "all" &&
+                     !isLoading &&
+                     creators.featured.length > 0 && (
+                        <div className="mb-8">
+                           <h2 className="text-lg font-medium mb-4">
+                              Featured Creators
+                           </h2>
+                           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                              {creators.featured.map((creator, index) => (
+                                 <CreatorCard
+                                    key={index}
+                                    creator={creator}
+                                    featured
+                                 />
+                              ))}
+                           </div>
                         </div>
-                     </div>
-                  )}
+                     )}
 
                   {/* All Creators */}
                   <div>
@@ -235,11 +235,78 @@ export function ExplorePage() {
                                 category.slice(1)
                              } Creators`}
                      </h2>
-                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredCreators.map((creator) => (
-                           <CreatorCard key={creator.id} creator={creator} />
-                        ))}
-                     </div>
+                     {isLoading ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                           {[...Array(6)].map((_, index) => (
+                              <div key={index} className="animate-pulse">
+                                 <div className="h-[300px] bg-muted rounded-lg" />
+                              </div>
+                           ))}
+                        </div>
+                     ) : (
+                        <>
+                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                              {filteredCreators.map((creator, index) => (
+                                 <CreatorCard key={index} creator={creator} />
+                              ))}
+                           </div>
+                           {/* Pagination */}
+                           {creators.pagination.totalPages > 1 && (
+                              <div className="flex justify-center mt-8 gap-2">
+                                 <Button
+                                    variant="outline"
+                                    onClick={() =>
+                                       setCurrentPage((prev) =>
+                                          Math.max(prev - 1, 1)
+                                       )
+                                    }
+                                    disabled={currentPage === 1}
+                                 >
+                                    Previous
+                                 </Button>
+                                 <div className="flex items-center gap-2">
+                                    {Array.from(
+                                       {
+                                          length:
+                                             creators.pagination.totalPages,
+                                       },
+                                       (_, i) => i + 1
+                                    ).map((page) => (
+                                       <Button
+                                          key={page}
+                                          variant={
+                                             currentPage === page
+                                                ? "default"
+                                                : "outline"
+                                          }
+                                          onClick={() => setCurrentPage(page)}
+                                          className="w-10 h-10 p-0"
+                                       >
+                                          {page}
+                                       </Button>
+                                    ))}
+                                 </div>
+                                 <Button
+                                    variant="outline"
+                                    onClick={() =>
+                                       setCurrentPage((prev) =>
+                                          Math.min(
+                                             prev + 1,
+                                             creators.pagination.totalPages
+                                          )
+                                       )
+                                    }
+                                    disabled={
+                                       currentPage ===
+                                       creators.pagination.totalPages
+                                    }
+                                 >
+                                    Next
+                                 </Button>
+                              </div>
+                           )}
+                        </>
+                     )}
                   </div>
                </div>
             </main>

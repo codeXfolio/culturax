@@ -72,15 +72,11 @@ export function LandingPage() {
                            <Button
                               size="lg"
                               className="gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg shadow-purple-500/20"
+                              asChild
                            >
-                              Get Started <ArrowRight className="h-4 w-4" />
-                           </Button>
-                           <Button
-                              size="lg"
-                              variant="outline"
-                              className="gap-2 border-purple-500/20 hover:bg-purple-500/5"
-                           >
-                              <Wallet className="h-4 w-4" /> Connect Wallet
+                              <Link href="/register">
+                                 Get Started <ArrowRight className="h-4 w-4" />
+                              </Link>
                            </Button>
                         </div>
 
@@ -391,21 +387,6 @@ export function LandingPage() {
                            <Link href="#features">Learn More</Link>
                         </Button>
                      </div>
-
-                     <div className="mt-8 pt-8 border-t border-border/20 flex flex-col md:flex-row items-center justify-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-2">
-                           <CheckCircle2 className="h-4 w-4 text-green-500" />
-                           <span>No credit card required</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                           <CheckCircle2 className="h-4 w-4 text-green-500" />
-                           <span>Free tier available</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                           <CheckCircle2 className="h-4 w-4 text-green-500" />
-                           <span>Cancel anytime</span>
-                        </div>
-                     </div>
                   </div>
                </div>
             </section>
@@ -422,14 +403,18 @@ export function LandingPage() {
                <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
                   <div>
                      <div className="flex items-center gap-2 mb-4">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center">
-                           <span className="font-bold text-white">CX</span>
-                        </div>
-                        <span className="font-bold text-xl">CreatorX</span>
+                        <Image
+                           src="/logo.png"
+                           alt="Logo"
+                           width={32}
+                           height={32}
+                        />
+                        <span className="font-bold text-xl">CulturaX</span>
                      </div>
                      <p className="text-sm text-muted-foreground mb-4">
-                        Empowering creators in the Web3 ecosystem with
-                        innovative tools for monetization and growth.
+                        Revolutionizing digital creativity with Web3 technology
+                        and NFT monetization for the next generation of
+                        creators.
                      </p>
                      <div className="flex items-center gap-3">
                         <Link
@@ -572,22 +557,6 @@ export function LandingPage() {
                               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                            >
                               Careers
-                           </Link>
-                        </li>
-                        <li>
-                           <Link
-                              href="/terms"
-                              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                           >
-                              Terms of Service
-                           </Link>
-                        </li>
-                        <li>
-                           <Link
-                              href="/privacy"
-                              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                           >
-                              Privacy Policy
                            </Link>
                         </li>
                         <li>

@@ -36,7 +36,7 @@ app.use(
   validateSignature,
   collectionRoutes,
 );
-app.use('/api/feed', uploadRateLimiter, validateSignature, feedRoutes);
+app.use('/api/feed', apiRateLimiter, validateSignature, feedRoutes);
 
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
