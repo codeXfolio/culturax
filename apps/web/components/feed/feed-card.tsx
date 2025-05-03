@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, MessageSquare, Share2, Lock, X } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { CommentModal } from "@/components/feed/CommentModal";
 
 interface FeedCardProps {
    item: {
@@ -51,6 +52,7 @@ export function FeedCard({
    const [showComments, setShowComments] = useState(false);
    const [newComment, setNewComment] = useState("");
    const [isLiked, setIsLiked] = useState(false);
+   const [showCommentModal, setShowCommentModal] = useState(false);
 
    const formatDate = (dateString: string) => {
       const date = new Date(dateString);
@@ -82,6 +84,32 @@ export function FeedCard({
          setNewComment("");
       }
    };
+
+   // Placeholder comments for now
+   const commentsList = [
+      {
+         id: 1,
+         user: {
+            name: "Sarah Johnson",
+            avatar: "/placeholder.svg?height=40&width=40",
+            isVerified: true,
+         },
+         content: "This is amazing content! Thanks for sharing your insights.",
+         date: "2 hours ago",
+         likes: 12,
+      },
+      {
+         id: 2,
+         user: {
+            name: "Michael Chen",
+            avatar: "/placeholder.svg?height=40&width=40",
+         },
+         content:
+            "I've been following your work for a while now. Always top quality!",
+         date: "5 hours ago",
+         likes: 8,
+      },
+   ];
 
    return (
       <Card className="overflow-hidden">
@@ -118,13 +146,13 @@ export function FeedCard({
             {item.image && (
                <div className="relative">
                   <img
-                     src={`${process.env.NEXT_PUBLIC_API_URL}${item.image}`}
+                     src={item.image}
                      alt={item.caption}
                      className="w-full h-auto object-cover"
                   />
 
                   {item.isPremium && (
-                     <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent flex flex-col items-center justify-center">
+                     <div className="absolute inset-0 backdrop-blur-md flex flex-col items-center justify-center">
                         <Lock className="h-8 w-8 mb-2 text-primary" />
                         <p className="font-medium mb-1">Premium Content</p>
                         <p className="text-sm text-muted-foreground mb-3">
@@ -138,7 +166,7 @@ export function FeedCard({
          </CardContent>
 
          <CardFooter className="flex flex-col p-4">
-            <div className="flex items-center justify-between w-full mb-4">
+            <div className="flex items-center justify-between w-full">
                <div className="flex items-center gap-4">
                   <Button
                      variant="ghost"
@@ -157,10 +185,10 @@ export function FeedCard({
                      variant="ghost"
                      size="sm"
                      className="gap-1 px-2"
-                     onClick={() => setShowComments(!showComments)}
+                     onClick={() => setShowCommentModal(true)}
                   >
                      <MessageSquare className="h-4 w-4" />
-                     <span>{item.FeedPostComment.length}</span>
+                     <span>{commentsList.length}</span>
                   </Button>
                </div>
                <div className="flex items-center gap-2">
@@ -174,19 +202,12 @@ export function FeedCard({
             </div>
 
             {showComments && (
-               <div className="w-full space-y-4">
-                  <form onSubmit={handleAddComment} className="flex gap-2">
-                     <Input
-                        placeholder="Add a comment..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                     />
-                     <Button type="submit" disabled={!newComment.trim()}>
-                        Post
-                     </Button>
-                  </form>
-                  <div className="space-y-4">
-                     {item.FeedPostComment.map((comment) => (
+               <div className="px-4 py-3 border-t border-border/40">
+                  <h4 className="font-medium text-sm mb-3">
+                     Comments ({commentsList.length})
+                  </h4>
+                  <div className="space-y-4 mb-4">
+                     {commentsList.map((comment) => (
                         <div
                            key={comment.id}
                            className="flex items-start gap-2"
@@ -206,25 +227,56 @@ export function FeedCard({
                                     {comment.user.name}
                                  </span>
                                  <span className="text-xs text-muted-foreground">
-                                    {formatDate(comment.createdAt)}
+                                    {comment.date}
                                  </span>
                               </div>
-                              <p className="text-sm">{comment.comment}</p>
+                              <p className="text-sm">{comment.content}</p>
                            </div>
                            <Button
                               variant="ghost"
                               size="icon"
                               className="h-8 w-8"
-                              onClick={() => onDeleteComment(comment.id)}
+                              // onClick={() => onDeleteComment(comment.id)}
                            >
                               <X className="h-4 w-4" />
                            </Button>
                         </div>
                      ))}
                   </div>
+                  <form
+                     onSubmit={handleAddComment}
+                     className="flex flex-col gap-2"
+                  >
+                     <textarea
+                        placeholder="Add a comment..."
+                        className="min-h-[80px] text-sm rounded-md border border-input bg-background px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ring"
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                     />
+                     <div className="flex justify-end">
+                        <Button
+                           type="submit"
+                           size="sm"
+                           disabled={!newComment.trim()}
+                        >
+                           Post
+                        </Button>
+                     </div>
+                  </form>
                </div>
             )}
          </CardFooter>
+
+         <CommentModal
+            open={showCommentModal}
+            onOpenChange={setShowCommentModal}
+            post={{
+               image: item.image,
+               user: item.user,
+               caption: item.caption,
+            }}
+            comments={commentsList}
+         />
       </Card>
    );
 }

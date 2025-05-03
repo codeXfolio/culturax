@@ -12,13 +12,16 @@ import {
    DollarSign,
    FolderPlus,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export function Sidebar() {
+   const pathname = usePathname();
+
    return (
       <aside className="w-16 md:w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] border-r border-border/40 p-2 md:p-4 hidden sm:block">
          <nav className="space-y-2">
             <Button
-               variant="ghost"
+               variant={pathname === "/feed" ? "secondary" : "ghost"}
                className="w-full justify-start gap-3"
                asChild
             >
@@ -28,7 +31,7 @@ export function Sidebar() {
                </Link>
             </Button>
             <Button
-               variant="ghost"
+               variant={pathname === "/explore" ? "secondary" : "ghost"}
                className="w-full justify-start gap-3"
                asChild
             >
@@ -38,7 +41,7 @@ export function Sidebar() {
                </Link>
             </Button>
             <Button
-               variant="ghost"
+               variant={pathname === "/ai-tools" ? "secondary" : "ghost"}
                className="w-full justify-start gap-3"
                asChild
             >
@@ -48,7 +51,7 @@ export function Sidebar() {
                </Link>
             </Button>
             <Button
-               variant="ghost"
+               variant={pathname === "/messages" ? "secondary" : "ghost"}
                className="w-full justify-start gap-3"
                asChild
             >
@@ -58,7 +61,7 @@ export function Sidebar() {
                </Link>
             </Button>
             <Button
-               variant="ghost"
+               variant={pathname === "/wallet-manager" ? "secondary" : "ghost"}
                className="w-full justify-start gap-3"
                asChild
             >
@@ -68,7 +71,7 @@ export function Sidebar() {
                </Link>
             </Button>
             <Button
-               variant="ghost"
+               variant={pathname === "/staking" ? "secondary" : "ghost"}
                className="w-full justify-start gap-3"
                asChild
             >
@@ -78,7 +81,7 @@ export function Sidebar() {
                </Link>
             </Button>
             <Button
-               variant="ghost"
+               variant={pathname === "/profile" ? "secondary" : "ghost"}
                className="w-full justify-start gap-3"
                asChild
             >
@@ -88,7 +91,7 @@ export function Sidebar() {
                </Link>
             </Button>
             <Button
-               variant="ghost"
+               variant={pathname === "/earnings" ? "secondary" : "ghost"}
                className="w-full justify-start gap-3"
                asChild
             >
@@ -98,7 +101,9 @@ export function Sidebar() {
                </Link>
             </Button>
             <Button
-               variant="ghost"
+               variant={
+                  pathname === "/upload-collection" ? "secondary" : "ghost"
+               }
                className="w-full justify-start gap-3"
                asChild
             >

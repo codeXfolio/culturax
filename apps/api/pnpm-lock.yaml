@@ -11,9 +11,6 @@ importers:
       '@prisma/client':
         specifier: 6.6.0
         version: 6.6.0(prisma@6.6.0(typescript@5.8.3))(typescript@5.8.3)
-      '@types/express-rate-limit':
-        specifier: ^6.0.2
-        version: 6.0.2(express@5.1.0)
       '@types/multer':
         specifier: ^1.4.12
         version: 1.4.12
@@ -293,10 +290,6 @@ packages:
 
   '@types/cors@2.8.17':
     resolution: {integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA==}
-
-  '@types/express-rate-limit@6.0.2':
-    resolution: {integrity: sha512-e1xZLOOlxCDvplAGq7rDcXtbdBu2CWRsMjaIu1LVqGxWtKvwr884YE5mPs3IvHeG/OMDhf24oTaqG5T1bV3rBQ==}
-    deprecated: This is a stub types definition. express-rate-limit provides its own type definitions, so you do not need this installed.
 
   '@types/express-serve-static-core@5.0.6':
     resolution: {integrity: sha512-3xhRnjJPkULekpSzgtoNYYcTWgEZkp4myc+Saevii5JPnHNvHMRlBSHDbs7Bh1iPPoVTERHEZXyhyLbMEsExsA==}
@@ -1074,12 +1067,6 @@ snapshots:
   '@types/cors@2.8.17':
     dependencies:
       '@types/node': 22.14.1
-
-  '@types/express-rate-limit@6.0.2(express@5.1.0)':
-    dependencies:
-      express-rate-limit: 7.5.0(express@5.1.0)
-    transitivePeerDependencies:
-      - express
 
   '@types/express-serve-static-core@5.0.6':
     dependencies:

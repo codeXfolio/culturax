@@ -273,8 +273,13 @@ export const getFeedPosts = async (input: GetFeedPostsInput = {}) => {
     prisma.feedPost.count(),
   ]);
 
+  const postResult = posts.map((post) => ({
+    ...post,
+    image: `${process.env.APP_URL}${post.image}`,
+  }));
+
   return {
-    posts,
+    posts: postResult,
     pagination: {
       total,
       page,

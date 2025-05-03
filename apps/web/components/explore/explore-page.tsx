@@ -1,8 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ModeToggle } from "@/components/mode-toggle";
 import {
    Search,
    Bell,
@@ -24,9 +22,9 @@ import {
    SelectValue,
 } from "@/components/ui/select";
 import { useState, useRef, useEffect } from "react";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Header } from "@/components/navigation/header";
 import { Sidebar } from "@/components/navigation/sidebar";
+import MobileNavigation from "../navigation/mobile-navigation";
 
 interface Creator {
    id: number;
@@ -199,9 +197,6 @@ export function ExplorePage() {
                               </SelectItem>
                            </SelectContent>
                         </Select>
-                        <Button variant="outline" size="icon">
-                           <Filter className="h-4 w-4" />
-                        </Button>
                      </div>
                   </div>
 
@@ -313,35 +308,7 @@ export function ExplorePage() {
          </div>
 
          {/* Mobile Navigation */}
-         <div className="sm:hidden fixed bottom-0 left-0 right-0 border-t border-border/40 bg-background z-50">
-            <div className="flex justify-around p-2">
-               <Button variant="ghost" size="icon" asChild>
-                  <Link href="/feed">
-                     <Home className="h-5 w-5" />
-                  </Link>
-               </Button>
-               <Button variant="ghost" size="icon" asChild>
-                  <Link href="/explore">
-                     <Compass className="h-5 w-5" />
-                  </Link>
-               </Button>
-               <Button variant="ghost" size="icon" asChild>
-                  <Link href="/ai-tools">
-                     <Sparkles className="h-5 w-5" />
-                  </Link>
-               </Button>
-               <Button variant="ghost" size="icon" asChild>
-                  <Link href="/wallet-manager">
-                     <Wallet className="h-5 w-5" />
-                  </Link>
-               </Button>
-               <Button variant="ghost" size="icon" asChild>
-                  <Link href="/profile">
-                     <User className="h-5 w-5" />
-                  </Link>
-               </Button>
-            </div>
-         </div>
+         <MobileNavigation />
       </div>
    );
 }

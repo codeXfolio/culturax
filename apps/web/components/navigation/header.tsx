@@ -1,5 +1,5 @@
 "use client";
-import { Bell, Wallet } from "lucide-react";
+import { Bell, Wallet, Menu } from "lucide-react";
 import { ModeToggle } from "../mode-toggle";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -79,22 +79,24 @@ export function Header() {
 
    return (
       <header className="border-b border-border/40 backdrop-blur-sm fixed top-0 w-full z-50 bg-background/80">
-         <div className="container flex items-center justify-between h-16">
+         <div className="container flex items-center justify-between h-14 px-2 sm:h-16 sm:px-0">
             <div className="flex items-center gap-2">
                <Link
                   href="/"
-                  className="font-bold text-xl flex items-center gap-2"
+                  className="font-bold text-lg sm:text-xl flex items-center gap-2"
                >
                   <Image
                      src="/logo.png"
                      alt="CulturaX"
-                     width={32}
-                     height={32}
+                     width={28}
+                     height={28}
+                     className="sm:w-8 sm:h-8 w-7 h-7"
                   />
                   <span>CulturaX</span>
                </Link>
             </div>
 
+            {/* Search bar remains hidden on mobile */}
             <div
                className="hidden md:flex items-center relative max-w-md w-full mx-4"
                ref={searchRef}
@@ -279,11 +281,8 @@ export function Header() {
                )}
             </div>
 
-            <div className="flex items-center gap-4">
-               <Button variant="ghost" size="icon" className="relative">
-                  <Bell className="h-5 w-5" />
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
-               </Button>
+            {/* Desktop actions */}
+            <div className="flex items-center gap-2 sm:gap-4">
                <SmartWallet />
                <ModeToggle />
             </div>

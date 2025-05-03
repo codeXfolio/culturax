@@ -206,7 +206,7 @@ export function SmartWallet() {
          ) : (
             <Button
                variant="outline"
-               className="gap-2 hidden md:flex w-full bg-primary text-white"
+               className="gap-2 md:flex w-full bg-primary text-white"
                onClick={login}
             >
                <LogIn className="h-4 w-4" /> Connect Account
