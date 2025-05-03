@@ -26,6 +26,7 @@ import {
 import { useState, useRef, useEffect } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Header } from "@/components/navigation/header";
+import { Sidebar } from "@/components/navigation/sidebar";
 
 export function ExplorePage() {
    const [category, setCategory] = useState("all");
@@ -149,130 +150,7 @@ export function ExplorePage() {
 
          <div className="flex pt-16">
             {/* Sidebar Navigation */}
-            <aside className="w-16 md:w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] border-r border-border/40 p-2 md:p-4 hidden sm:block">
-               <nav className="space-y-2">
-                  <Button
-                     variant="ghost"
-                     className="w-full justify-start gap-3"
-                     asChild
-                  >
-                     <Link href="/feed">
-                        <Home className="h-5 w-5" />
-                        <span className="hidden md:inline">Home</span>
-                     </Link>
-                  </Button>
-                  <Button
-                     variant="secondary"
-                     className="w-full justify-start gap-3"
-                     asChild
-                  >
-                     <Link href="/explore">
-                        <Compass className="h-5 w-5" />
-                        <span className="hidden md:inline">Explore</span>
-                     </Link>
-                  </Button>
-                  <Button
-                     variant="ghost"
-                     className="w-full justify-start gap-3"
-                     asChild
-                  >
-                     <Link href="/ai-tools">
-                        <Sparkles className="h-5 w-5" />
-                        <span className="hidden md:inline">AI Tools</span>
-                     </Link>
-                  </Button>
-                  <Button
-                     variant="ghost"
-                     className="w-full justify-start gap-3"
-                     asChild
-                  >
-                     <Link href="/messages">
-                        <MessageSquare className="h-5 w-5" />
-                        <span className="hidden md:inline">Messages</span>
-                     </Link>
-                  </Button>
-                  <Button
-                     variant="ghost"
-                     className="w-full justify-start gap-3"
-                     asChild
-                  >
-                     <Link href="/wallet-manager">
-                        <Wallet className="h-5 w-5" />
-                        <span className="hidden md:inline">Wallet</span>
-                     </Link>
-                  </Button>
-                  <Button
-                     variant="ghost"
-                     className="w-full justify-start gap-3"
-                     asChild
-                  >
-                     <Link href="/profile">
-                        <User className="h-5 w-5" />
-                        <span className="hidden md:inline">Profile</span>
-                     </Link>
-                  </Button>
-               </nav>
-
-               <div className="mt-8 hidden md:block">
-                  <h3 className="text-sm font-medium mb-4">Categories</h3>
-                  <div className="space-y-2">
-                     <Button
-                        variant={category === "all" ? "secondary" : "ghost"}
-                        size="sm"
-                        className="w-full justify-start"
-                        onClick={() => setCategory("all")}
-                     >
-                        All Categories
-                     </Button>
-                     <Button
-                        variant={
-                           category === "digital art" ? "secondary" : "ghost"
-                        }
-                        size="sm"
-                        className="w-full justify-start"
-                        onClick={() => setCategory("digital art")}
-                     >
-                        Digital Art
-                     </Button>
-                     <Button
-                        variant={
-                           category === "photography" ? "secondary" : "ghost"
-                        }
-                        size="sm"
-                        className="w-full justify-start"
-                        onClick={() => setCategory("photography")}
-                     >
-                        Photography
-                     </Button>
-                     <Button
-                        variant={category === "music" ? "secondary" : "ghost"}
-                        size="sm"
-                        className="w-full justify-start"
-                        onClick={() => setCategory("music")}
-                     >
-                        Music
-                     </Button>
-                     <Button
-                        variant={
-                           category === "tutorials" ? "secondary" : "ghost"
-                        }
-                        size="sm"
-                        className="w-full justify-start"
-                        onClick={() => setCategory("tutorials")}
-                     >
-                        Tutorials
-                     </Button>
-                     <Button
-                        variant={category === "3d art" ? "secondary" : "ghost"}
-                        size="sm"
-                        className="w-full justify-start"
-                        onClick={() => setCategory("3d art")}
-                     >
-                        3D Art
-                     </Button>
-                  </div>
-               </div>
-            </aside>
+            <Sidebar />
 
             {/* Main Content */}
             <main className="flex-1 sm:ml-16 md:ml-64 p-4">

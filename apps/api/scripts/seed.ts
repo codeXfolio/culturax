@@ -20,8 +20,10 @@ const CREATORS = [
     username: 'michaelc',
     email: 'michael.chen@example.com',
     bio: 'Photography enthusiast capturing moments that tell stories',
-    avatar: 'https://placehold.co/150x150',
-    coverImage: 'https://placehold.co/1200x400',
+    avatar:
+      'https://pbs.twimg.com/profile_images/1648457115126620160/jGEIHv6j_400x400.jpg',
+    coverImage:
+      'https://pbs.twimg.com/profile_banners/1356563031438680067/1622010536/600x200',
   },
   {
     name: 'Emma Rodriguez',

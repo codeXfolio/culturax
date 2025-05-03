@@ -14,7 +14,7 @@ function Header() {
          <div className="container flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
                <Image src="/logo.png" alt="Logo" width={32} height={32} />
-               <span className="font-bold text-xl">CreatorX</span>
+               <span className="font-bold text-xl">CulturaX</span>
             </div>
             <nav className="hidden md:flex items-center gap-6">
                <Link

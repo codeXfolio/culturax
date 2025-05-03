@@ -101,9 +101,6 @@ export function CreatorCard({ creator, featured = false }: CreatorCardProps) {
                      @{creator.username}
                   </p>
                </div>
-               <Badge variant="outline" className="text-xs">
-                  {creator.category}
-               </Badge>
             </div>
 
             <p className="text-sm text-muted-foreground mb-4 line-clamp-2">

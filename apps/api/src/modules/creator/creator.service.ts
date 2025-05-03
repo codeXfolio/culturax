@@ -91,6 +91,7 @@ export const getTopCreators = async () => {
       coverImage: true,
       followers: true,
       featured: true,
+      bio: true,
     },
     orderBy: {
       followers: {
@@ -108,5 +109,6 @@ export const getTopCreators = async () => {
     coverImage: creator.coverImage,
     totalFollowers: creator.followers.length,
     featured: creator.featured,
+    bio: creator.bio,
   }));
 };

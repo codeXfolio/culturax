@@ -22,6 +22,8 @@ import { HighlightedCreator } from "@/components/landing/highlighted-creator";
 import { Testimonial } from "@/components/landing/testimonial";
 import Image from "next/image";
 import Header from "./header";
+import { CreatorCardSkeleton } from "./creator-card-skeleton";
+import TopCreator from "./top-creators";
 
 export function LandingPage() {
    const { theme } = useTheme();
@@ -274,47 +276,7 @@ export function LandingPage() {
                      </p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                     {/* Simplified hover effects for creator cards */}
-                     <div className="transition-all duration-200 hover:translate-y-[-4px]">
-                        <HighlightedCreator
-                           name="Alex Rivera"
-                           username="alexrivera"
-                           category="Digital Art"
-                           followers="24.5K"
-                           bio="Digital artist specializing in futuristic landscapes and NFT collections."
-                           avatarUrl="/placeholder.svg?height=100&width=100"
-                           coverUrl="/placeholder.svg?height=200&width=400"
-                           verified={true}
-                        />
-                     </div>
-
-                     <div className="transition-all duration-200 hover:translate-y-[-4px]">
-                        <HighlightedCreator
-                           name="Sarah Johnson"
-                           username="sarahjcreates"
-                           category="Photography"
-                           followers="18.2K"
-                           bio="Capturing moments and emotions through the lens. NFT photographer and visual storyteller."
-                           avatarUrl="/placeholder.svg?height=100&width=100"
-                           coverUrl="/placeholder.svg?height=200&width=400"
-                           verified={true}
-                        />
-                     </div>
-
-                     <div className="transition-all duration-200 hover:translate-y-[-4px]">
-                        <HighlightedCreator
-                           name="Michael Chen"
-                           username="michaelchenmusic"
-                           category="Music"
-                           followers="32.1K"
-                           bio="Electronic music producer and sound designer. Creating audio NFTs and immersive experiences."
-                           avatarUrl="/placeholder.svg?height=100&width=100"
-                           coverUrl="/placeholder.svg?height=200&width=400"
-                           verified={false}
-                        />
-                     </div>
-                  </div>
+                  <TopCreator />
 
                   <div className="text-center mt-12">
                      <Button

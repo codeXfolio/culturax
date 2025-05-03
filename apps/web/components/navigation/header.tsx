@@ -1,13 +1,14 @@
 "use client";
 import { Bell, Wallet } from "lucide-react";
 import { ModeToggle } from "../mode-toggle";
-import { Link } from "lucide-react";
+import Link from "next/link";
 import { Button } from "../ui/button";
 import { Search } from "lucide-react";
 import { Input } from "../ui/input";
 import React, { useRef, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { SmartWallet } from "../SmartWallet";
+import Image from "next/image";
 
 export function Header() {
    const searchRef = useRef<HTMLDivElement>(null);
@@ -80,10 +81,18 @@ export function Header() {
       <header className="border-b border-border/40 backdrop-blur-sm fixed top-0 w-full z-50 bg-background/80">
          <div className="container flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
-               <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center">
-                  <span className="font-bold text-white">CX</span>
-               </div>
-               <span className="font-bold text-xl">CreatorX</span>
+               <Link
+                  href="/"
+                  className="font-bold text-xl flex items-center gap-2"
+               >
+                  <Image
+                     src="/logo.png"
+                     alt="CulturaX"
+                     width={32}
+                     height={32}
+                  />
+                  <span>CulturaX</span>
+               </Link>
             </div>
 
             <div
