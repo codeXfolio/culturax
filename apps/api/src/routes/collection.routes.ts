@@ -16,7 +16,12 @@ const routes: RouteConfig[] = [
     path: '/upload',
     method: 'post',
     handler: collectionController.upload,
-    middlewares: [upload.single('images')],
+    middlewares: [
+      upload.fields([
+        { name: 'images', maxCount: 1 },
+        { name: 'coverImage', maxCount: 1 },
+      ]),
+    ],
   },
   {
     path: '/user/:userId',

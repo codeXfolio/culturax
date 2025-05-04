@@ -13,6 +13,7 @@ export interface CollectionInput {
 export const uploadCollection = async (
   input: CollectionInput,
   images: Express.Multer.File,
+  coverImage?: Express.Multer.File,
 ) => {
   const prisma = new PrismaClient();
 
@@ -26,17 +27,31 @@ export const uploadCollection = async (
     },
   });
 
+  const uploadDir = join(
+    process.cwd(),
+    'uploads',
+    'collections',
+    collection.id,
+  );
+  await mkdir(uploadDir, { recursive: true });
+
+  // Handle cover image
+  if (coverImage) {
+    const coverImagePath = join(uploadDir, 'cover.jpg');
+    await writeFile(coverImagePath, coverImage.buffer);
+
+    // Update collection with cover image path
+    await prisma.collection.update({
+      where: { id: collection.id },
+      data: {
+        coverImage: `/uploads/collections/${collection.id}/cover.jpg`,
+      },
+    });
+  }
+
   // Handle zip file
   if (images) {
     const { entries } = await unzip(images.buffer);
-
-    const uploadDir = join(
-      process.cwd(),
-      'uploads',
-      'collections',
-      collection.id,
-    );
-    await mkdir(uploadDir, { recursive: true });
 
     for (const [name, entry] of Object.entries(entries)) {
       if (

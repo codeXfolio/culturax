@@ -12,7 +12,9 @@ class CollectionController {
   async upload(req: Request, res: Response) {
     try {
       const { title, description, tags, userId } = req.body;
-      const images = req.file;
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      const images = files['images']?.[0];
+      const coverImage = files['coverImage']?.[0];
 
       if (!title || !description || !tags || !userId) {
         return res.status(400).json({
@@ -32,7 +34,7 @@ class CollectionController {
         throw new Error('No image file provided');
       }
 
-      const collection = await uploadCollection(input, images);
+      const collection = await uploadCollection(input, images, coverImage);
       res.json({ success: true, data: collection });
     } catch (error) {
       console.error(error);
