@@ -11,6 +11,7 @@ import { Sidebar } from "../navigation/sidebar";
 import { useInView } from "react-intersection-observer";
 import { CreatePostCard } from "./create-post-card";
 import { UploadCollectionCard } from "./upload-collection-card";
+import { fetchProfile } from "@/lib/utils";
 
 interface User {
    id: string;
@@ -37,6 +38,10 @@ export function FanFeed() {
    const [page, setPage] = useState(1);
    const [hasMore, setHasMore] = useState(true);
    const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
+   const [profile, setProfile] = useState<{
+      avatar: string;
+      accountType: string;
+   } | null>(null);
    const { ref, inView } = useInView({
       threshold: 0,
    });
@@ -74,6 +79,10 @@ export function FanFeed() {
             setIsLoading(false);
          }
       };
+
+      fetchProfile().then((profile) => {
+         setProfile(profile);
+      });
 
       fetchFeedPosts();
    }, []);
@@ -315,7 +324,7 @@ export function FanFeed() {
 
          <div className="flex pt-16">
             {/* Sidebar Navigation */}
-            <Sidebar />
+            <Sidebar profile={profile} />
 
             {/* Main Content */}
             <main className="flex-1 sm:ml-16 md:ml-64 p-4">
@@ -323,7 +332,9 @@ export function FanFeed() {
                   {/* Feed */}
                   <div className="mt-14">
                      <CreatePostCard onCreatePost={handleCreatePost} />
-                     <UploadCollectionCard />
+                     {profile?.accountType === "CREATOR" && (
+                        <UploadCollectionCard />
+                     )}
                      {isLoading ? (
                         <div className="space-y-6">
                            {[...Array(4)].map((_, index) => (

@@ -14,7 +14,14 @@ import {
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-export function Sidebar() {
+export function Sidebar({
+   profile,
+}: {
+   profile: {
+      avatar: string;
+      accountType: string;
+   } | null;
+}) {
    const pathname = usePathname();
 
    return (
@@ -40,16 +47,33 @@ export function Sidebar() {
                   <span className="hidden md:inline">Explore</span>
                </Link>
             </Button>
-            <Button
-               variant={pathname === "/ai-tools" ? "secondary" : "ghost"}
-               className="w-full justify-start gap-3"
-               asChild
-            >
-               <Link href="/ai-tools">
-                  <Sparkles className="h-5 w-5" />
-                  <span className="hidden md:inline">AI Tools</span>
-               </Link>
-            </Button>
+
+            {profile?.accountType === "CREATOR" && (
+               <Button
+                  variant={
+                     pathname === "/upload-collection" ? "secondary" : "ghost"
+                  }
+                  className="w-full justify-start gap-3"
+                  asChild
+               >
+                  <Link href="/upload-collection">
+                     <FolderPlus className="h-5 w-5" />
+                     <span className="hidden md:inline">Upload Collection</span>
+                  </Link>
+               </Button>
+            )}
+            {profile?.accountType === "CREATOR" && (
+               <Button
+                  variant={pathname === "/ai-tools" ? "secondary" : "ghost"}
+                  className="w-full justify-start gap-3"
+                  asChild
+               >
+                  <Link href="/ai-tools">
+                     <Sparkles className="h-5 w-5" />
+                     <span className="hidden md:inline">AI Tools</span>
+                  </Link>
+               </Button>
+            )}
             <Button
                variant={pathname === "/messages" ? "secondary" : "ghost"}
                className="w-full justify-start gap-3"
@@ -70,6 +94,19 @@ export function Sidebar() {
                   <span className="hidden md:inline">Wallet</span>
                </Link>
             </Button>
+
+            {profile?.accountType === "CREATOR" && (
+               <Button
+                  variant={pathname === "/earnings" ? "secondary" : "ghost"}
+                  className="w-full justify-start gap-3"
+                  asChild
+               >
+                  <Link href="/earnings">
+                     <DollarSign className="h-5 w-5" />
+                     <span className="hidden md:inline">Earnings</span>
+                  </Link>
+               </Button>
+            )}
             <Button
                variant={pathname === "/staking" ? "secondary" : "ghost"}
                className="w-full justify-start gap-3"
@@ -88,28 +125,6 @@ export function Sidebar() {
                <Link href="/profile">
                   <User className="h-5 w-5" />
                   <span className="hidden md:inline">Profile</span>
-               </Link>
-            </Button>
-            <Button
-               variant={pathname === "/earnings" ? "secondary" : "ghost"}
-               className="w-full justify-start gap-3"
-               asChild
-            >
-               <Link href="/earnings">
-                  <DollarSign className="h-5 w-5" />
-                  <span className="hidden md:inline">Earnings</span>
-               </Link>
-            </Button>
-            <Button
-               variant={
-                  pathname === "/upload-collection" ? "secondary" : "ghost"
-               }
-               className="w-full justify-start gap-3"
-               asChild
-            >
-               <Link href="/upload-collection">
-                  <FolderPlus className="h-5 w-5" />
-                  <span className="hidden md:inline">Upload Collection</span>
                </Link>
             </Button>
          </nav>

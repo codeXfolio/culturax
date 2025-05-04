@@ -25,6 +25,7 @@ import { useState, useRef, useEffect } from "react";
 import { Header } from "@/components/navigation/header";
 import { Sidebar } from "@/components/navigation/sidebar";
 import MobileNavigation from "../navigation/mobile-navigation";
+import { fetchProfile } from "@/lib/utils";
 
 interface Creator {
    id: number;
@@ -64,6 +65,10 @@ export function ExplorePage() {
          itemsPerPage: 9,
       },
    });
+   const [profile, setProfile] = useState<{
+      avatar: string;
+      accountType: string;
+   } | null>(null);
 
    useEffect(() => {
       const fetchCreators = async () => {
@@ -130,6 +135,12 @@ export function ExplorePage() {
       fetchCreators();
    }, [currentPage]);
 
+   useEffect(() => {
+      fetchProfile().then((profile) => {
+         setProfile(profile);
+      });
+   }, []);
+
    // Filter creators based on selected category
    const filteredCreators =
       category === "all"
@@ -146,7 +157,7 @@ export function ExplorePage() {
 
          <div className="flex pt-16">
             {/* Sidebar Navigation */}
-            <Sidebar />
+            <Sidebar profile={profile} />
 
             {/* Main Content */}
             <main className="flex-1 sm:ml-16 md:ml-64 p-4">

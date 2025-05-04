@@ -49,6 +49,11 @@ const routes: RouteConfig[] = [
     handler: userController.updateCoverImage,
     middlewares: [upload.single('coverImage')],
   },
+  {
+    path: '/:userId/profile',
+    method: 'get',
+    handler: userController.getUserProfile,
+  },
 ];
 
 // Register routes

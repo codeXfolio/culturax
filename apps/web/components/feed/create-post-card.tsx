@@ -192,17 +192,6 @@ export function CreatePostCard({ onCreatePost }: CreatePostCardProps) {
                      <VideoIcon className="h-4 w-4" />
                      <span>Video</span>
                   </Button>
-                  <Button
-                     variant="ghost"
-                     className="flex-1 gap-2"
-                     asChild
-                     type="button"
-                  >
-                     <Link href="/upload-collection">
-                        <FolderPlus className="h-4 w-4" />
-                        <span>Collection</span>
-                     </Link>
-                  </Button>
                   <Dialog
                      open={showFeelingModal}
                      onOpenChange={setShowFeelingModal}

@@ -262,3 +262,22 @@ export const updateCoverImage = async (
 
   return updatedUser;
 };
+
+export const getUserProfile = async (userId: string) => {
+  const prisma = new PrismaClient();
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      avatar: true,
+      accountType: true,
+    },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  return user;
+};

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
    Select,
@@ -19,6 +19,7 @@ import { UnstakeDialog } from "./unstake-dialog";
 import { ClaimDialog } from "./claim-dialog";
 import MobileNavigation from "../navigation/mobile-navigation";
 import { useCreators } from "./use-staking";
+import { fetchProfile } from "@/lib/utils";
 
 export interface Creator {
    id: number;
@@ -69,6 +70,10 @@ export function StakingPage() {
    const [stakeSuccess, setStakeSuccess] = useState(false);
    const [unstakeSuccess, setUnstakeSuccess] = useState(false);
    const [claimSuccess, setClaimSuccess] = useState(false);
+   const [profile, setProfile] = useState<{
+      avatar: string;
+      accountType: string;
+   } | null>(null);
 
    // Get staking data from custom hook
    const {
@@ -157,11 +162,17 @@ export function StakingPage() {
       }, 2000);
    };
 
+   useEffect(() => {
+      fetchProfile().then((profile) => {
+         setProfile(profile);
+      });
+   }, []);
+
    return (
       <div className="min-h-screen bg-background">
          <div className="flex pt-16">
             {/* Sidebar Navigation */}
-            <Sidebar />
+            <Sidebar profile={profile} />
 
             {/* Main Content */}
             <main className="flex-1 sm:ml-16 md:ml-64 p-4">

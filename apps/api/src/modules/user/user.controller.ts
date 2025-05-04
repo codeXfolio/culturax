@@ -9,6 +9,7 @@ import {
   getFollowers,
   getFollowing,
   updateCoverImage,
+  getUserProfile,
 } from './user.service';
 
 class UserController {
@@ -203,6 +204,38 @@ class UserController {
       });
     } catch (error) {
       console.error('Error updating cover image:', error);
+      if (error instanceof Error) {
+        return res.status(400).json({
+          success: false,
+          error: error.message,
+        });
+      }
+      return res.status(500).json({
+        success: false,
+        error: 'Internal server error',
+      });
+    }
+  }
+
+  async getUserProfile(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+
+      if (!userId) {
+        return res.status(400).json({
+          success: false,
+          error: 'User ID is required',
+        });
+      }
+
+      const user = await getUserProfile(userId);
+
+      return res.status(200).json({
+        success: true,
+        data: user,
+      });
+    } catch (error) {
+      console.error('Error getting user profile:', error);
       if (error instanceof Error) {
         return res.status(400).json({
           success: false,
