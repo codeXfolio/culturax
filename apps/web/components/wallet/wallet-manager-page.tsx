@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
    Card,
@@ -45,6 +45,13 @@ import {
 } from "@/components/ui/dialog";
 import { Sidebar } from "../navigation/sidebar";
 import MobileNavigation from "../navigation/mobile-navigation";
+import { fetchProfile } from "@/lib/utils";
+
+interface Profile {
+   avatar: string;
+   accountType: string;
+}
+
 export function WalletManagerPage() {
    const [copied, setCopied] = useState(false);
    const [refreshing, setRefreshing] = useState(false);
@@ -52,7 +59,7 @@ export function WalletManagerPage() {
    const [transferToken, setTransferToken] = useState("eth");
    const [transferAmount, setTransferAmount] = useState("");
    const [recipientAddress, setRecipientAddress] = useState("");
-
+   const [profile, setProfile] = useState<Profile | null>(null);
    // Mock wallet data
    const walletData = {
       address: "0x1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t",
@@ -138,6 +145,15 @@ export function WalletManagerPage() {
       },
    ];
 
+   useEffect(() => {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+         fetchProfile().then((profile) => {
+            setProfile(profile);
+         });
+      }
+   }, []);
+
    const handleCopyAddress = () => {
       navigator.clipboard.writeText(walletData.address);
       setCopied(true);
@@ -164,7 +180,7 @@ export function WalletManagerPage() {
          <div className="flex pt-16">
             {/* Sidebar Navigation */}
             <div className="hidden md:block">
-               <Sidebar />
+               <Sidebar profile={profile} />
             </div>
 
             <main className="container pt-8 md:pt-24 pb-16 w-full md:max-w-5xl">

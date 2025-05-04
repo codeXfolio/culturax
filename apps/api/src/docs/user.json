@@ -269,10 +269,10 @@
     "post": {
       "tags": ["User"],
       "summary": "Register a new user",
-      "description": "Registers a new user with the provided email, name, username, address, and optional avatar",
+      "description": "Registers a new user with the provided email, name, username, address, and optional avatar URL",
       "requestBody": {
         "content": {
-          "multipart/form-data": {
+          "application/json": {
             "schema": {
               "type": "object",
               "required": [
@@ -305,8 +305,8 @@
                 },
                 "avatar": {
                   "type": "string",
-                  "format": "binary",
-                  "description": "User's avatar image (optional)"
+                  "description": "URL of the user's avatar image (optional)",
+                  "example": "https://example.com/avatar.jpg"
                 }
               }
             }
@@ -354,7 +354,7 @@
                       },
                       "avatar": {
                         "type": "string",
-                        "example": "/uploads/avatars/0x1234567890abcdef/avatar.jpg"
+                        "example": "https://example.com/avatar.jpg"
                       }
                     }
                   }

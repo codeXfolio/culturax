@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import {
    type NexusAccount,
    type NexusClient,
@@ -46,6 +47,7 @@ const paymasterClient = createPaymasterClient({
 });
 
 export function SmartWallet() {
+   const router = useRouter();
    const { isConnected, address } = useAccount();
    const { login } = useLogin();
    const { ready, authenticated, user } = usePrivy();
@@ -105,7 +107,9 @@ export function SmartWallet() {
    const handleLogout = async () => {
       localStorage.removeItem("authSignature");
       localStorage.removeItem("authAddress");
+      localStorage.removeItem("userId");
       await logout();
+      router.push("/");
    };
 
    const getSmartAccountInstance = async () => {
@@ -187,6 +191,28 @@ export function SmartWallet() {
 
             localStorage.setItem("authSignature", signature);
             localStorage.setItem("authAddress", address);
+
+            const user = await fetch(
+               `${process.env.NEXT_PUBLIC_API_URL}/api/user/${address}`,
+               {
+                  method: "GET",
+                  headers: {
+                     "Content-Type": "application/json",
+                     "x-eth-signature": signature,
+                     "x-eth-address": address,
+                  },
+               }
+            );
+            const userData: { success: boolean; data: { id: string } } =
+               await user.json();
+
+            if (!userData.success) {
+               router.push("/register");
+               return;
+            }
+
+            localStorage.setItem("userId", userData.data.id);
+            router.push("/feed");
          }
       } catch (error) {
          console.error("Error initializing kernel client", error);

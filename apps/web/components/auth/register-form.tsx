@@ -15,12 +15,15 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Wallet, Mail } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { SmartWallet } from "../SmartWallet";
 import Image from "next/image";
+import { usePrivy } from "@privy-io/react-auth";
+
 export function RegisterForm() {
+   const { user } = usePrivy();
    const router = useRouter();
    const [isLoading, setIsLoading] = useState(false);
    const [formData, setFormData] = useState({
@@ -32,6 +35,30 @@ export function RegisterForm() {
       termsAccepted: false,
    });
 
+   useEffect(() => {
+      if (user) {
+         const twitterName = user.twitter?.name;
+         const twitterUsername = user.twitter?.username;
+         if (twitterName && twitterUsername) {
+            setFormData((prev) => ({
+               ...prev,
+               name: twitterName,
+               username: twitterUsername,
+            }));
+         }
+
+         const farcasterName = user.farcaster?.displayName;
+         const farcasterUsername = user.farcaster?.username;
+         if (farcasterName && farcasterUsername) {
+            setFormData((prev) => ({
+               ...prev,
+               name: farcasterName,
+               username: farcasterUsername,
+            }));
+         }
+      }
+   }, [user]);
+
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value, checked } = e.target;
       setFormData((prev) => ({
@@ -41,7 +68,6 @@ export function RegisterForm() {
    };
 
    const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
       setIsLoading(true);
 
       try {
@@ -53,23 +79,27 @@ export function RegisterForm() {
             return;
          }
 
-         const formDataObj = new FormData();
-         formDataObj.append("name", formData.name);
-         formDataObj.append("email", formData.email);
-         formDataObj.append("username", formData.username);
-         formDataObj.append("accountType", formData.accountType.toUpperCase());
-         formDataObj.append("address", authAddress);
-         formDataObj.append("bio", formData.bio);
-
          const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/user/register`,
             {
                method: "POST",
-               body: formDataObj,
                headers: {
+                  "Content-Type": "application/json",
                   "x-eth-signature": authSignature,
                   "x-eth-address": authAddress,
                },
+               body: JSON.stringify({
+                  name: formData.name,
+                  email: formData.email,
+                  username: formData.username,
+                  accountType: formData.accountType.toUpperCase(),
+                  address: authAddress,
+                  bio: formData.bio,
+                  avatar:
+                     user?.twitter?.profilePictureUrl ||
+                     user?.farcaster?.pfp ||
+                     "https://placehold.co/400x400",
+               }),
             }
          );
 
@@ -81,7 +111,6 @@ export function RegisterForm() {
 
          if (data.success) {
             toast.success("Registration successful!");
-            localStorage.setItem("isLoggedIn", "true");
             localStorage.setItem("userId", data.data.id);
             await new Promise((resolve) => setTimeout(resolve, 1000));
             router.push("/feed");
@@ -234,9 +263,9 @@ export function RegisterForm() {
                </CardContent>
                <CardFooter className="relative flex flex-col gap-4">
                   <Button
-                     type="submit"
                      className="w-full"
                      disabled={isLoading || !formData.termsAccepted}
+                     onClick={handleSubmit}
                   >
                      {isLoading ? "Registering..." : "Sign & Register"}
                   </Button>

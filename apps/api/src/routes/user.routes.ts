@@ -16,7 +16,6 @@ const routes: RouteConfig[] = [
     path: '/register',
     method: 'post',
     handler: userController.register,
-    middlewares: [upload.single('avatar')],
   },
   {
     path: '/:address',

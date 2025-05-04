@@ -8,52 +8,11 @@ export interface RegisterUserInput {
   username: string;
   address: string;
   accountType: 'CREATOR' | 'USER' | 'ADMIN';
-  avatar?: Express.Multer.File;
+  avatar?: string;
 }
 
 export const inputUser = async (input: RegisterUserInput) => {
   const prisma = new PrismaClient();
-
-  let avatarPath: string | undefined = undefined;
-
-  // Handle avatar upload if provided
-  if (input.avatar) {
-    try {
-      // Ensure the base uploads directory exists
-      const baseUploadDir = join(process.cwd(), 'uploads');
-      try {
-        await access(baseUploadDir);
-      } catch {
-        await mkdir(baseUploadDir, { recursive: true });
-      }
-
-      // Ensure the avatars directory exists
-      const avatarsDir = join(baseUploadDir, 'avatars');
-      try {
-        await access(avatarsDir);
-      } catch {
-        await mkdir(avatarsDir, { recursive: true });
-      }
-
-      // Create user-specific directory
-      const userUploadDir = join(avatarsDir, input.address);
-      await mkdir(userUploadDir, { recursive: true });
-
-      // Generate unique filename
-      const fileExtension = input.avatar.originalname.split('.').pop();
-      const fileName = `avatar.${fileExtension}`;
-      const filePath = join(userUploadDir, fileName);
-
-      // Write the file
-      await writeFile(filePath, input.avatar.buffer);
-
-      // Store the relative path
-      avatarPath = `/uploads/avatars/${input.address}/${fileName}`;
-    } catch (error) {
-      console.error('Error handling avatar upload:', error);
-      throw new Error('Failed to process avatar upload');
-    }
-  }
 
   const createdUser = await prisma.user.create({
     data: {
@@ -62,7 +21,9 @@ export const inputUser = async (input: RegisterUserInput) => {
       username: input.username,
       address: input.address,
       accountType: input.accountType,
-      avatar: avatarPath,
+      avatar: input.avatar,
+      coverImage:
+        'https://pbs.twimg.com/profile_banners/1431478958285934593/1746331496/1500x500',
     },
     select: {
       id: true,
@@ -83,7 +44,10 @@ export const getUserByAddress = async (address: string) => {
   const user = await prisma.user.findUnique({
     where: { address },
   });
-  return user;
+  return {
+    success: user ? true : false,
+    data: user,
+  };
 };
 
 export const followUser = async (

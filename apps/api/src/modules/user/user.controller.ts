@@ -15,13 +15,19 @@ import {
 class UserController {
   async register(req: Request, res: Response) {
     try {
-      const input = req.body as unknown as RegisterUserInput;
-      input.avatar = req.file;
+      const input: RegisterUserInput = {
+        email: req.body.email,
+        name: req.body.name,
+        username: req.body.username,
+        address: req.body.address,
+        accountType: req.body.accountType,
+        avatar: req.body.avatar,
+      };
 
-      //   Check if user already exists
+      // Check if user already exists
       const user = await getUserByAddress(input.address);
 
-      if (user) {
+      if (user.data) {
         return res
           .status(400)
           .json({ success: false, error: 'User already exists' });
