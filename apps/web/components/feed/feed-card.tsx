@@ -6,6 +6,7 @@ import { Heart, MessageSquare, Share2, Lock, X } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { CommentModal } from "@/components/feed/CommentModal";
+import Link from "next/link";
 
 interface FeedCardProps {
    item: {
@@ -128,13 +129,17 @@ export function FeedCard({
                      </Avatar>
                      <div>
                         <div className="flex items-center gap-1">
-                           <span className="font-medium text-sm">
-                              {item.user.name}
-                           </span>
+                           <Link href={`/subscription/${item.user.username}`}>
+                              <span className="font-medium text-sm hover:underline">
+                                 {item.user.name}
+                              </span>
+                           </Link>
                         </div>
-                        <span className="text-xs text-muted-foreground">
-                           @{item.user.username}
-                        </span>
+                        <Link href={`/subscription/${item.user.username}`}>
+                           <span className="text-xs text-muted-foreground hover:underline">
+                              @{item.user.username}
+                           </span>
+                        </Link>
                      </div>
                   </div>
                </div>

@@ -1,6 +1,10 @@
 import { PrismaClient } from '../../../generated/prisma';
 
-export const getCreators = async (page: number = 1, limit: number = 9) => {
+export const getCreators = async (
+  page: number = 1,
+  limit: number = 9,
+  address: string,
+) => {
   const prisma = new PrismaClient();
 
   // Get featured creators (limited to 3)
@@ -15,7 +19,18 @@ export const getCreators = async (page: number = 1, limit: number = 9) => {
       username: true,
       avatar: true,
       coverImage: true,
-      following: true,
+      following: {
+        where: {
+          follower: {
+            address,
+          },
+        },
+      },
+      _count: {
+        select: {
+          following: true,
+        },
+      },
       featured: true,
       bio: true,
     },
@@ -34,7 +49,18 @@ export const getCreators = async (page: number = 1, limit: number = 9) => {
       username: true,
       avatar: true,
       coverImage: true,
-      following: true,
+      following: {
+        where: {
+          follower: {
+            address,
+          },
+        },
+      },
+      _count: {
+        select: {
+          following: true,
+        },
+      },
       featured: true,
       bio: true,
     },
@@ -58,8 +84,9 @@ export const getCreators = async (page: number = 1, limit: number = 9) => {
       avatar: creator.avatar,
       bio: creator.bio,
       coverImage: creator.coverImage,
-      totalFollowers: creator.following.length,
+      totalFollowers: creator._count.following,
       featured: creator.featured,
+      isFollowed: creator.following.length > 0,
     })),
     regular: regularCreators.map((creator) => ({
       id: creator.id,
@@ -68,8 +95,9 @@ export const getCreators = async (page: number = 1, limit: number = 9) => {
       avatar: creator.avatar,
       bio: creator.bio,
       coverImage: creator.coverImage,
-      totalFollowers: creator.following.length,
+      totalFollowers: creator._count.following,
       featured: creator.featured,
+      isFollowed: creator.following.length > 0,
     })),
     pagination: {
       currentPage: page,

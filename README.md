@@ -55,3 +55,87 @@ The platform follows a microservices architecture with:
 -  On-chain ownership verification
 -  Secure API endpoints
 -  Responsive frontend interface
+
+## Local Development
+
+### Running the Web Frontend
+
+1. Navigate to the web application directory:
+
+```bash
+cd apps/web
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+The web application will be available at `http://localhost:3000`
+
+### Running the API Backend
+
+1. Navigate to the API directory:
+
+```bash
+cd apps/api
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+The API server will be available at `http://localhost:5555`
+
+### API Documentation
+
+To view the API documentation:
+
+1. Navigate to the API directory:
+
+```bash
+cd apps/api
+```
+
+2. Run the Swagger documentation server:
+
+```bash
+npm run specs
+```
+
+The API documentation will be available at `http://localhost:3333`
+
+### Environment Setup
+
+Both the web and API applications require environment variables to be set up. Copy the example environment files and configure them:
+
+For the web application:
+
+```bash
+cd apps/web
+cp .env.example .env
+```
+
+For the API:
+
+```bash
+cd apps/api
+cp .env.example .env
+```
+
+Make sure to fill in the required environment variables in both `.env` files before starting the applications.

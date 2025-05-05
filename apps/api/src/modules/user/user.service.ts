@@ -60,6 +60,7 @@ export const getUserByUsername = async (username: string, address: string) => {
       username: true,
       address: true,
       avatar: true,
+      coverImage: true,
       bio: true,
       featured: true,
       _count: {
@@ -85,6 +86,7 @@ export const getUserByUsername = async (username: string, address: string) => {
       username: user?.username,
       address: user?.address,
       avatar: user?.avatar,
+      coverImage: user?.coverImage,
       bio: user?.bio,
       totalFollowers: user?._count.following,
       featured: user?.featured,

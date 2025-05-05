@@ -10,6 +10,7 @@ export interface Creator {
    featured: boolean;
    address: string;
    isFollowed: boolean;
+   coverImage: string;
 }
 
 export interface Subscription {

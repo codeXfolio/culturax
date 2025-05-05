@@ -58,6 +58,7 @@ interface Profile {
    name: string;
    username: string;
    avatar: string;
+   coverImage: string;
    bio: string;
    totalFollowers: number;
    featured: boolean;
@@ -340,7 +341,7 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
             <div className="container flex items-center justify-between h-16">
                <div className="flex items-center gap-2">
                   <Button variant="ghost" size="icon" asChild>
-                     <Link href="/feed">
+                     <Link href="#" onClick={() => window.history.back()}>
                         <ArrowLeft className="h-5 w-5" />
                      </Link>
                   </Button>
@@ -351,10 +352,22 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
          </header>
 
          <main className="container pt-24 pb-16 max-w-5xl">
+            {/* Cover Image */}
+            <div className="relative w-full h-[200px] md:h-[300px] mb-4 rounded-lg overflow-hidden">
+               <img
+                  src={
+                     profile?.coverImage ||
+                     "/placeholder.svg?height=200&width=1200"
+                  }
+                  alt="Cover"
+                  className="w-full h-full object-cover"
+               />
+            </div>
+
             {/* Creator Profile */}
             <div className="flex flex-col md:flex-row gap-6 mb-10">
-               <div className="flex-shrink-0">
-                  <Avatar className="h-24 w-24 md:h-32 md:w-32">
+               <div className="flex-shrink-0 -mt-16 md:-mt-20">
+                  <Avatar className="h-24 w-24 md:h-32 md:w-32 border-4 border-background">
                      <AvatarImage
                         src={profile?.avatar || "/placeholder.svg"}
                         alt={profile?.name}

@@ -67,6 +67,10 @@
                             "featured": {
                               "type": "boolean",
                               "example": true
+                            },
+                            "isFollowed": {
+                              "type": "boolean",
+                              "example": true
                             }
                           }
                         }
@@ -103,6 +107,10 @@
                             "featured": {
                               "type": "boolean",
                               "example": false
+                            },
+                            "isFollowed": {
+                              "type": "boolean",
+                              "example": true
                             }
                           }
                         }
