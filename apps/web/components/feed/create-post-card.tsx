@@ -23,9 +23,10 @@ import { FeedItem } from "./fan-feed";
 
 interface CreatePostCardProps {
    onCreatePost: (result: FeedItem) => void;
+   avatar: string;
 }
 
-export function CreatePostCard({ onCreatePost }: CreatePostCardProps) {
+export function CreatePostCard({ onCreatePost, avatar }: CreatePostCardProps) {
    const [imagePreview, setImagePreview] = useState<string | null>(null);
    const [showFeelingModal, setShowFeelingModal] = useState(false);
    const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null);
@@ -129,10 +130,7 @@ export function CreatePostCard({ onCreatePost }: CreatePostCardProps) {
             <CardContent className="p-4">
                <div className="flex items-center gap-3 mb-4">
                   <Avatar>
-                     <AvatarImage
-                        src="/placeholder.svg?height=40&width=40"
-                        alt="Your profile"
-                     />
+                     <AvatarImage src={avatar} alt="Your profile" />
                      <AvatarFallback>YP</AvatarFallback>
                   </Avatar>
                   <Textarea

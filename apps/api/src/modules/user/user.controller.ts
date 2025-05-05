@@ -4,12 +4,14 @@ import {
   inputUser,
   RegisterUserInput,
   followUser,
+  unfollowUser,
   updateUser,
   UpdateUserInput,
   getFollowers,
   getFollowing,
   updateCoverImage,
   getUserProfile,
+  getUserByUsername,
 } from './user.service';
 
 class UserController {
@@ -54,16 +56,16 @@ class UserController {
   }
 
   async getUser(req: Request, res: Response) {
-    const { address } = req.params;
-    if (!address) {
+    const { username } = req.params;
+    if (!username) {
       return res
         .status(400)
-        .json({ success: false, error: 'Address is required' });
+        .json({ success: false, error: 'Username is required' });
     }
 
-    const user = await getUserByAddress(address);
+    const user = await getUserByUsername(username, req.ethAddress || '');
 
-    if (!user) {
+    if (!user.success) {
       return res.status(404).json({ success: false, error: 'User not found' });
     }
 
@@ -83,6 +85,30 @@ class UserController {
 
       const follow = await followUser(userAddress, targetAddress);
       res.json({ success: true, data: follow });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ success: false, error: error.message });
+      } else {
+        res
+          .status(500)
+          .json({ success: false, error: 'Internal server error' });
+      }
+    }
+  }
+
+  async unfollow(req: Request, res: Response) {
+    try {
+      const { userAddress, targetAddress } = req.body;
+
+      if (!userAddress || !targetAddress) {
+        return res.status(400).json({
+          success: false,
+          error: 'User and target addresses are required',
+        });
+      }
+
+      const unfollow = await unfollowUser(userAddress, targetAddress);
+      res.json({ success: true, data: unfollow });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ success: false, error: error.message });

@@ -56,6 +56,16 @@ export function RegisterForm() {
                username: farcasterUsername,
             }));
          }
+
+         const googleName = user.google?.name;
+         const googleEmail = user.google?.email;
+         if (googleName && googleEmail) {
+            setFormData((prev) => ({
+               ...prev,
+               name: googleName,
+               email: googleEmail,
+            }));
+         }
       }
    }, [user]);
 

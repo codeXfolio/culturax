@@ -331,7 +331,10 @@ export function FanFeed() {
                <div className="max-w-3xl mx-auto">
                   {/* Feed */}
                   <div className="mt-14">
-                     <CreatePostCard onCreatePost={handleCreatePost} />
+                     <CreatePostCard
+                        onCreatePost={handleCreatePost}
+                        avatar={profile?.avatar || ""}
+                     />
                      {profile?.accountType === "CREATOR" && (
                         <UploadCollectionCard />
                      )}

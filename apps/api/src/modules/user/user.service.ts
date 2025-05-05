@@ -50,6 +50,49 @@ export const getUserByAddress = async (address: string) => {
   };
 };
 
+export const getUserByUsername = async (username: string, address: string) => {
+  const prisma = new PrismaClient();
+  const user = await prisma.user.findUnique({
+    where: { username },
+    select: {
+      id: true,
+      name: true,
+      username: true,
+      address: true,
+      avatar: true,
+      bio: true,
+      featured: true,
+      _count: {
+        select: {
+          following: true,
+        },
+      },
+      following: {
+        where: {
+          follower: {
+            address,
+          },
+        },
+      },
+    },
+  });
+
+  return {
+    success: user ? true : false,
+    data: {
+      id: user?.id,
+      name: user?.name,
+      username: user?.username,
+      address: user?.address,
+      avatar: user?.avatar,
+      bio: user?.bio,
+      totalFollowers: user?._count.following,
+      featured: user?.featured,
+      isFollowed: user?.following && user.following.length > 0,
+    },
+  };
+};
+
 export const followUser = async (
   targetAddress: string,
   userAddress: string,
@@ -68,8 +111,60 @@ export const followUser = async (
     throw new Error('User not found');
   }
 
+  // Check if already following
+  const existingFollow = await prisma.follow.findFirst({
+    where: {
+      followerId: user.id,
+      followingId: target.id,
+    },
+  });
+
+  if (existingFollow) {
+    throw new Error('Already following this user');
+  }
+
   const follow = await prisma.follow.create({
     data: {
+      followerId: user.id,
+      followingId: target.id,
+    },
+  });
+
+  return follow;
+};
+
+export const unfollowUser = async (
+  targetAddress: string,
+  userAddress: string,
+) => {
+  const prisma = new PrismaClient();
+
+  const target = await prisma.user.findUnique({
+    where: { address: userAddress },
+  });
+
+  const user = await prisma.user.findUnique({
+    where: { address: targetAddress },
+  });
+
+  if (!user || !target) {
+    throw new Error('User not found');
+  }
+
+  // Check if following exists
+  const existingFollow = await prisma.follow.findFirst({
+    where: {
+      followerId: user.id,
+      followingId: target.id,
+    },
+  });
+
+  if (!existingFollow) {
+    throw new Error('Not following this user');
+  }
+
+  const follow = await prisma.follow.deleteMany({
+    where: {
       followerId: user.id,
       followingId: target.id,
     },

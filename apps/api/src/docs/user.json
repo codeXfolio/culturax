@@ -1,19 +1,19 @@
 {
-  "/api/user/{address}": {
+  "/api/user/{username}": {
     "get": {
       "tags": ["User"],
       "summary": "Get user details",
-      "description": "Retrieves details for a user by their blockchain address",
+      "description": "Retrieves details for a user by their username",
       "parameters": [
         {
-          "name": "address",
+          "name": "username",
           "in": "path",
           "required": true,
-          "description": "Blockchain address of the user",
+          "description": "Username of the user",
           "schema": {
             "type": "string"
           },
-          "example": "0x1234567890abcdef"
+          "example": "johndoe"
         }
       ],
       "responses": {
@@ -47,18 +47,17 @@
                         "type": "string",
                         "example": "johndoe"
                       },
-                      "address": {
+                      "bio": {
                         "type": "string",
-                        "example": "0x1234567890abcdef"
+                        "example": "I'm a software engineer and a blockchain enthusiast"
                       },
-                      "accountType": {
-                        "type": "string",
-                        "example": "USER"
+                      "totalFollowers": {
+                        "type": "number",
+                        "example": 100
                       },
-                      "createdAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2023-01-01T00:00:00Z"
+                      "isFollowed": {
+                        "type": "boolean",
+                        "example": true
                       }
                     }
                   }
@@ -858,6 +857,80 @@
         },
         "404": {
           "description": "User not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/user/unfollow": {
+    "post": {
+      "tags": ["User"],
+      "summary": "Unfollow a user",
+      "description": "Allows a user to unfollow another user",
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userAddress": {
+                  "type": "string",
+                  "example": "0x1234567890abcdef"
+                },
+                "targetAddress": {
+                  "type": "string",
+                  "example": "0xabcdef1234567890"
+                }
+              },
+              "required": ["userAddress", "targetAddress"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Successful response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "number",
+                        "example": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
           "content": {
             "application/json": {
               "schema": {

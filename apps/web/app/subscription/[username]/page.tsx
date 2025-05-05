@@ -1,9 +1,10 @@
-import { SubscriptionPage } from "@/components/subscription/subscription-page"
+import { SubscriptionPage } from "@/components/subscription/subscription-page";
 
-export default function CreatorSubscriptionPage({
-  params,
+export default async function CreatorSubscriptionPage({
+   params,
 }: {
-  params: { username: string }
+   params: { username: string };
 }) {
-  return <SubscriptionPage username={params.username} />
+   const { username } = await params;
+   return <SubscriptionPage username={username} />;
 }

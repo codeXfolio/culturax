@@ -24,7 +24,7 @@ import {
 import Link from "next/link";
 import { ContentPreview } from "@/components/subscription/content-preview";
 import { FeedPostCard } from "@/components/feed/feed-post-card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
    Dialog,
    DialogContent,
@@ -42,14 +42,86 @@ import {
 } from "@/components/ui/collapsible";
 import { FeedCard } from "../feed/feed-card";
 import { FeedItem } from "../feed/fan-feed";
+import {
+   followUser,
+   getCreatorFeed,
+   getCreatorProfile,
+   unfollowUser,
+} from "@/lib/api/subscription";
 
 interface SubscriptionPageProps {
    username: string;
 }
 
+interface Profile {
+   id: string;
+   name: string;
+   username: string;
+   avatar: string;
+   bio: string;
+   totalFollowers: number;
+   featured: boolean;
+   address: string;
+   isFollowed: boolean;
+}
+
 export function SubscriptionPage({ username }: SubscriptionPageProps) {
    const [showSubscription, setShowSubscription] = useState(false);
    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+   const [profile, setProfile] = useState<Profile | null>(null);
+   const [feed, setFeed] = useState<FeedItem[]>([]);
+   const [isFollowed, setIsFollowed] = useState(false);
+
+   useEffect(() => {
+      const fetchProfile = async () => {
+         if (!username) return;
+
+         const response = await getCreatorProfile(username);
+         setProfile(response);
+         setIsFollowed(response.isFollowed);
+      };
+
+      const fetchFeed = async () => {
+         if (!username) return;
+
+         const response = await getCreatorFeed(username);
+         setFeed(response);
+      };
+
+      fetchProfile();
+      // fetchFeed();
+   }, [username]);
+
+   const handleFollow = async () => {
+      if (!username) return;
+
+      if (isFollowed) {
+         const myAddress = localStorage.getItem("authAddress");
+         const targetAddress = profile?.address;
+         if (!myAddress || !targetAddress) return;
+         const response = await unfollowUser(myAddress, targetAddress);
+         if (typeof response === "object") {
+            setIsFollowed(!isFollowed);
+            setProfile({
+               ...profile,
+               totalFollowers: profile?.totalFollowers - 1,
+            });
+         }
+      } else {
+         const myAddress = localStorage.getItem("authAddress");
+         const targetAddress = profile?.address;
+         if (!myAddress || !targetAddress) return;
+         const response = await followUser(myAddress, targetAddress);
+
+         if (typeof response === "object") {
+            setIsFollowed(!isFollowed);
+            setProfile({
+               ...profile,
+               totalFollowers: profile?.totalFollowers + 1,
+            });
+         }
+      }
+   };
 
    // Mock creator data
    const creator = {
@@ -284,17 +356,17 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                <div className="flex-shrink-0">
                   <Avatar className="h-24 w-24 md:h-32 md:w-32">
                      <AvatarImage
-                        src={creator.avatar || "/placeholder.svg"}
-                        alt={creator.name}
+                        src={profile?.avatar || "/placeholder.svg"}
+                        alt={profile?.name}
                      />
-                     <AvatarFallback>{creator.name.charAt(0)}</AvatarFallback>
+                     <AvatarFallback>{profile?.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                </div>
 
                <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                     <h1 className="text-2xl font-bold">{creator.name}</h1>
-                     {creator.verified && (
+                     <h1 className="text-2xl font-bold">{profile?.name}</h1>
+                     {profile?.featured && (
                         <svg
                            className="h-5 w-5 text-blue-500"
                            viewBox="0 0 24 24"
@@ -306,14 +378,14 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                   </div>
                   <div className="flex items-center gap-2 mb-4">
                      <span className="text-muted-foreground">
-                        @{creator.username}
+                        @{profile?.username}
                      </span>
                      <span className="text-muted-foreground">•</span>
                      <span className="text-muted-foreground">
-                        {creator.followers} followers
+                        {profile?.totalFollowers} followers
                      </span>
                   </div>
-                  <p className="text-muted-foreground mb-4">{creator.bio}</p>
+                  <p className="text-muted-foreground mb-4">{profile?.bio}</p>
                   <div className="flex flex-wrap gap-2">
                      {/* Desktop: Collapsible for subscription */}
                      <div className="hidden md:block">
@@ -332,11 +404,6 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                               >
                                  <Wallet className="h-4 w-4" />
                                  Subscribe
-                                 {showSubscription ? (
-                                    <ChevronUp className="h-4 w-4 ml-1" />
-                                 ) : (
-                                    <ChevronDown className="h-4 w-4 ml-1" />
-                                 )}
                               </Button>
                            </CollapsibleTrigger>
                            <CollapsibleContent className="mt-6">
@@ -449,7 +516,9 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                         </Dialog>
                      </div>
 
-                     <Button variant="outline">Follow</Button>
+                     <Button onClick={handleFollow} variant="outline">
+                        {isFollowed ? "Unfollow" : "Follow"}
+                     </Button>
                   </div>
                </div>
             </div>

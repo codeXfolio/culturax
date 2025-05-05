@@ -18,7 +18,7 @@ const routes: RouteConfig[] = [
     handler: userController.register,
   },
   {
-    path: '/:address',
+    path: '/:username',
     method: 'get',
     handler: userController.getUser,
   },
@@ -26,6 +26,11 @@ const routes: RouteConfig[] = [
     path: '/follow',
     method: 'post',
     handler: userController.follow,
+  },
+  {
+    path: '/unfollow',
+    method: 'post',
+    handler: userController.unfollow,
   },
   {
     path: '/:address',
