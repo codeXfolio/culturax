@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -20,6 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { FeedItem } from "./fan-feed";
+import { useSearchParams } from "next/navigation";
 
 interface CreatePostCardProps {
    onCreatePost: (result: FeedItem) => void;
@@ -27,6 +28,7 @@ interface CreatePostCardProps {
 }
 
 export function CreatePostCard({ onCreatePost, avatar }: CreatePostCardProps) {
+   const searchParams = useSearchParams();
    const [imagePreview, setImagePreview] = useState<string | null>(null);
    const [showFeelingModal, setShowFeelingModal] = useState(false);
    const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null);
@@ -34,6 +36,27 @@ export function CreatePostCard({ onCreatePost, avatar }: CreatePostCardProps) {
    const [isPremium, setIsPremium] = useState(false);
    const fileInputRef = useRef<HTMLInputElement>(null);
    const [isLoading, setIsLoading] = useState(false);
+
+   useEffect(() => {
+      const captionParam = searchParams.get("caption");
+      if (captionParam) {
+         try {
+            const decodedData = JSON.parse(decodeURIComponent(captionParam));
+            setCaption(decodedData.caption);
+
+            // Add hashtags to the caption if they exist
+            if (decodedData.hashtags && decodedData.hashtags.length > 0) {
+               const hashtagsText = decodedData.hashtags.join(" ");
+               setCaption((prev) => `${prev}\n\n${hashtagsText}`);
+            }
+
+            // Clear the URL parameter after setting the caption
+            window.history.replaceState({}, "", "/feed");
+         } catch (error) {
+            console.error("Error parsing caption data:", error);
+         }
+      }
+   }, [searchParams]);
 
    const handleImageClick = () => {
       fileInputRef.current?.click();
@@ -96,7 +119,12 @@ export function CreatePostCard({ onCreatePost, avatar }: CreatePostCardProps) {
          if (fileInputRef.current) {
             fileInputRef.current.value = "";
          }
-         onCreatePost({ ...data.data, FeedPostLike: [], FeedPostComment: [] });
+         onCreatePost({
+            ...data.data,
+            image: process.env.NEXT_PUBLIC_API_URL + data.data.image,
+            FeedPostLike: [],
+            FeedPostComment: [],
+         });
       } else {
          console.error("Error creating post:", data.error);
       }
@@ -142,6 +170,7 @@ export function CreatePostCard({ onCreatePost, avatar }: CreatePostCardProps) {
                      className="resize-none min-h-[60px]"
                      value={caption}
                      onChange={(e) => setCaption(e.target.value)}
+                     rows={4}
                   />
                </div>
 
