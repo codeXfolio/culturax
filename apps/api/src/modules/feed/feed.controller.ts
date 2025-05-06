@@ -268,7 +268,7 @@ class FeedController {
       const { page, username } = req.query;
       const input: GetFeedPostsInput = {
         page: page ? parseInt(page as string) : undefined,
-        limit: 8,
+        limit: 9,
         username: username as string,
       };
 

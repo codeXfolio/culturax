@@ -22,6 +22,7 @@ import {
    ChevronUp,
    Heart,
    MessageCircle,
+   Lock,
 } from "lucide-react";
 import Link from "next/link";
 import { ContentPreview } from "@/components/subscription/content-preview";
@@ -43,7 +44,7 @@ import {
    CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { FeedCard } from "../feed/feed-card";
-import { FeedItem } from "../feed/fan-feed";
+import { FeedItem } from "@/components/feed/fan-feed";
 import {
    followUser,
    getCreatorFeed,
@@ -497,8 +498,24 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                                        <img
                                           src={item.image || "/placeholder.svg"}
                                           alt={item.caption}
-                                          className="w-full h-full object-cover rounded-lg"
+                                          className={`w-full h-full object-cover rounded-lg ${
+                                             item.isPremium ? "blur-sm" : ""
+                                          }`}
                                        />
+                                       {item.isPremium && (
+                                          <div className="absolute inset-0 backdrop-blur-md flex flex-col items-center justify-center">
+                                             <Lock className="h-8 w-8 mb-2 text-primary" />
+                                             <p className="font-medium mb-1">
+                                                Premium Content
+                                             </p>
+                                             <p className="text-sm text-muted-foreground mb-3">
+                                                Subscribe to unlock
+                                             </p>
+                                             <Button size="sm">
+                                                Subscribe
+                                             </Button>
+                                          </div>
+                                       )}
                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
                                           <div className="flex items-center gap-4 text-white">
                                              <div className="flex items-center gap-1">
@@ -570,6 +587,7 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                   avatar: selectedPost?.user?.avatar ?? "/placeholder.svg",
                },
                caption: selectedPost?.caption || "",
+               isPremium: selectedPost?.isPremium ?? false,
             }}
             comments={
                selectedPost?.FeedPostComment?.map((comment) => ({

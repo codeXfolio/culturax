@@ -47,7 +47,7 @@ export function CommentModal({
                         src={post.image}
                         alt="Post"
                         className={`object-contain max-h-[80vh] w-full ${
-                           post.isPremium ? "blur-sm" : ""
+                           post.isPremium ? "blur-md" : ""
                         }`}
                      />
                      {post.isPremium && (

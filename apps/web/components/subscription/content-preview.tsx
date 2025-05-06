@@ -65,7 +65,7 @@ export function ContentPreview({ content }: ContentPreviewProps) {
                </Button>
             ) : (
                <Button size="sm" variant="outline" className="w-full" asChild>
-                  <Link href={`/collections/${content.id}`}>View</Link>
+                  <Link href={`/collection/${content.id}`}>View</Link>
                </Button>
             )}
          </CardContent>
