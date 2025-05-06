@@ -20,6 +20,8 @@ import {
    FileText,
    ChevronDown,
    ChevronUp,
+   Heart,
+   MessageCircle,
 } from "lucide-react";
 import Link from "next/link";
 import { ContentPreview } from "@/components/subscription/content-preview";
@@ -50,6 +52,7 @@ import {
    getCreatorCollectionsByUsername,
 } from "@/lib/api/subscription";
 import { useInView } from "react-intersection-observer";
+import { CommentModal } from "@/components/feed/CommentModal";
 
 interface SubscriptionPageProps {
    username: string;
@@ -89,7 +92,7 @@ interface ContentPreview {
    id: string;
    title: string;
    type: string;
-   thumbnail: string;
+   coverImage: string;
    locked: boolean;
 }
 
@@ -104,6 +107,8 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
    const [page, setPage] = useState(1);
    const [hasMore, setHasMore] = useState(true);
    const [collections, setCollections] = useState<ContentPreview[]>([]);
+   const [selectedPost, setSelectedPost] = useState<FeedItem | null>(null);
+   const [showComments, setShowComments] = useState(false);
 
    const { ref, inView } = useInView({
       threshold: 0,
@@ -470,25 +475,51 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                   <TabsContent value="feed">
                      <div className="space-y-6">
                         {isLoading ? (
-                           <div className="space-y-6">
-                              {[...Array(4)].map((_, index) => (
+                           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                              {[...Array(6)].map((_, index) => (
                                  <div key={index} className="animate-pulse">
-                                    <div className="h-[400px] bg-muted rounded-lg" />
+                                    <div className="aspect-square bg-muted rounded-lg" />
                                  </div>
                               ))}
                            </div>
                         ) : feed.length > 0 ? (
                            <>
-                              {feed.map((item) => (
-                                 <FeedCard
-                                    key={item.id}
-                                    item={item}
-                                    onLike={() => {}}
-                                    onUnlike={() => {}}
-                                    onAddComment={() => {}}
-                                    onDeleteComment={() => {}}
-                                 />
-                              ))}
+                              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                 {feed.map((item) => (
+                                    <div
+                                       key={item.id}
+                                       className="relative aspect-square cursor-pointer group"
+                                       onClick={() => {
+                                          setSelectedPost(item);
+                                          setShowComments(true);
+                                       }}
+                                    >
+                                       <img
+                                          src={item.image || "/placeholder.svg"}
+                                          alt={item.caption}
+                                          className="w-full h-full object-cover rounded-lg"
+                                       />
+                                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                          <div className="flex items-center gap-4 text-white">
+                                             <div className="flex items-center gap-1">
+                                                <Heart className="h-5 w-5" />
+                                                <span>
+                                                   {item.FeedPostLike?.length ||
+                                                      0}
+                                                </span>
+                                             </div>
+                                             <div className="flex items-center gap-1">
+                                                <MessageCircle className="h-5 w-5" />
+                                                <span>
+                                                   {item.FeedPostComment
+                                                      ?.length || 0}
+                                                </span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 ))}
+                              </div>
                               {/* Loading indicator for infinite scroll */}
                               <div ref={ref} className="py-4">
                                  {isLoadingMore && (
@@ -512,11 +543,11 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                            <ContentPreview
                               key={collection.id}
                               content={{
-                                 id: parseInt(collection.id),
+                                 id: collection.id,
                                  title: collection.title,
                                  type: "image",
                                  thumbnail:
-                                    collection.thumbnail ||
+                                    collection.coverImage ||
                                     "/placeholder.svg?height=300&width=400",
                                  locked: false,
                               }}
@@ -527,6 +558,42 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                </Tabs>
             </div>
          </main>
+
+         {/* Comments Modal */}
+         <CommentModal
+            open={showComments}
+            onOpenChange={setShowComments}
+            post={{
+               image: selectedPost?.image,
+               user: {
+                  name: selectedPost?.user?.name ?? "Anonymous",
+                  avatar: selectedPost?.user?.avatar ?? "/placeholder.svg",
+               },
+               caption: selectedPost?.caption || "",
+            }}
+            comments={
+               selectedPost?.FeedPostComment?.map((comment) => ({
+                  id: comment.id,
+                  user: {
+                     name: comment.user?.name ?? "Anonymous",
+                     avatar: comment.user?.avatar ?? "/placeholder.svg",
+                     isVerified: comment.user?.isVerified ?? false,
+                  },
+                  content: comment.content,
+                  date: comment.createdAt
+                     ? new Date(comment.createdAt).toLocaleDateString(
+                          undefined,
+                          {
+                             year: "numeric",
+                             month: "short",
+                             day: "numeric",
+                          }
+                       )
+                     : "",
+                  likes: comment.likes ?? 0,
+               })) || []
+            }
+         />
       </div>
    );
 }

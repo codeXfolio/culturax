@@ -6,7 +6,7 @@ import Link from "next/link";
 
 interface ContentPreviewProps {
    content: {
-      id: number;
+      id: string;
       title: string;
       type: string;
       thumbnail: string;
@@ -34,7 +34,10 @@ export function ContentPreview({ content }: ContentPreviewProps) {
       <Card className="overflow-hidden border-2 shadow-md">
          <div className="relative">
             <img
-               src={content.thumbnail || "/placeholder.svg"}
+               src={
+                  process.env.NEXT_PUBLIC_API_URL + content.thumbnail ||
+                  "/placeholder.svg"
+               }
                alt={content.title}
                className="w-full h-48 object-cover"
             />

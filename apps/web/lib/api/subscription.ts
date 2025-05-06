@@ -50,7 +50,7 @@ export interface ContentPreview {
    id: string;
    title: string;
    type: string;
-   thumbnail: string;
+   coverImage: string;
    locked: boolean;
 }
 
