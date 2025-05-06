@@ -642,17 +642,26 @@
   "/api/feed": {
     "get": {
       "tags": ["Feed"],
-      "summary": "Get all feed posts",
-      "description": "Retrieves all feed posts with pagination",
+      "summary": "Get feed posts",
+      "description": "Retrieves feed posts with optional filtering by username and pagination",
       "parameters": [
         {
           "name": "page",
           "in": "query",
           "required": false,
-          "description": "Page number",
+          "description": "Page number for pagination",
           "schema": {
             "type": "integer",
             "default": 1
+          }
+        },
+        {
+          "name": "username",
+          "in": "query",
+          "required": false,
+          "description": "Username to filter posts by specific user",
+          "schema": {
+            "type": "string"
           }
         }
       ],
@@ -718,6 +727,34 @@
                           "type": "string",
                           "format": "date-time",
                           "example": "2023-01-01T00:00:00Z"
+                        },
+                        "FeedPostLike": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "userId": {
+                                "type": "string",
+                                "example": "987fdebc-a654-3210-9876-543210987654"
+                              }
+                            }
+                          }
+                        },
+                        "FeedPostComment": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "123e4567-e89b-12d3-a456-426614174000"
+                              },
+                              "comment": {
+                                "type": "string",
+                                "example": "Great post!"
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -742,6 +779,46 @@
                         "example": 13
                       }
                     }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Invalid page number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Internal server error"
                   }
                 }
               }

@@ -233,6 +233,7 @@ export const getPostComments = async (feedPostId: string) => {
 export interface GetFeedPostsInput {
   page?: number;
   limit?: number;
+  username?: string;
 }
 
 export const getFeedPosts = async (input: GetFeedPostsInput = {}) => {
@@ -241,8 +242,18 @@ export const getFeedPosts = async (input: GetFeedPostsInput = {}) => {
   const limit = input.limit || 8;
   const skip = (page - 1) * limit;
 
+  // Build where clause
+  const where = input.username
+    ? {
+        user: {
+          username: input.username,
+        },
+      }
+    : {};
+
   const [posts, total] = await Promise.all([
     prisma.feedPost.findMany({
+      where,
       skip,
       take: limit,
       orderBy: {
@@ -270,7 +281,9 @@ export const getFeedPosts = async (input: GetFeedPostsInput = {}) => {
         },
       },
     }),
-    prisma.feedPost.count(),
+    prisma.feedPost.count({
+      where,
+    }),
   ]);
 
   const postResult = posts.map((post) => ({

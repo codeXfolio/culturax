@@ -265,10 +265,11 @@ class FeedController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const { page } = req.query;
+      const { page, username } = req.query;
       const input: GetFeedPostsInput = {
         page: page ? parseInt(page as string) : undefined,
         limit: 8,
+        username: username as string,
       };
 
       const result = await getFeedPosts(input);

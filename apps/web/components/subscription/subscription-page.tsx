@@ -48,6 +48,7 @@ import {
    getCreatorProfile,
    unfollowUser,
 } from "@/lib/api/subscription";
+import { useInView } from "react-intersection-observer";
 
 interface SubscriptionPageProps {
    username: string;
@@ -72,26 +73,81 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
    const [profile, setProfile] = useState<Profile | null>(null);
    const [feed, setFeed] = useState<FeedItem[]>([]);
    const [isFollowed, setIsFollowed] = useState(false);
+   const [isLoading, setIsLoading] = useState(true);
+   const [isLoadingMore, setIsLoadingMore] = useState(false);
+   const [page, setPage] = useState(1);
+   const [hasMore, setHasMore] = useState(true);
+
+   const { ref, inView } = useInView({
+      threshold: 0,
+   });
 
    useEffect(() => {
       const fetchProfile = async () => {
          if (!username) return;
 
-         const response = await getCreatorProfile(username);
-         setProfile(response);
-         setIsFollowed(response.isFollowed);
+         try {
+            const response = await getCreatorProfile(username);
+            setProfile(response);
+            setIsFollowed(response.isFollowed);
+         } catch (error) {
+            console.error("Error fetching profile:", error);
+         }
       };
 
       const fetchFeed = async () => {
          if (!username) return;
 
-         const response = await getCreatorFeed(username);
-         setFeed(response);
+         try {
+            setIsLoading(true);
+            const response = await getCreatorFeed(username);
+            setFeed(response.data);
+            setHasMore(
+               response.pagination.page < response.pagination.totalPages
+            );
+         } catch (error) {
+            console.error("Error fetching feed:", error);
+         } finally {
+            setIsLoading(false);
+         }
       };
 
       fetchProfile();
-      // fetchFeed();
+      fetchFeed();
    }, [username]);
+
+   // Load more posts when scrolling to the bottom
+   useEffect(() => {
+      if (inView && hasMore && !isLoadingMore) {
+         loadMorePosts();
+      }
+   }, [inView, hasMore, isLoadingMore]);
+
+   const loadMorePosts = async () => {
+      if (!username) return;
+
+      try {
+         setIsLoadingMore(true);
+         const nextPage = page + 1;
+         const response = await getCreatorFeed(username, nextPage);
+
+         if (response.success) {
+            // Use a Set to ensure unique items based on id
+            const existingIds = new Set(feed.map((item) => item.id));
+            const newItems = response.data.filter(
+               (item: FeedItem) => !existingIds.has(item.id)
+            );
+
+            setFeed((prev) => [...prev, ...newItems]);
+            setPage(nextPage);
+            setHasMore(nextPage < response.pagination.totalPages);
+         }
+      } catch (error) {
+         console.error("Error loading more posts:", error);
+      } finally {
+         setIsLoadingMore(false);
+      }
+   };
 
    const handleFollow = async () => {
       if (!username) return;
@@ -353,7 +409,7 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
 
          <main className="container pt-24 pb-16 max-w-5xl">
             {/* Cover Image */}
-            <div className="relative w-full h-[200px] md:h-[300px] mb-4 rounded-lg overflow-hidden">
+            <div className="relative w-full h-[200px] md:h-[300px] mb-4 rounded-t-lg overflow-hidden">
                <img
                   src={
                      profile?.coverImage ||
@@ -400,67 +456,6 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                   </div>
                   <p className="text-muted-foreground mb-4">{profile?.bio}</p>
                   <div className="flex flex-wrap gap-2">
-                     {/* Desktop: Collapsible for subscription */}
-                     <div className="hidden md:block">
-                        <Collapsible
-                           open={showSubscription}
-                           onOpenChange={setShowSubscription}
-                           className="w-full"
-                        >
-                           <CollapsibleTrigger asChild>
-                              <Button
-                                 className="gap-2"
-                                 onClick={(e) => {
-                                    e.preventDefault();
-                                    setShowConfirmDialog(true);
-                                 }}
-                              >
-                                 <Wallet className="h-4 w-4" />
-                                 Subscribe
-                              </Button>
-                           </CollapsibleTrigger>
-                           <CollapsibleContent className="mt-6">
-                              <Card className="border border-border/50 relative max-w-md">
-                                 <CardHeader>
-                                    <CardTitle>Subscription</CardTitle>
-                                    <CardDescription>
-                                       <span className="text-xl font-bold">
-                                          {subscription.price}
-                                       </span>
-                                       <span className="text-muted-foreground">
-                                          /{subscription.period}
-                                       </span>
-                                    </CardDescription>
-                                 </CardHeader>
-                                 <CardContent>
-                                    <p className="text-sm text-muted-foreground mb-4">
-                                       {subscription.description}
-                                    </p>
-                                    <ul className="space-y-2">
-                                       {subscription.features.map(
-                                          (feature, index) => (
-                                             <li
-                                                key={index}
-                                                className="flex items-start gap-2 text-sm"
-                                             >
-                                                <Check className="h-4 w-4 text-green-500 mt-0.5" />
-                                                <span>{feature}</span>
-                                             </li>
-                                          )
-                                       )}
-                                    </ul>
-                                 </CardContent>
-                                 <CardFooter>
-                                    <Button className="w-full gap-2">
-                                       <Wallet className="h-4 w-4" />
-                                       Subscribe Now
-                                    </Button>
-                                 </CardFooter>
-                              </Card>
-                           </CollapsibleContent>
-                        </Collapsible>
-                     </div>
-
                      {/* Mobile: Dialog for subscription */}
                      <div className="md:hidden">
                         <Dialog>
@@ -559,16 +554,40 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
 
                   <TabsContent value="feed">
                      <div className="space-y-6">
-                        {feedItems.map((item) => (
-                           <FeedCard
-                              key={item.id}
-                              item={item}
-                              onLike={() => {}}
-                              onUnlike={() => {}}
-                              onAddComment={() => {}}
-                              onDeleteComment={() => {}}
-                           />
-                        ))}
+                        {isLoading ? (
+                           <div className="space-y-6">
+                              {[...Array(4)].map((_, index) => (
+                                 <div key={index} className="animate-pulse">
+                                    <div className="h-[400px] bg-muted rounded-lg" />
+                                 </div>
+                              ))}
+                           </div>
+                        ) : feed.length > 0 ? (
+                           <>
+                              {feed.map((item) => (
+                                 <FeedCard
+                                    key={item.id}
+                                    item={item}
+                                    onLike={() => {}}
+                                    onUnlike={() => {}}
+                                    onAddComment={() => {}}
+                                    onDeleteComment={() => {}}
+                                 />
+                              ))}
+                              {/* Loading indicator for infinite scroll */}
+                              <div ref={ref} className="py-4">
+                                 {isLoadingMore && (
+                                    <div className="flex justify-center">
+                                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                                    </div>
+                                 )}
+                              </div>
+                           </>
+                        ) : (
+                           <div className="text-center py-8 text-muted-foreground">
+                              No posts yet
+                           </div>
+                        )}
                      </div>
                   </TabsContent>
 

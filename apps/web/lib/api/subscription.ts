@@ -54,66 +54,100 @@ export interface ContentPreview {
    locked: boolean;
 }
 
+interface FeedResponse {
+   success: boolean;
+   data: FeedItem[];
+   pagination: {
+      total: number;
+      page: number;
+      limit: number;
+      totalPages: number;
+   };
+}
+
 export const getCreatorProfile = async (username: string) => {
-   return await apiRequest<Creator>(`/api/user/${username}`);
+   const response = await apiRequest<Creator>(`/api/user/${username}`);
+   return response.data;
 };
 
 export const followUser = async (
    userAddress: string,
    targetAddress: string
 ) => {
-   return apiRequest<{ id: string }>(`/api/user/follow`, {
+   const response = await apiRequest<{ id: string }>(`/api/user/follow`, {
       method: "POST",
       body: JSON.stringify({ userAddress, targetAddress }),
    });
+   return response.data;
 };
 
 export const unfollowUser = async (
    userAddress: string,
    targetAddress: string
 ) => {
-   return apiRequest<{ id: string }>(`/api/user/unfollow`, {
+   const response = await apiRequest<{ id: string }>(`/api/user/unfollow`, {
       method: "POST",
       body: JSON.stringify({ userAddress, targetAddress }),
    });
+   return response.data;
 };
 
 export const getCreatorMonetizationSettings = async (userId: string) => {
-   return apiRequest<MonetizationSettings>(
+   const response = await apiRequest<MonetizationSettings>(
       `/api/subscription/monetization/settings/${userId}`
    );
+   return response.data;
 };
 
 export const createSubscription = async (
    subscriberId: string,
    creatorId: string
 ) => {
-   return apiRequest<Subscription>("/api/subscription/create", {
+   const response = await apiRequest<Subscription>("/api/subscription/create", {
       method: "POST",
       body: JSON.stringify({ subscriberId, creatorId }),
    });
+   return response.data;
 };
 
-export const getCreatorFeed = async (userId: string) => {
-   return apiRequest<FeedItem[]>(`/api/feed/user/${userId}`);
-};
+export async function getCreatorFeed(
+   username: string,
+   page: number = 1
+): Promise<any> {
+   const response = await apiRequest<{
+      data: FeedItem[];
+      pagination: {
+         total: number;
+         page: number;
+         limit: number;
+         totalPages: number;
+      };
+   }>(`/api/feed?username=${username}&page=${page}`);
+
+   return response;
+}
 
 export const getCreatorCollections = async (userId: string) => {
-   return apiRequest<ContentPreview[]>(`/api/collection/user/${userId}`);
+   const response = await apiRequest<ContentPreview[]>(
+      `/api/collection/user/${userId}`
+   );
+   return response.data;
 };
 
 export const likePost = async (userId: string, feedPostId: string) => {
-   return apiRequest<{ id: string }>("/api/feed/like", {
+   const response = await apiRequest<{ id: string }>("/api/feed/like", {
       method: "POST",
       body: JSON.stringify({ userId, feedPostId }),
    });
+   return response.data;
 };
 
 export const unlikePost = async (userId: string, feedPostId: string) => {
-   return apiRequest<{ id: string }>("/api/feed/unlike", {
+   const response = await apiRequest<{ id: string }>("/api/feed/unlike", {
       method: "POST",
       body: JSON.stringify({ userId, feedPostId }),
    });
+   return response.data;
 };
 
 export const addComment = async (
@@ -121,14 +155,19 @@ export const addComment = async (
    feedPostId: string,
    comment: string
 ) => {
-   return apiRequest<{ id: string }>("/api/feed/comment", {
+   const response = await apiRequest<{ id: string }>("/api/feed/comment", {
       method: "POST",
       body: JSON.stringify({ userId, feedPostId, comment }),
    });
+   return response.data;
 };
 
 export const deleteComment = async (commentId: string) => {
-   return apiRequest<{ id: string }>(`/api/feed/comment/${commentId}`, {
-      method: "DELETE",
-   });
+   const response = await apiRequest<{ id: string }>(
+      `/api/feed/comment/${commentId}`,
+      {
+         method: "DELETE",
+      }
+   );
+   return response.data;
 };

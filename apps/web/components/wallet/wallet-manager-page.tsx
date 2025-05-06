@@ -75,7 +75,7 @@ export function WalletManagerPage() {
          symbol: "ETH",
          balance: "1.245",
          usdValue: "2,856.45",
-         icon: "/placeholder.svg?height=40&width=40",
+         icon: "/icons/eth.png",
          change: "+5.2%",
          positive: true,
       },
@@ -85,17 +85,17 @@ export function WalletManagerPage() {
          symbol: "USDC",
          balance: "150.00",
          usdValue: "150.00",
-         icon: "/placeholder.svg?height=40&width=40",
+         icon: "/icons/usdc.png",
          change: "+0.1%",
          positive: true,
       },
       {
          id: 3,
-         name: "CreatorX Token",
+         name: "CulturaX Token",
          symbol: "CX",
          balance: "500.00",
          usdValue: "750.00",
-         icon: "/placeholder.svg?height=40&width=40",
+         icon: "/logo.png",
          change: "-2.5%",
          positive: false,
       },
@@ -396,14 +396,14 @@ export function WalletManagerPage() {
                                  >
                                     <CardContent className="p-3 sm:p-4">
                                        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                                          <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center overflow-hidden mx-auto sm:mx-0">
+                                          <div className="h-10 w-10 rounded-md flex items-center justify-center overflow-hidden mx-auto sm:mx-0">
                                              <img
                                                 src={
                                                    token.icon ||
                                                    "/placeholder.svg"
                                                 }
                                                 alt={token.name}
-                                                className="h-6 w-6"
+                                                className="w-full h-full object-cover"
                                              />
                                           </div>
                                           <div className="flex-1 min-w-0 text-center sm:text-left">

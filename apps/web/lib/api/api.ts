@@ -2,10 +2,16 @@
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
+interface ApiResponse<T> {
+   success: boolean;
+   data: T;
+   error?: string;
+}
+
 export async function apiRequest<T>(
    endpoint: string,
    options: RequestInit = {}
-): Promise<T> {
+): Promise<ApiResponse<T>> {
    const signature = localStorage.getItem("authSignature");
    const address = localStorage.getItem("authAddress");
    const headers = {
@@ -29,5 +35,5 @@ export async function apiRequest<T>(
       throw new Error(data.error);
    }
 
-   return data.data;
+   return data;
 }
