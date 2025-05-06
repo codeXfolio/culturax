@@ -47,6 +47,7 @@ import {
    getCreatorFeed,
    getCreatorProfile,
    unfollowUser,
+   getCreatorCollectionsByUsername,
 } from "@/lib/api/subscription";
 import { useInView } from "react-intersection-observer";
 
@@ -67,6 +68,31 @@ interface Profile {
    isFollowed: boolean;
 }
 
+interface Collection {
+   id: string;
+   title: string;
+   description: string;
+   tags: string[];
+   userId: string;
+   coverImage: string;
+   createdAt: string;
+   updatedAt: string;
+   user: {
+      id: string;
+      name: string;
+      username: string;
+      avatar: string;
+   };
+}
+
+interface ContentPreview {
+   id: string;
+   title: string;
+   type: string;
+   thumbnail: string;
+   locked: boolean;
+}
+
 export function SubscriptionPage({ username }: SubscriptionPageProps) {
    const [showSubscription, setShowSubscription] = useState(false);
    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -77,6 +103,7 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
    const [isLoadingMore, setIsLoadingMore] = useState(false);
    const [page, setPage] = useState(1);
    const [hasMore, setHasMore] = useState(true);
+   const [collections, setCollections] = useState<ContentPreview[]>([]);
 
    const { ref, inView } = useInView({
       threshold: 0,
@@ -112,8 +139,20 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
          }
       };
 
+      const fetchCollections = async () => {
+         if (!username) return;
+
+         try {
+            const response = await getCreatorCollectionsByUsername(username);
+            setCollections(response);
+         } catch (error) {
+            console.error("Error fetching collections:", error);
+         }
+      };
+
       fetchProfile();
       fetchFeed();
+      fetchCollections();
    }, [username]);
 
    // Load more posts when scrolling to the bottom
@@ -205,141 +244,6 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
          "Community access",
       ],
    };
-
-   // Mock content previews
-   const contentPreviews = [
-      {
-         id: 1,
-         title: "Digital Art Collection #1",
-         type: "image",
-         thumbnail: "/placeholder.svg?height=300&width=400",
-         locked: false,
-      },
-      {
-         id: 2,
-         title: "Behind the Scenes: Creative Process",
-         type: "video",
-         thumbnail: "/placeholder.svg?height=300&width=400",
-         locked: true,
-      },
-      {
-         id: 3,
-         title: "Exclusive Tutorial: Digital Painting",
-         type: "tutorial",
-         thumbnail: "/placeholder.svg?height=300&width=400",
-         locked: true,
-      },
-      {
-         id: 4,
-         title: "New NFT Collection Preview",
-         type: "image",
-         thumbnail: "/placeholder.svg?height=300&width=400",
-         locked: true,
-      },
-      {
-         id: 5,
-         title: "Artist Statement: My Creative Journey",
-         type: "text",
-         thumbnail: "/placeholder.svg?height=300&width=400",
-         locked: false,
-      },
-      {
-         id: 6,
-         title: "Ambient Music for Creativity",
-         type: "audio",
-         thumbnail: "/placeholder.svg?height=300&width=400",
-         locked: true,
-      },
-   ];
-
-   // Mock feed items
-   const feedItems: FeedItem[] = [
-      {
-         id: "1",
-         caption:
-            "Really happy with how this turned out! Let me know what you think in the comments.",
-         image: "/placeholder.svg?height=400&width=600",
-         createdAt: "2024-01-20T10:00:00Z",
-         isPremium: false,
-         userId: "1",
-         FeedPostLike: [],
-         FeedPostComment: [],
-         user: {
-            id: "1",
-            name: "Alex Rivera",
-            username: "alexrivera",
-            avatar: "/placeholder.svg?height=40&width=40",
-         },
-      },
-      {
-         id: "2",
-         caption:
-            "Here's a look at how I created my latest NFT collection. I start with sketches and then move to digital...",
-         image: "/placeholder.svg?height=400&width=600",
-         createdAt: "2024-01-19T15:30:00Z",
-         isPremium: true,
-         userId: "1",
-         FeedPostLike: [],
-         FeedPostComment: [],
-         user: {
-            id: "1",
-            name: "Alex Rivera",
-            username: "alexrivera",
-            avatar: "/placeholder.svg?height=40&width=40",
-         },
-      },
-      {
-         id: "3",
-         caption:
-            "I'll be sharing my techniques for creating realistic lighting effects in digital art. Stay tuned!",
-         image: "/placeholder.svg?height=400&width=600",
-         createdAt: "2024-01-18T09:15:00Z",
-         isPremium: false,
-         userId: "1",
-         FeedPostLike: [],
-         FeedPostComment: [],
-         user: {
-            id: "1",
-            name: "Alex Rivera",
-            username: "alexrivera",
-            avatar: "/placeholder.svg?height=40&width=40",
-         },
-      },
-      {
-         id: "4",
-         caption:
-            "Here's an early look at my upcoming NFT collection. Subscribers will get early access and special pricing.",
-         image: "/placeholder.svg?height=400&width=600",
-         createdAt: "2024-01-17T14:20:00Z",
-         isPremium: true,
-         userId: "1",
-         FeedPostLike: [],
-         FeedPostComment: [],
-         user: {
-            id: "1",
-            name: "Alex Rivera",
-            username: "alexrivera",
-            avatar: "/placeholder.svg?height=40&width=40",
-         },
-      },
-      {
-         id: "5",
-         caption:
-            "I've been thinking a lot about where digital art is headed, especially with AI and blockchain technologies becoming more mainstream...",
-         image: "/placeholder.svg?height=400&width=600",
-         createdAt: "2024-01-15T11:45:00Z",
-         isPremium: false,
-         userId: "1",
-         FeedPostLike: [],
-         FeedPostComment: [],
-         user: {
-            id: "1",
-            name: "Alex Rivera",
-            username: "alexrivera",
-            avatar: "/placeholder.svg?height=40&width=40",
-         },
-      },
-   ];
 
    return (
       <div className="min-h-screen bg-background">
@@ -471,10 +375,10 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                            <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto">
                               <DialogHeader>
                                  <DialogTitle>
-                                    Subscribe to {creator.name}
+                                    Subscribe to {profile?.name}
                                  </DialogTitle>
                                  <DialogDescription>
-                                    Get exclusive access to {creator.name}'s
+                                    Get exclusive access to {profile?.name}'s
                                     content for {subscription.price}/
                                     {subscription.period}
                                  </DialogDescription>
@@ -522,6 +426,17 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                               </div>
                            </DialogContent>
                         </Dialog>
+                     </div>
+
+                     {/* Desktop: Button for subscription */}
+                     <div className="hidden md:block">
+                        <Button
+                           className="gap-2"
+                           onClick={() => setShowConfirmDialog(true)}
+                        >
+                           <Wallet className="h-4 w-4" />
+                           Subscribe
+                        </Button>
                      </div>
 
                      <Button onClick={handleFollow} variant="outline">
@@ -593,14 +508,20 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
 
                   <TabsContent value="images">
                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        {contentPreviews
-                           .filter((content) => content.type === "image")
-                           .map((content) => (
-                              <ContentPreview
-                                 key={content.id}
-                                 content={content}
-                              />
-                           ))}
+                        {collections.map((collection) => (
+                           <ContentPreview
+                              key={collection.id}
+                              content={{
+                                 id: parseInt(collection.id),
+                                 title: collection.title,
+                                 type: "image",
+                                 thumbnail:
+                                    collection.thumbnail ||
+                                    "/placeholder.svg?height=300&width=400",
+                                 locked: false,
+                              }}
+                           />
+                        ))}
                      </div>
                   </TabsContent>
                </Tabs>

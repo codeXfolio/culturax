@@ -214,6 +214,168 @@
       }
     }
   },
+  "/api/collection/username/{username}": {
+    "get": {
+      "tags": ["Collection"],
+      "summary": "Get collections by username",
+      "description": "Retrieve all collections owned by a specific user using their username",
+      "parameters": [
+        {
+          "name": "username",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Username of the collection owner"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Collections retrieved successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "My Art Collection"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "A collection of my digital artwork"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": ["digital", "art", "collection"]
+                        },
+                        "userId": {
+                          "type": "string",
+                          "example": "987fdebc-a654-3210-9876-543210987654"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "987fdebc-a654-3210-9876-543210987654"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John Doe"
+                            },
+                            "username": {
+                              "type": "string",
+                              "example": "johndoe"
+                            },
+                            "avatar": {
+                              "type": "string",
+                              "example": "https://example.com/avatar.jpg"
+                            }
+                          }
+                        },
+                        "coverImage": {
+                          "type": "string",
+                          "example": "/uploads/collections/123e4567-e89b-12d3-a456-426614174000/cover.jpg"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-01-01T00:00:00Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-01-01T00:00:00Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Username is required"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "User not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Internal server error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "/api/collection/{id}": {
     "get": {
       "tags": ["Collection"],

@@ -88,6 +88,30 @@ export const getCollectionsByUser = async (userId: string) => {
   return collections;
 };
 
+export const getCollectionsByUsername = async (username: string) => {
+  const prisma = new PrismaClient();
+
+  const collections = await prisma.collection.findMany({
+    where: {
+      user: {
+        username: username,
+      },
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+
+  return collections;
+};
+
 interface CollectionFile {
   name: string;
   path: string;

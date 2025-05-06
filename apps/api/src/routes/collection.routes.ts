@@ -29,6 +29,11 @@ const routes: RouteConfig[] = [
     handler: collectionController.getByUser,
   },
   {
+    path: '/username/:username',
+    method: 'get',
+    handler: collectionController.getByUsername,
+  },
+  {
     path: '/:id',
     method: 'get',
     handler: collectionController.getById,

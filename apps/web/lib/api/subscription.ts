@@ -134,6 +134,13 @@ export const getCreatorCollections = async (userId: string) => {
    return response.data;
 };
 
+export const getCreatorCollectionsByUsername = async (username: string) => {
+   const response = await apiRequest<ContentPreview[]>(
+      `/api/collection/username/${username}`
+   );
+   return response.data;
+};
+
 export const likePost = async (userId: string, feedPostId: string) => {
    const response = await apiRequest<{ id: string }>("/api/feed/like", {
       method: "POST",

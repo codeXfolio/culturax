@@ -6,6 +6,7 @@ import {
   getCollectionById,
   updateCollection,
   deleteCollection,
+  getCollectionsByUsername,
 } from './collection.service';
 
 class CollectionController {
@@ -143,6 +144,30 @@ class CollectionController {
         success: false,
         error: 'Failed to delete collection',
       });
+    }
+  }
+
+  async getByUsername(req: Request, res: Response) {
+    try {
+      const { username } = req.params;
+
+      if (!username) {
+        return res.status(400).json({
+          success: false,
+          error: 'Username is required',
+        });
+      }
+
+      const collections = await getCollectionsByUsername(username);
+      res.json({ success: true, data: collections });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ success: false, error: error.message });
+      } else {
+        res
+          .status(500)
+          .json({ success: false, error: 'Internal server error' });
+      }
     }
   }
 }
