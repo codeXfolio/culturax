@@ -44,7 +44,7 @@ export function CommentModal({
                {post.image ? (
                   <>
                      <img
-                        src={post.image}
+                        src={`${process.env.NEXT_PUBLIC_API_URL + post.image}`}
                         alt="Post"
                         className={`object-contain max-h-[80vh] w-full ${
                            post.isPremium ? "blur-md" : ""

@@ -10,6 +10,9 @@ import feedRoutes from './routes/feed.routes';
 import path from 'path';
 import cors from 'cors';
 import subscriptionRoutes from './routes/subscription.routes';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 

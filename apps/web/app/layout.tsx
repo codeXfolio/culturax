@@ -3,8 +3,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { PrivyProvider } from "@privy-io/react-auth";
-import { soneiumMinato } from "viem/chains";
 import Privy from "@/context/privy";
 const inter = Inter({ subsets: ["latin"] });
 

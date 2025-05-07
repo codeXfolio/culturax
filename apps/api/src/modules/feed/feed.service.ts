@@ -277,6 +277,15 @@ export const getFeedPosts = async (input: GetFeedPostsInput = {}) => {
           select: {
             id: true,
             comment: true,
+            createdAt: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                username: true,
+                avatar: true
+              },
+            },
           },
         },
       },
@@ -286,13 +295,8 @@ export const getFeedPosts = async (input: GetFeedPostsInput = {}) => {
     }),
   ]);
 
-  const postResult = posts.map((post) => ({
-    ...post,
-    image: `${process.env.APP_URL}${post.image}`,
-  }));
-
   return {
-    posts: postResult,
+    posts: posts,
     pagination: {
       total,
       page,

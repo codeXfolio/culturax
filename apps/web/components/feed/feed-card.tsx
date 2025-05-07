@@ -86,32 +86,6 @@ export function FeedCard({
       }
    };
 
-   // Placeholder comments for now
-   const commentsList = [
-      {
-         id: 1,
-         user: {
-            name: "Sarah Johnson",
-            avatar: "/placeholder.svg?height=40&width=40",
-            isVerified: true,
-         },
-         content: "This is amazing content! Thanks for sharing your insights.",
-         date: "2 hours ago",
-         likes: 12,
-      },
-      {
-         id: 2,
-         user: {
-            name: "Michael Chen",
-            avatar: "/placeholder.svg?height=40&width=40",
-         },
-         content:
-            "I've been following your work for a while now. Always top quality!",
-         date: "5 hours ago",
-         likes: 8,
-      },
-   ];
-
    return (
       <Card className="overflow-hidden">
          <CardContent className="p-0">
@@ -151,7 +125,7 @@ export function FeedCard({
             {item.image && (
                <div className="relative">
                   <img
-                     src={item.image}
+                     src={`${process.env.NEXT_PUBLIC_API_URL + item.image}`}
                      alt={item.caption}
                      className="w-full h-auto object-cover"
                   />
@@ -193,7 +167,7 @@ export function FeedCard({
                      onClick={() => setShowCommentModal(true)}
                   >
                      <MessageSquare className="h-4 w-4" />
-                     <span>{commentsList.length}</span>
+                     <span>{item.FeedPostComment.length}</span>
                   </Button>
                </div>
                <div className="flex items-center gap-2">
@@ -209,10 +183,10 @@ export function FeedCard({
             {showComments && (
                <div className="px-4 py-3 border-t border-border/40">
                   <h4 className="font-medium text-sm mb-3">
-                     Comments ({commentsList.length})
+                     Comments ({item.FeedPostComment.length})
                   </h4>
                   <div className="space-y-4 mb-4">
-                     {commentsList.map((comment) => (
+                     {item.FeedPostComment.map((comment) => (
                         <div
                            key={comment.id}
                            className="flex items-start gap-2"
@@ -232,10 +206,10 @@ export function FeedCard({
                                     {comment.user.name}
                                  </span>
                                  <span className="text-xs text-muted-foreground">
-                                    {comment.date}
+                                    {formatDate(comment.createdAt)}
                                  </span>
                               </div>
-                              <p className="text-sm">{comment.content}</p>
+                              <p className="text-sm">{comment.comment}</p>
                            </div>
                            <Button
                               variant="ghost"
@@ -280,7 +254,16 @@ export function FeedCard({
                user: item.user,
                caption: item.caption,
             }}
-            comments={commentsList}
+            comments={item.FeedPostComment.map((comment) => ({
+               id: parseInt(comment.id),
+               user: {
+                  name: comment.user.name,
+                  avatar: comment.user.avatar,
+               },
+               content: comment.comment,
+               date: formatDate(comment.createdAt),
+               likes: 0,
+            }))}
          />
       </Card>
    );

@@ -496,7 +496,7 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                                        }}
                                     >
                                        <img
-                                          src={item.image || "/placeholder.svg"}
+                                          src={`${process.env.NEXT_PUBLIC_API_URL + item.image}` || "/placeholder.svg"}
                                           alt={item.caption}
                                           className={`w-full h-full object-cover rounded-lg ${
                                              item.isPremium ? "blur-sm" : ""
@@ -597,7 +597,7 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                      avatar: comment.user?.avatar ?? "/placeholder.svg",
                      isVerified: comment.user?.isVerified ?? false,
                   },
-                  content: comment.content,
+                  content: comment.comment,
                   date: comment.createdAt
                      ? new Date(comment.createdAt).toLocaleDateString(
                           undefined,
@@ -608,7 +608,7 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                           }
                        )
                      : "",
-                  likes: comment.likes ?? 0,
+                  likes: 0,
                })) || []
             }
          />
