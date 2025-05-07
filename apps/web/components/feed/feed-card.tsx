@@ -255,7 +255,7 @@ export function FeedCard({
                caption: item.caption,
             }}
             comments={item.FeedPostComment.map((comment) => ({
-               id: parseInt(comment.id),
+               id: comment.id,
                user: {
                   name: comment.user.name,
                   avatar: comment.user.avatar,

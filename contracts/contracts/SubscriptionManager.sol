@@ -11,8 +11,6 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
     using Address for address payable;
 
     // USDC token address
-    address public constant USDC_ADDRESS =
-        0xE9A198d38483aD727ABC8b0B1e16B2d338CF0391;
     IERC20 public immutable usdcToken;
 
     enum SubscriptionStatus {
@@ -106,8 +104,9 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
         uint256 timestamp
     );
 
-    constructor() Ownable(msg.sender) {
-        usdcToken = IERC20(USDC_ADDRESS);
+    constructor(address _usdcAddress) Ownable(msg.sender) {
+        require(_usdcAddress != address(0), "Invalid USDC address");
+        usdcToken = IERC20(_usdcAddress);
     }
 
     // Function to set or update creator settings

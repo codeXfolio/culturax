@@ -19,7 +19,7 @@ interface CommentModalProps {
       isPremium?: boolean;
    };
    comments?: {
-      id: number;
+      id: string;
       user: { name: string; avatar: string; isVerified?: boolean };
       content: string;
       date: string;
