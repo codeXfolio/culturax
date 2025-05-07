@@ -5,6 +5,7 @@ interface Deployment {
    chainId: string;
    CulturaXToken: string;
    NFTGenerator: string;
+   SubscriptionManager: string;
    deployer: string;
    timestamp: string;
 }
@@ -38,6 +39,15 @@ async function main() {
    await nftGenerator.waitForDeployment();
    console.log("NFTGenerator deployed to:", await nftGenerator.getAddress());
 
+   // SubscriptionManager deployment
+   console.log("\nDeploying SubscriptionManager...");
+   const SubscriptionManager = await ethers.getContractFactory("SubscriptionManager");
+   // Note: You'll need to provide the USDC token address for your network
+   const usdcAddress = "0xE9A198d38483aD727ABC8b0B1e16B2d338CF0391";
+   const subscriptionManager = await SubscriptionManager.deploy(usdcAddress);
+   await subscriptionManager.waitForDeployment();
+   console.log("SubscriptionManager deployed to:", await subscriptionManager.getAddress());
+
    // Save deployment addresses to a file
    const fs = require("fs");
    const path = require("path");
@@ -61,6 +71,7 @@ async function main() {
       chainId: network.chainId.toString(),
       CulturaXToken: await token.getAddress(),
       NFTGenerator: await nftGenerator.getAddress(),
+      SubscriptionManager: await subscriptionManager.getAddress(),
       deployer: deployer.address,
       timestamp: new Date().toISOString(),
    };
@@ -98,6 +109,7 @@ async function main() {
    console.log("Chain ID:", network.chainId);
    console.log("CulturaXToken:", await token.getAddress());
    console.log("NFTGenerator:", await nftGenerator.getAddress());
+   console.log("SubscriptionManager:", await subscriptionManager.getAddress());
 }
 
 main()

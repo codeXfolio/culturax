@@ -19,8 +19,6 @@ describe("SubscriptionManager", function () {
    const BIWEEKLY_PRICE = ethers.parseEther("0.05"); // 0.05 ETH
    const MIN_WITHDRAWAL = ethers.parseEther("0.01"); // 0.01 ETH
    const USDC_MONTHLY_PRICE = BigInt(1000000); // 1 USDC
-   const USDC_WEEKLY_PRICE = BigInt(250000); // 0.25 USDC
-   const USDC_BIWEEKLY_PRICE = BigInt(500000); // 0.5 USDC
    const MIN_USDC_WITHDRAWAL = BigInt(1000000); // 1 USDC
 
    beforeEach(async function () {
