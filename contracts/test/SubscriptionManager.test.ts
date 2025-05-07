@@ -3,9 +3,11 @@ import { ethers } from "hardhat";
 import { SubscriptionManager } from "../typechain-types";
 import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
 import { time } from "@nomicfoundation/hardhat-network-helpers";
+import { IERC20 } from "../typechain-types";
 
 describe("SubscriptionManager", function () {
    let subscriptionManager: SubscriptionManager;
+   let usdcToken: IERC20;
    let owner: SignerWithAddress;
    let creator: SignerWithAddress;
    let subscriber: SignerWithAddress;
@@ -15,6 +17,10 @@ describe("SubscriptionManager", function () {
    const WEEKLY_PRICE = ethers.parseEther("0.025"); // 0.025 ETH
    const BIWEEKLY_PRICE = ethers.parseEther("0.05"); // 0.05 ETH
    const MIN_WITHDRAWAL = ethers.parseEther("0.01"); // 0.01 ETH
+   const USDC_MONTHLY_PRICE = BigInt(1000000); // 1 USDC
+   const USDC_WEEKLY_PRICE = BigInt(250000); // 0.25 USDC
+   const USDC_BIWEEKLY_PRICE = BigInt(500000); // 0.5 USDC
+   const MIN_USDC_WITHDRAWAL = BigInt(1000000); // 1 USDC
 
    beforeEach(async function () {
       [owner, creator, subscriber, otherUser] = await ethers.getSigners();
@@ -22,13 +28,31 @@ describe("SubscriptionManager", function () {
          "SubscriptionManager"
       );
       subscriptionManager = await SubscriptionManager.deploy();
+
+      // Get USDC token instance
+      usdcToken = await ethers.getContractAt(
+         "IERC20",
+         await subscriptionManager.USDC_ADDRESS()
+      );
+
+      // Mint some USDC to test accounts
+      const usdcMinter = await ethers.getImpersonatedSigner(
+         await subscriptionManager.USDC_ADDRESS()
+      );
+      await usdcToken
+         .connect(usdcMinter)
+         .transfer(subscriber.address, BigInt(10000000)); // 10 USDC
+      await usdcToken
+         .connect(usdcMinter)
+         .transfer(otherUser.address, BigInt(10000000)); // 10 USDC
    });
 
    describe("Creator Settings", function () {
-      it("should allow creator to set their settings", async function () {
+      it("should allow creator to set their settings with ETH", async function () {
          await subscriptionManager.connect(creator).setCreatorSettings(
             MONTHLY_PRICE,
-            0 // MONTHLY
+            0, // MONTHLY
+            0 // ETH
          );
 
          const settings = await subscriptionManager.getCreatorSettings(
@@ -36,6 +60,23 @@ describe("SubscriptionManager", function () {
          );
          expect(settings.price).to.equal(MONTHLY_PRICE);
          expect(settings.payoutSchedule).to.equal(0); // MONTHLY
+         expect(settings.paymentToken).to.equal(0); // ETH
+         expect(settings.isActive).to.be.true;
+      });
+
+      it("should allow creator to set their settings with USDC", async function () {
+         await subscriptionManager.connect(creator).setCreatorSettings(
+            USDC_MONTHLY_PRICE,
+            0, // MONTHLY
+            1 // USDC
+         );
+
+         const settings = await subscriptionManager.getCreatorSettings(
+            creator.address
+         );
+         expect(settings.price).to.equal(USDC_MONTHLY_PRICE);
+         expect(settings.payoutSchedule).to.equal(0); // MONTHLY
+         expect(settings.paymentToken).to.equal(1); // USDC
          expect(settings.isActive).to.be.true;
       });
 
@@ -43,7 +84,8 @@ describe("SubscriptionManager", function () {
          await expect(
             subscriptionManager.connect(creator).setCreatorSettings(
                0,
-               0 // MONTHLY
+               0, // MONTHLY
+               0 // ETH
             )
          ).to.be.revertedWith("Price must be greater than 0");
       });
@@ -53,77 +95,139 @@ describe("SubscriptionManager", function () {
          await expect(
             subscriptionManager.connect(creator).setCreatorSettings(
                maxPrice,
-               0 // MONTHLY
+               0, // MONTHLY
+               0 // ETH
             )
          ).to.be.revertedWith("Price exceeds maximum limit");
       });
    });
 
    describe("Subscription", function () {
-      beforeEach(async function () {
-         // Set up creator settings
-         await subscriptionManager.connect(creator).setCreatorSettings(
-            MONTHLY_PRICE,
-            0 // MONTHLY
-         );
+      describe("ETH Subscriptions", function () {
+         beforeEach(async function () {
+            await subscriptionManager.connect(creator).setCreatorSettings(
+               MONTHLY_PRICE,
+               0, // MONTHLY
+               0 // ETH
+            );
+         });
+
+         it("should allow user to subscribe with correct payment", async function () {
+            await subscriptionManager
+               .connect(subscriber)
+               .subscribe(creator.address, {
+                  value: MONTHLY_PRICE,
+               });
+
+            const subscriptionId = 0;
+            const subscription = await subscriptionManager.getSubscription(
+               subscriptionId
+            );
+            expect(subscription.subscriber).to.equal(subscriber.address);
+            expect(subscription.creator).to.equal(creator.address);
+            expect(subscription.amount).to.equal(MONTHLY_PRICE);
+            expect(subscription.status).to.equal(0); // ACTIVE
+            expect(subscription.paymentToken).to.equal(0); // ETH
+         });
+
+         it("should not allow subscription with insufficient payment", async function () {
+            const insufficientPayment = MONTHLY_PRICE - BigInt(1);
+            await expect(
+               subscriptionManager
+                  .connect(subscriber)
+                  .subscribe(creator.address, {
+                     value: insufficientPayment,
+                  })
+            ).to.be.revertedWith("Insufficient payment");
+         });
+
+         it("should not allow self-subscription", async function () {
+            await expect(
+               subscriptionManager.connect(creator).subscribe(creator.address, {
+                  value: MONTHLY_PRICE,
+               })
+            ).to.be.revertedWith("Cannot subscribe to self");
+         });
+
+         it("should allow subscriber to cancel subscription", async function () {
+            await subscriptionManager
+               .connect(subscriber)
+               .subscribe(creator.address, {
+                  value: MONTHLY_PRICE,
+               });
+
+            await subscriptionManager.connect(subscriber).cancelSubscription(0);
+            const subscription = await subscriptionManager.getSubscription(0);
+            expect(subscription.status).to.equal(1); // CANCELLED
+         });
+
+         it("should not allow non-subscriber to cancel subscription", async function () {
+            await subscriptionManager
+               .connect(subscriber)
+               .subscribe(creator.address, {
+                  value: MONTHLY_PRICE,
+               });
+
+            await expect(
+               subscriptionManager.connect(otherUser).cancelSubscription(0)
+            ).to.be.revertedWith("Only subscriber can cancel");
+         });
       });
 
-      it("should allow user to subscribe with correct payment", async function () {
-         await subscriptionManager
-            .connect(subscriber)
-            .subscribe(creator.address, {
-               value: MONTHLY_PRICE,
-            });
+      describe("USDC Subscriptions", function () {
+         beforeEach(async function () {
+            await subscriptionManager.connect(creator).setCreatorSettings(
+               USDC_MONTHLY_PRICE,
+               0, // MONTHLY
+               1 // USDC
+            );
 
-         const subscriptionId = 0;
-         const subscription = await subscriptionManager.getSubscription(
-            subscriptionId
-         );
-         expect(subscription.subscriber).to.equal(subscriber.address);
-         expect(subscription.creator).to.equal(creator.address);
-         expect(subscription.amount).to.equal(MONTHLY_PRICE);
-         expect(subscription.status).to.equal(0); // ACTIVE
-      });
+            // Approve USDC spending
+            await usdcToken
+               .connect(subscriber)
+               .approve(
+                  await subscriptionManager.getAddress(),
+                  USDC_MONTHLY_PRICE
+               );
+         });
 
-      it("should not allow subscription with insufficient payment", async function () {
-         const insufficientPayment = MONTHLY_PRICE - BigInt(1);
-         await expect(
-            subscriptionManager.connect(subscriber).subscribe(creator.address, {
-               value: insufficientPayment,
-            })
-         ).to.be.revertedWith("Insufficient payment");
-      });
+         it("should allow user to subscribe with USDC", async function () {
+            await subscriptionManager
+               .connect(subscriber)
+               .subscribe(creator.address);
 
-      it("should not allow self-subscription", async function () {
-         await expect(
-            subscriptionManager.connect(creator).subscribe(creator.address, {
-               value: MONTHLY_PRICE,
-            })
-         ).to.be.revertedWith("Cannot subscribe to self");
-      });
+            const subscriptionId = 0;
+            const subscription = await subscriptionManager.getSubscription(
+               subscriptionId
+            );
+            expect(subscription.subscriber).to.equal(subscriber.address);
+            expect(subscription.creator).to.equal(creator.address);
+            expect(subscription.amount).to.equal(USDC_MONTHLY_PRICE);
+            expect(subscription.status).to.equal(0); // ACTIVE
+            expect(subscription.paymentToken).to.equal(1); // USDC
+         });
 
-      it("should allow subscriber to cancel subscription", async function () {
-         await subscriptionManager
-            .connect(subscriber)
-            .subscribe(creator.address, {
-               value: MONTHLY_PRICE,
-            });
+         it("should not allow subscription without USDC approval", async function () {
+            await usdcToken
+               .connect(subscriber)
+               .approve(await subscriptionManager.getAddress(), 0);
 
-         await subscriptionManager.connect(subscriber).cancelSubscription(0);
-         const subscription = await subscriptionManager.getSubscription(0);
-         expect(subscription.status).to.equal(1); // CANCELLED
-      });
+            await expect(
+               subscriptionManager
+                  .connect(subscriber)
+                  .subscribe(creator.address)
+            ).to.be.revertedWith("USDC transfer failed");
+         });
 
-      it("should not allow non-subscriber to cancel subscription", async function () {
-         await subscriptionManager
-            .connect(subscriber)
-            .subscribe(creator.address, {
-               value: MONTHLY_PRICE,
-            });
-
-         await expect(
-            subscriptionManager.connect(otherUser).cancelSubscription(0)
-         ).to.be.revertedWith("Only subscriber can cancel");
+         it("should not allow subscription with ETH when USDC is required", async function () {
+            await expect(
+               subscriptionManager
+                  .connect(subscriber)
+                  .subscribe(creator.address, {
+                     value: MONTHLY_PRICE,
+                  })
+            ).to.be.revertedWith("ETH payment not accepted");
+         });
       });
    });
 
@@ -132,7 +236,8 @@ describe("SubscriptionManager", function () {
          // Set up creator settings
          await subscriptionManager.connect(creator).setCreatorSettings(
             MONTHLY_PRICE,
-            0 // MONTHLY
+            0, // MONTHLY
+            0 // ETH
          );
 
          // Create subscription
@@ -173,7 +278,8 @@ describe("SubscriptionManager", function () {
       it("should handle weekly subscriptions", async function () {
          await subscriptionManager.connect(creator).setCreatorSettings(
             WEEKLY_PRICE,
-            1 // WEEKLY
+            1, // WEEKLY
+            0 // ETH
          );
 
          await subscriptionManager
@@ -191,7 +297,8 @@ describe("SubscriptionManager", function () {
       it("should handle biweekly subscriptions", async function () {
          await subscriptionManager.connect(creator).setCreatorSettings(
             BIWEEKLY_PRICE,
-            2 // BIWEEKLY
+            2, // BIWEEKLY
+            0 // ETH
          );
 
          await subscriptionManager
@@ -208,112 +315,238 @@ describe("SubscriptionManager", function () {
    });
 
    describe("Withdrawal", function () {
-      beforeEach(async function () {
-         // Set up creator settings
-         await subscriptionManager.connect(creator).setCreatorSettings(
-            MONTHLY_PRICE,
-            0 // MONTHLY
-         );
-      });
+      describe("ETH Withdrawal", function () {
+         beforeEach(async function () {
+            await subscriptionManager.connect(creator).setCreatorSettings(
+               MONTHLY_PRICE,
+               0, // MONTHLY
+               0 // ETH
+            );
+         });
 
-      it("should allow creator to withdraw earnings to specified address", async function () {
-         // Create multiple subscriptions
-         await subscriptionManager
-            .connect(subscriber)
-            .subscribe(creator.address, {
-               value: MONTHLY_PRICE,
-            });
-         await subscriptionManager
-            .connect(otherUser)
-            .subscribe(creator.address, {
-               value: MONTHLY_PRICE,
-            });
-
-         // Check earnings
-         const earnings = await subscriptionManager.getCreatorEarnings(
-            creator.address
-         );
-         expect(earnings).to.equal(MONTHLY_PRICE * BigInt(2));
-
-         // Withdraw to a different address
-         const initialBalance = await ethers.provider.getBalance(
-            otherUser.address
-         );
-         const tx = await subscriptionManager
-            .connect(creator)
-            .withdraw(otherUser.address as any);
-         const receipt = await tx.wait();
-         const gasUsed = receipt!.gasUsed * receipt!.gasPrice;
-         const finalBalance = await ethers.provider.getBalance(
-            otherUser.address
-         );
-
-         // Check balance change
-         const expectedBalance = initialBalance + earnings;
-         expect(finalBalance).to.be.closeTo(
-            expectedBalance,
-            ethers.parseEther("0.01")
-         );
-
-         // Check earnings reset
-         const newEarnings = await subscriptionManager.getCreatorEarnings(
-            creator.address
-         );
-         expect(newEarnings).to.equal(0);
-      });
-
-      it("should not allow withdrawal with insufficient earnings", async function () {
-         // Create subscription with amount less than minimum withdrawal
-         const smallAmount = MIN_WITHDRAWAL - BigInt(1);
-         await subscriptionManager.connect(creator).setCreatorSettings(
-            smallAmount,
-            0 // MONTHLY
-         );
-
-         await subscriptionManager
-            .connect(subscriber)
-            .subscribe(creator.address, {
-               value: smallAmount,
-            });
-
-         // Try to withdraw
-         await expect(
-            subscriptionManager
-               .connect(creator)
-               .withdraw(creator.address as any)
-         ).to.be.revertedWith("Insufficient earnings for withdrawal");
-      });
-
-      it("should not allow withdrawal to zero address", async function () {
-         // Create subscription
-         await subscriptionManager
-            .connect(subscriber)
-            .subscribe(creator.address, {
-               value: MONTHLY_PRICE,
-            });
-
-         // Try to withdraw to zero address
-         await expect(
-            subscriptionManager
-               .connect(creator)
-               .withdraw(ethers.ZeroAddress as any)
-         ).to.be.revertedWith("Invalid destination address");
-      });
-
-      it("should not allow non-creator to withdraw", async function () {
-         // Create subscription
-         await subscriptionManager
-            .connect(subscriber)
-            .subscribe(creator.address, {
-               value: MONTHLY_PRICE,
-            });
-
-         // Try to withdraw with different address
-         await expect(
-            subscriptionManager
+         it("should allow creator to withdraw earnings to specified address", async function () {
+            // Create multiple subscriptions
+            await subscriptionManager
+               .connect(subscriber)
+               .subscribe(creator.address, {
+                  value: MONTHLY_PRICE,
+               });
+            await subscriptionManager
                .connect(otherUser)
-               .withdraw(otherUser.address as any)
-         ).to.be.revertedWith("Insufficient earnings for withdrawal");
+               .subscribe(creator.address, {
+                  value: MONTHLY_PRICE,
+               });
+
+            // Check earnings
+            const earnings = await subscriptionManager.getCreatorEarnings(
+               creator.address
+            );
+            expect(earnings).to.equal(MONTHLY_PRICE * BigInt(2));
+
+            // Withdraw to a different address
+            const initialBalance = await ethers.provider.getBalance(
+               otherUser.address
+            );
+            const tx = await subscriptionManager
+               .connect(creator)
+               .withdraw(otherUser.address);
+            const receipt = await tx.wait();
+            const gasUsed = receipt!.gasUsed * receipt!.gasPrice;
+            const finalBalance = await ethers.provider.getBalance(
+               otherUser.address
+            );
+
+            // Check balance change
+            const expectedBalance = initialBalance + earnings;
+            expect(finalBalance).to.be.closeTo(
+               expectedBalance,
+               ethers.parseEther("0.01")
+            );
+
+            // Check earnings reset
+            const newEarnings = await subscriptionManager.getCreatorEarnings(
+               creator.address
+            );
+            expect(newEarnings).to.equal(0);
+         });
+
+         it("should not allow withdrawal with insufficient earnings", async function () {
+            // Create subscription with amount less than minimum withdrawal
+            const smallAmount = MIN_WITHDRAWAL - BigInt(1);
+            await subscriptionManager.connect(creator).setCreatorSettings(
+               smallAmount,
+               0, // MONTHLY
+               0 // ETH
+            );
+
+            await subscriptionManager
+               .connect(subscriber)
+               .subscribe(creator.address, {
+                  value: smallAmount,
+               });
+
+            // Try to withdraw
+            await expect(
+               subscriptionManager.connect(creator).withdraw(creator.address)
+            ).to.be.revertedWith("Insufficient earnings for withdrawal");
+         });
+
+         it("should not allow withdrawal to zero address", async function () {
+            // Create subscription
+            await subscriptionManager
+               .connect(subscriber)
+               .subscribe(creator.address, {
+                  value: MONTHLY_PRICE,
+               });
+
+            // Try to withdraw to zero address
+            await expect(
+               subscriptionManager.connect(creator).withdraw(ethers.ZeroAddress)
+            ).to.be.revertedWith("Invalid destination address");
+         });
+
+         it("should not allow non-creator to withdraw", async function () {
+            // Create subscription
+            await subscriptionManager
+               .connect(subscriber)
+               .subscribe(creator.address, {
+                  value: MONTHLY_PRICE,
+               });
+
+            // Try to withdraw with different address
+            await expect(
+               subscriptionManager
+                  .connect(otherUser)
+                  .withdraw(otherUser.address)
+            ).to.be.revertedWith("Insufficient earnings for withdrawal");
+         });
+      });
+
+      describe("USDC Withdrawal", function () {
+         beforeEach(async function () {
+            await subscriptionManager.connect(creator).setCreatorSettings(
+               USDC_MONTHLY_PRICE,
+               0, // MONTHLY
+               1 // USDC
+            );
+
+            // Approve and create USDC subscription
+            await usdcToken
+               .connect(subscriber)
+               .approve(
+                  await subscriptionManager.getAddress(),
+                  USDC_MONTHLY_PRICE
+               );
+            await subscriptionManager
+               .connect(subscriber)
+               .subscribe(creator.address);
+         });
+
+         it("should allow creator to withdraw USDC earnings", async function () {
+            const initialBalance = await usdcToken.balanceOf(otherUser.address);
+
+            await subscriptionManager
+               .connect(creator)
+               .withdraw(otherUser.address);
+
+            const finalBalance = await usdcToken.balanceOf(otherUser.address);
+            expect(finalBalance - initialBalance).to.equal(USDC_MONTHLY_PRICE);
+
+            // Check earnings reset
+            const usdcEarnings =
+               await subscriptionManager.getCreatorUSDCearnings(
+                  creator.address
+               );
+            expect(usdcEarnings).to.equal(0);
+         });
+
+         it("should not allow withdrawal with insufficient USDC earnings", async function () {
+            const smallAmount = MIN_USDC_WITHDRAWAL - BigInt(1);
+            await subscriptionManager.connect(creator).setCreatorSettings(
+               smallAmount,
+               0, // MONTHLY
+               1 // USDC
+            );
+
+            await usdcToken
+               .connect(subscriber)
+               .approve(await subscriptionManager.getAddress(), smallAmount);
+            await subscriptionManager
+               .connect(subscriber)
+               .subscribe(creator.address);
+
+            await expect(
+               subscriptionManager.connect(creator).withdraw(creator.address)
+            ).to.be.revertedWith("Insufficient earnings for withdrawal");
+         });
+      });
+
+      describe("Mixed Withdrawals", function () {
+         beforeEach(async function () {
+            // Set up ETH subscription
+            await subscriptionManager.connect(creator).setCreatorSettings(
+               MONTHLY_PRICE,
+               0, // MONTHLY
+               0 // ETH
+            );
+            await subscriptionManager
+               .connect(subscriber)
+               .subscribe(creator.address, {
+                  value: MONTHLY_PRICE,
+               });
+
+            // Set up USDC subscription
+            await subscriptionManager.connect(creator).setCreatorSettings(
+               USDC_MONTHLY_PRICE,
+               0, // MONTHLY
+               1 // USDC
+            );
+            await usdcToken
+               .connect(otherUser)
+               .approve(
+                  await subscriptionManager.getAddress(),
+                  USDC_MONTHLY_PRICE
+               );
+            await subscriptionManager
+               .connect(otherUser)
+               .subscribe(creator.address);
+         });
+
+         it("should allow withdrawal of both ETH and USDC in one transaction", async function () {
+            const initialEthBalance = await ethers.provider.getBalance(
+               otherUser.address
+            );
+            const initialUsdcBalance = await usdcToken.balanceOf(
+               otherUser.address
+            );
+
+            await subscriptionManager
+               .connect(creator)
+               .withdraw(otherUser.address);
+
+            const finalEthBalance = await ethers.provider.getBalance(
+               otherUser.address
+            );
+            const finalUsdcBalance = await usdcToken.balanceOf(
+               otherUser.address
+            );
+
+            expect(finalEthBalance - initialEthBalance).to.equal(MONTHLY_PRICE);
+            expect(finalUsdcBalance - initialUsdcBalance).to.equal(
+               USDC_MONTHLY_PRICE
+            );
+
+            // Check earnings reset
+            const ethEarnings = await subscriptionManager.getCreatorEarnings(
+               creator.address
+            );
+            const usdcEarnings =
+               await subscriptionManager.getCreatorUSDCearnings(
+                  creator.address
+               );
+            expect(ethEarnings).to.equal(0);
+            expect(usdcEarnings).to.equal(0);
+         });
       });
    });
 
@@ -341,7 +574,8 @@ describe("SubscriptionManager", function () {
          await expect(
             subscriptionManager.connect(creator).setCreatorSettings(
                MONTHLY_PRICE,
-               0 // MONTHLY
+               0, // MONTHLY
+               0 // ETH
             )
          ).to.be.revertedWithCustomError(subscriptionManager, "EnforcedPause");
       });
@@ -351,7 +585,8 @@ describe("SubscriptionManager", function () {
       beforeEach(async function () {
          await subscriptionManager.connect(creator).setCreatorSettings(
             MONTHLY_PRICE,
-            0 // MONTHLY
+            0, // MONTHLY
+            0 // ETH
          );
       });
 
@@ -415,7 +650,7 @@ describe("SubscriptionManager", function () {
          // Test weekly duration
          await subscriptionManager
             .connect(creator)
-            .setCreatorSettings(WEEKLY_PRICE, 1); // WEEKLY
+            .setCreatorSettings(WEEKLY_PRICE, 1, 0); // WEEKLY, ETH
          await subscriptionManager
             .connect(subscriber)
             .subscribe(creator.address, { value: WEEKLY_PRICE });
@@ -428,7 +663,7 @@ describe("SubscriptionManager", function () {
          // Test biweekly duration
          await subscriptionManager
             .connect(creator)
-            .setCreatorSettings(BIWEEKLY_PRICE, 2); // BIWEEKLY
+            .setCreatorSettings(BIWEEKLY_PRICE, 2, 0); // BIWEEKLY, ETH
          await subscriptionManager
             .connect(otherUser)
             .subscribe(creator.address, { value: BIWEEKLY_PRICE });

@@ -5,9 +5,15 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
     using Address for address payable;
+
+    // USDC token address
+    address public constant USDC_ADDRESS =
+        0xE9A198d38483aD727ABC8b0B1e16B2d338CF0391;
+    IERC20 public immutable usdcToken;
 
     enum SubscriptionStatus {
         ACTIVE,
@@ -21,6 +27,11 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
         BIWEEKLY
     }
 
+    enum PaymentToken {
+        ETH,
+        USDC
+    }
+
     // Optimized struct packing
     struct Subscription {
         address subscriber; // 20 bytes
@@ -29,7 +40,8 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
         uint48 endDate; // 6 bytes
         uint128 amount; // 16 bytes
         SubscriptionStatus status; // 1 byte
-        // Total: 69 bytes (3 slots)
+        PaymentToken paymentToken; // 1 byte
+        // Total: 70 bytes (3 slots)
     }
 
     // Optimized struct packing
@@ -37,7 +49,8 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
         uint128 price; // 16 bytes
         PayoutSchedule payoutSchedule; // 1 byte
         bool isActive; // 1 byte
-        // Total: 18 bytes (1 slot)
+        PaymentToken paymentToken; // 1 byte
+        // Total: 19 bytes (1 slot)
     }
 
     // Mapping from creator address to their settings
@@ -54,12 +67,14 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
 
     // Mapping from creator address to their earnings
     mapping(address => uint256) private _creatorEarnings;
+    mapping(address => uint256) private _creatorUSDCearnings;
 
     // Total number of subscriptions
     uint256 private _totalSubscriptions;
 
     // Constants
     uint256 public constant MIN_WITHDRAWAL_AMOUNT = 0.01 ether;
+    uint256 public constant MIN_USDC_WITHDRAWAL_AMOUNT = 1000000; // 1 USDC (6 decimals)
     uint256 public constant MAX_PRICE = 1000 ether;
     uint256 private constant MONTHLY_DURATION = 30 days;
     uint256 private constant WEEKLY_DURATION = 7 days;
@@ -72,28 +87,34 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
         address indexed creator,
         uint256 amount,
         uint256 startDate,
-        uint256 endDate
+        uint256 endDate,
+        PaymentToken paymentToken
     );
     event SubscriptionCancelled(uint256 indexed id);
     event SubscriptionExpired(uint256 indexed id);
     event CreatorSettingsUpdated(
         address indexed creator,
         uint256 price,
-        PayoutSchedule payoutSchedule
+        PayoutSchedule payoutSchedule,
+        PaymentToken paymentToken
     );
     event Withdrawal(
         address indexed creator,
         address indexed destination,
-        uint256 amount,
+        uint256 ethAmount,
+        uint256 usdcAmount,
         uint256 timestamp
     );
 
-    constructor() Ownable(msg.sender) {}
+    constructor() Ownable(msg.sender) {
+        usdcToken = IERC20(USDC_ADDRESS);
+    }
 
     // Function to set or update creator settings
     function setCreatorSettings(
         uint256 _price,
-        PayoutSchedule _payoutSchedule
+        PayoutSchedule _payoutSchedule,
+        PaymentToken _paymentToken
     ) external whenNotPaused {
         require(_price > 0, "Price must be greater than 0");
         require(_price <= MAX_PRICE, "Price exceeds maximum limit");
@@ -101,10 +122,16 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
         _creatorSettings[msg.sender] = CreatorSettings({
             price: uint128(_price),
             payoutSchedule: _payoutSchedule,
-            isActive: true
+            isActive: true,
+            paymentToken: _paymentToken
         });
 
-        emit CreatorSettingsUpdated(msg.sender, _price, _payoutSchedule);
+        emit CreatorSettingsUpdated(
+            msg.sender,
+            _price,
+            _payoutSchedule,
+            _paymentToken
+        );
     }
 
     // Function to subscribe to a creator
@@ -113,11 +140,27 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
     ) external payable nonReentrant whenNotPaused {
         require(creator != address(0), "Invalid creator address");
         require(creator != msg.sender, "Cannot subscribe to self");
-        require(msg.value > 0, "Payment must be greater than 0");
 
         CreatorSettings memory settings = _creatorSettings[creator];
         require(settings.isActive, "Creator is not accepting subscriptions");
-        require(msg.value >= settings.price, "Insufficient payment");
+
+        uint256 paymentAmount;
+        if (settings.paymentToken == PaymentToken.ETH) {
+            require(msg.value > 0, "Payment must be greater than 0");
+            require(msg.value >= settings.price, "Insufficient payment");
+            paymentAmount = msg.value;
+        } else {
+            require(msg.value == 0, "ETH payment not accepted");
+            require(
+                usdcToken.transferFrom(
+                    msg.sender,
+                    address(this),
+                    settings.price
+                ),
+                "USDC transfer failed"
+            );
+            paymentAmount = settings.price;
+        }
 
         // Calculate subscription duration based on payout schedule
         uint256 duration;
@@ -137,10 +180,11 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
         _subscriptions[subscriptionId] = Subscription({
             subscriber: msg.sender,
             creator: creator,
-            amount: uint128(msg.value),
+            amount: uint128(paymentAmount),
             startDate: uint48(startDate),
             endDate: uint48(endDate),
-            status: SubscriptionStatus.ACTIVE
+            status: SubscriptionStatus.ACTIVE,
+            paymentToken: settings.paymentToken
         });
 
         // Update subscriber and creator mappings
@@ -148,15 +192,20 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
         _creatorSubscriptions[creator].push(subscriptionId);
 
         // Add to creator's earnings
-        _creatorEarnings[creator] += msg.value;
+        if (settings.paymentToken == PaymentToken.ETH) {
+            _creatorEarnings[creator] += paymentAmount;
+        } else {
+            _creatorUSDCearnings[creator] += paymentAmount;
+        }
 
         emit SubscriptionCreated(
             subscriptionId,
             msg.sender,
             creator,
-            msg.value,
+            paymentAmount,
             startDate,
-            endDate
+            endDate,
+            settings.paymentToken
         );
     }
 
@@ -190,19 +239,39 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
     // Function to withdraw earnings
     function withdraw(address destination) external nonReentrant whenNotPaused {
         require(destination != address(0), "Invalid destination address");
-        uint256 earnings = _creatorEarnings[msg.sender];
+        uint256 ethEarnings = _creatorEarnings[msg.sender];
+        uint256 usdcEarnings = _creatorUSDCearnings[msg.sender];
+
         require(
-            earnings >= MIN_WITHDRAWAL_AMOUNT,
+            ethEarnings >= MIN_WITHDRAWAL_AMOUNT ||
+                usdcEarnings >= MIN_USDC_WITHDRAWAL_AMOUNT,
             "Insufficient earnings for withdrawal"
         );
 
         // Reset earnings before transfer to prevent reentrancy
         _creatorEarnings[msg.sender] = 0;
+        _creatorUSDCearnings[msg.sender] = 0;
 
-        // Transfer funds using safe transfer
-        payable(destination).sendValue(earnings);
+        // Transfer ETH if available
+        if (ethEarnings > 0) {
+            payable(destination).sendValue(ethEarnings);
+        }
 
-        emit Withdrawal(msg.sender, destination, earnings, block.timestamp);
+        // Transfer USDC if available
+        if (usdcEarnings > 0) {
+            require(
+                usdcToken.transfer(destination, usdcEarnings),
+                "USDC transfer failed"
+            );
+        }
+
+        emit Withdrawal(
+            msg.sender,
+            destination,
+            ethEarnings,
+            usdcEarnings,
+            block.timestamp
+        );
     }
 
     // Function to check if a subscription is valid
@@ -272,6 +341,14 @@ contract SubscriptionManager is Ownable, Pausable, ReentrancyGuard {
     ) external view returns (uint256) {
         require(creator != address(0), "Invalid creator address");
         return _creatorEarnings[creator];
+    }
+
+    // Function to get creator's USDC earnings
+    function getCreatorUSDCearnings(
+        address creator
+    ) external view returns (uint256) {
+        require(creator != address(0), "Invalid creator address");
+        return _creatorUSDCearnings[creator];
     }
 
     // Emergency pause function for owner
