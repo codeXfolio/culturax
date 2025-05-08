@@ -1,51 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  ArrowLeft,
-  Copy,
-  ExternalLink,
-  RefreshCw,
-  Wallet,
-  ArrowUpRight,
-  ArrowDownRight,
-  Send,
-  Plus,
-  History,
-} from "lucide-react";
-import Link from "next/link";
-import { TransactionItem } from "@/components/wallet/transaction-item";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useEffect, useState, useContext } from "react";
 import { Sidebar } from "../navigation/sidebar";
 import MobileNavigation from "../navigation/mobile-navigation";
 import { fetchProfile } from "@/lib/utils";
+import NexusContext from "@/context/nexus-context";
+import { WalletInfoCard } from "./wallet-info-card";
+import { WalletOverviewCard } from "./wallet-overview-card";
+import { SmartSession } from "@/lib/session";
+import { TransactionService } from "@/lib/transaction";
+import { http, createPublicClient, PublicClient, parseUnits } from "viem";
+import {
+  SmartSessionMode,
+  getSmartSessionsValidator,
+  isSessionEnabled,
+} from "@rhinestone/module-sdk";
+import { AA_CONFIG } from "@/context/config";
+import { soneiumMinato } from "viem/chains";
+import {
+  type GetPaymasterDataParameters,
+  createBundlerClient,
+  createPaymasterClient,
+} from "viem/account-abstraction";
+import { privateKeyToAccount } from "viem/accounts";
+import { type SessionData, type NexusClient } from "@biconomy/abstractjs";
 
 interface Profile {
   avatar: string;
@@ -53,18 +31,31 @@ interface Profile {
 }
 
 export function WalletManagerPage() {
-  const [copied, setCopied] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState("assets");
-  const [transferToken, setTransferToken] = useState("eth");
-  const [transferAmount, setTransferAmount] = useState("");
-  const [recipientAddress, setRecipientAddress] = useState("");
   const [profile, setProfile] = useState<Profile | null>(null);
+  const { nexusClient } = useContext(NexusContext);
+  const [isSessionModuleInstalled, setIsSessionModuleInstalled] =
+    useState(false);
+  const [activeSession, setActiveSession] = useState<SessionData | null>(null);
+
+  const publicClient = createPublicClient({
+    transport: http(AA_CONFIG.MINATO_RPC),
+    chain: soneiumMinato,
+  });
+
+  const bundlerClient = createBundlerClient({
+    client: publicClient,
+    transport: http(AA_CONFIG.BUNDLER_URL),
+  });
+
+  const paymasterClient = createPaymasterClient({
+    transport: http(AA_CONFIG.PAYMASTER_SERVICE_URL),
+  });
+
   // Mock wallet data
   const walletData = {
     address: "0x1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t",
     ensName: "creator.eth",
-    avatar: "/placeholder.svg?height=100&width=100",
   };
 
   // Mock token balances
@@ -145,34 +136,55 @@ export function WalletManagerPage() {
     },
   ];
 
+  const session = new SmartSession(
+    { isSessionModuleInstalled, setIsSessionModuleInstalled },
+    { activeSession, setActiveSession },
+    nexusClient as NexusClient
+  );
+
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (userId) {
       fetchProfile().then((profile) => {
         setProfile(profile);
       });
+
+      session.createSession();
     }
   }, []);
 
-  const handleCopyAddress = () => {
-    navigator.clipboard.writeText(walletData.address);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  useEffect(() => {
+    if (nexusClient) {
+      session.checkIsSessionModuleInstalled();
+    }
+  }, [nexusClient?.account?.address]);
 
-  const handleRefresh = () => {
-    setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 1500);
-  };
+  useEffect(() => {
+    if (!isSessionModuleInstalled) {
+      return;
+    }
+    const cachedSessionData = localStorage.getItem("smartSessionData");
+    if (cachedSessionData) {
+      setActiveSession(JSON.parse(cachedSessionData));
+    }
+  }, [isSessionModuleInstalled]);
 
-  const handleTransfer = () => {
-    // In a real app, this would connect to a wallet and execute the transfer
-    console.log(
-      `Transferring ${transferAmount} ${transferToken.toUpperCase()} to ${recipientAddress}`
-    );
-    // Reset form
-    setTransferAmount("");
-    setRecipientAddress("");
+  useEffect(() => {
+    if (activeSession) {
+      console.log("Active session found");
+      console.log(`Session owner: ${activeSession.granter}`);
+      console.log(`Session public key: ${activeSession.sessionPublicKey}`);
+    }
+  }, [activeSession]);
+
+  const handleRefresh = async () => {
+    try {
+      setRefreshing(true);
+    } catch (error) {
+      console.error("Error in handleRefresh:", error);
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   return (
@@ -185,325 +197,20 @@ export function WalletManagerPage() {
 
         <main className="container pt-8 md:pt-24 pb-16 w-full md:max-w-5xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Wallet Info */}
-            <Card className="md:col-span-1">
-              <CardHeader className="pb-2">
-                <CardTitle>Wallet</CardTitle>
-                <CardDescription>Manage your Web3 wallet</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex flex-col items-center text-center">
-                  <Avatar className="h-16 w-16 mb-2">
-                    <AvatarImage src={walletData.avatar} alt="ENS Avatar" />
-                    <AvatarFallback>
-                      <Wallet className="h-6 w-6" />
-                    </AvatarFallback>
-                  </Avatar>
-                  <h3 className="font-medium">{walletData.ensName}</h3>
-                  <div className="flex items-center gap-1 mt-1">
-                    <span className="text-xs text-muted-foreground truncate max-w-[150px]">
-                      {walletData.address.substring(0, 6)}...
-                      {walletData.address.substring(
-                        walletData.address.length - 4
-                      )}
-                    </span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-6 w-6"
-                      onClick={handleCopyAddress}
-                    >
-                      {copied ? (
-                        <svg
-                          className="h-3 w-3 text-green-500"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path d="M20 6L9 17l-5-5" />
-                        </svg>
-                      ) : (
-                        <Copy className="h-3 w-3" />
-                      )}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-6 w-6"
-                      asChild
-                    >
-                      <a
-                        href={`https://etherscan.io/address/${walletData.address}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Button
-                    variant="outline"
-                    className="w-full gap-2"
-                    onClick={handleRefresh}
-                  >
-                    <RefreshCw
-                      className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
-                    />
-                    Refresh Balances
-                  </Button>
-
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button className="w-full gap-2">
-                        <Send className="h-4 w-4" />
-                        Transfer Tokens
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Transfer Tokens</DialogTitle>
-                        <DialogDescription>
-                          Send tokens to another wallet address.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="token">Token</Label>
-                          <Select
-                            value={transferToken}
-                            onValueChange={setTransferToken}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select token" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="eth">ETH</SelectItem>
-                              <SelectItem value="usdc">USDC</SelectItem>
-                              <SelectItem value="cx">CX</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="amount">Amount</Label>
-                          <Input
-                            id="amount"
-                            type="number"
-                            placeholder="0.00"
-                            value={transferAmount}
-                            onChange={(e) => setTransferAmount(e.target.value)}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="recipient">Recipient Address</Label>
-                          <Input
-                            id="recipient"
-                            placeholder="0x..."
-                            value={recipientAddress}
-                            onChange={(e) =>
-                              setRecipientAddress(e.target.value)
-                            }
-                          />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button
-                          onClick={handleTransfer}
-                          disabled={!transferAmount || !recipientAddress}
-                        >
-                          Transfer
-                        </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-
-                  <Button variant="outline" className="w-full gap-2" asChild>
-                    <Link href="/wallet-manager/receive">
-                      <ArrowDownRight className="h-4 w-4" />
-                      Receive
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Tokens and Transactions */}
-            <Card className="md:col-span-2">
-              <CardHeader className="pb-2">
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                  <CardTitle>Wallet Overview</CardTitle>
-                  <div className="flex space-x-1 rounded-md bg-muted p-1">
-                    <Button
-                      variant={activeTab === "assets" ? "default" : "ghost"}
-                      size="sm"
-                      onClick={() => setActiveTab("assets")}
-                      className="flex items-center gap-1"
-                    >
-                      <Wallet className="h-4 w-4" />
-                      <span>Assets</span>
-                    </Button>
-                    <Button
-                      variant={
-                        activeTab === "transactions" ? "default" : "ghost"
-                      }
-                      size="sm"
-                      onClick={() => setActiveTab("transactions")}
-                      className="flex items-center gap-1"
-                    >
-                      <History className="h-4 w-4" />
-                      <span>Transactions</span>
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {activeTab === "assets" && (
-                  <div className="space-y-4 mt-2">
-                    {tokenBalances.map((token) => (
-                      <Card key={token.id} className="overflow-hidden">
-                        <CardContent className="p-3 sm:p-4">
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                            <div className="h-10 w-10 rounded-md flex items-center justify-center overflow-hidden mx-auto sm:mx-0">
-                              <img
-                                src={token.icon || "/placeholder.svg"}
-                                alt={token.name}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <div className="flex-1 min-w-0 text-center sm:text-left">
-                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1 gap-1">
-                                <p className="font-medium text-sm sm:text-base">
-                                  {token.name}
-                                </p>
-                                <p className="font-medium text-base sm:text-lg">
-                                  {token.balance} {token.symbol}
-                                </p>
-                              </div>
-                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                                <div className="flex items-center gap-2 justify-center sm:justify-start">
-                                  <Badge
-                                    variant="outline"
-                                    className={`text-xs ${
-                                      token.positive
-                                        ? "text-green-500"
-                                        : "text-red-500"
-                                    }`}
-                                  >
-                                    {token.change}
-                                  </Badge>
-                                  <span className="text-xs text-muted-foreground">
-                                    24h
-                                  </span>
-                                </div>
-                                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
-                                  ${token.usdValue} USD
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex gap-1 justify-center sm:justify-end">
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                className="h-8 w-8"
-                                asChild
-                              >
-                                <Link href="/wallet-manager/receive">
-                                  <ArrowDownRight className="h-4 w-4" />
-                                </Link>
-                              </Button>
-                              <Dialog>
-                                <DialogTrigger asChild>
-                                  <Button
-                                    variant="outline"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                  >
-                                    <ArrowUpRight className="h-4 w-4" />
-                                  </Button>
-                                </DialogTrigger>
-                                <DialogContent>
-                                  <DialogHeader>
-                                    <DialogTitle>
-                                      Transfer {token.symbol}
-                                    </DialogTitle>
-                                    <DialogDescription>
-                                      Send {token.symbol} to another wallet
-                                      address.
-                                    </DialogDescription>
-                                  </DialogHeader>
-                                  <div className="space-y-4 py-4">
-                                    <div className="space-y-2">
-                                      <Label htmlFor="amount">Amount</Label>
-                                      <Input
-                                        id="amount"
-                                        type="number"
-                                        placeholder="0.00"
-                                        value={transferAmount}
-                                        onChange={(e) =>
-                                          setTransferAmount(e.target.value)
-                                        }
-                                      />
-                                      <p className="text-xs text-muted-foreground">
-                                        Available: {token.balance}{" "}
-                                        {token.symbol}
-                                      </p>
-                                    </div>
-                                    <div className="space-y-2">
-                                      <Label htmlFor="recipient">
-                                        Recipient Address
-                                      </Label>
-                                      <Input
-                                        id="recipient"
-                                        placeholder="0x..."
-                                        value={recipientAddress}
-                                        onChange={(e) =>
-                                          setRecipientAddress(e.target.value)
-                                        }
-                                      />
-                                    </div>
-                                  </div>
-                                  <DialogFooter>
-                                    <Button
-                                      onClick={handleTransfer}
-                                      disabled={
-                                        !transferAmount || !recipientAddress
-                                      }
-                                    >
-                                      Transfer
-                                    </Button>
-                                  </DialogFooter>
-                                </DialogContent>
-                              </Dialog>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-
-                {activeTab === "transactions" && (
-                  <div className="space-y-4 mt-2">
-                    {transactions.map((transaction) => (
-                      <TransactionItem
-                        key={transaction.id}
-                        transaction={transaction}
-                      />
-                    ))}
-
-                    <Button
-                      variant="ghost"
-                      className="w-full text-muted-foreground"
-                    >
-                      View All Transactions
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            <WalletInfoCard
+              walletData={{
+                address: nexusClient?.account.address || "-",
+                ensName: "",
+              }}
+              onRefresh={handleRefresh}
+              refreshing={refreshing}
+              nexusClient={nexusClient as NexusClient}
+              activeSession={activeSession as SessionData}
+            />
+            <WalletOverviewCard
+              tokenBalances={tokenBalances}
+              transactions={transactions}
+            />
           </div>
         </main>
       </div>

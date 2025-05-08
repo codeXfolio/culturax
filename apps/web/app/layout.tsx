@@ -7,32 +7,32 @@ import Privy from "@/context/privy";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-   title: "CulturaX - Monetize your creativity. Decentralized.",
-   description:
-      "CulturaX empowers creators with AI tools, NFT monetization, and direct fan connection on Soneium.",
+  title: "CulturaX - Monetize your creativity. Decentralized.",
+  description:
+    "CulturaX empowers creators with AI tools, NFT monetization, and direct fan connection on Soneium.",
 };
 
 export default function RootLayout({
-   children,
+  children,
 }: Readonly<{
-   children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-   return (
-      <html lang="en" suppressHydrationWarning>
-         <body className={inter.className}>
-            <Privy>
-               <ThemeProvider
-                  attribute="class"
-                  defaultTheme="dark"
-                  enableSystem
-                  disableTransitionOnChange
-               >
-                  {children}
-               </ThemeProvider>
-            </Privy>
-         </body>
-      </html>
-   );
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <Privy>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </Privy>
+      </body>
+    </html>
+  );
 }
 
 import "./globals.css";
