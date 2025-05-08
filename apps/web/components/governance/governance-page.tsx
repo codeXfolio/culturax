@@ -206,7 +206,7 @@ export function GovernancePage() {
               <CardHeader>
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                   <CardTitle>Proposals</CardTitle>
-                  <div className="flex space-x-1 rounded-md bg-muted p-1">
+                  <div className="inline-flex space-x-1 rounded-md bg-muted p-1">
                     <Button
                       variant={activeTab === "active" ? "default" : "ghost"}
                       size="sm"
