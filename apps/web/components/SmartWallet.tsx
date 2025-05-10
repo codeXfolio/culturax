@@ -2,17 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import {
-  type NexusAccount,
-  type NexusClient,
   createSmartAccountClient,
-  toNexusAccount,
-} from "@biconomy/abstractjs";
+  StartaleAccountClient,
+  StartaleSmartAccount,
+  toStartaleSmartAccount,
+} from "startale-aa-sdk";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useLogin } from "@privy-io/react-auth";
 import { http, useAccount } from "wagmi";
 import { Button } from "./ui/button";
 import { useLogout } from "@privy-io/react-auth";
-import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { useRef } from "react";
 import { AA_CONFIG } from "../context/config";
@@ -23,16 +22,8 @@ import {
   GetPaymasterDataParameters,
 } from "viem/account-abstraction";
 import { LogIn, LogOut, Wallet } from "lucide-react";
-import NexusContext from "@/context/nexus-context";
-
-const {
-  MOCK_ATTESTER_ADDRESS,
-  NEXUS_K1_VALIDATOR_FACTORY_ADDRESS,
-  NEXUS_K1_VALIDATOR_ADDRESS,
-  MINATO_RPC,
-  BUNDLER_URL,
-  PAYMASTER_SERVICE_URL,
-} = AA_CONFIG;
+import StartaleContext from "../context/nexus-context";
+const { MINATO_RPC, BUNDLER_URL, PAYMASTER_SERVICE_URL } = AA_CONFIG;
 
 const scsContext = { calculateGasLimits: true, policyId: "sudo" };
 
@@ -49,17 +40,14 @@ const paymasterClient = createPaymasterClient({
 
 export function SmartWallet() {
   const router = useRouter();
-  const { isConnected, address } = useAccount();
-  const { login } = useLogin();
-  const { ready, authenticated, user } = usePrivy();
-  const { logout } = useLogout();
-
-  const isLoginDisabled = !ready;
-  const isLoggedIn = authenticated && ready;
-
+  const { authenticated, ready } = usePrivy();
   const { wallets } = useWallets();
-  const [nexusAccount, setNexusAccount] = useState<NexusAccount>();
-  const { nexusClient, setNexusClient } = useContext(NexusContext);
+  const { logout } = useLogout();
+  const { login } = useLogin();
+
+  const [startaleAccount, setStartaleAccount] =
+    useState<StartaleSmartAccount>();
+  const { startaleClient, setStartaleClient } = useContext(StartaleContext);
 
   const didLogout = useRef(false);
 
@@ -79,8 +67,8 @@ export function SmartWallet() {
       return;
     }
     if (!wallets[0]?.address) {
-      setNexusAccount(undefined);
-      setNexusClient(null);
+      setStartaleAccount(undefined);
+      setStartaleClient(undefined);
       return;
     }
 
@@ -94,16 +82,16 @@ export function SmartWallet() {
   }, [wallets]);
 
   useEffect(() => {
-    if (nexusAccount) {
+    if (startaleAccount) {
       initClient();
     }
-  }, [nexusAccount]);
+  }, [startaleAccount]);
 
   useEffect(() => {
-    if (nexusClient) {
-      console.log("Nexus client instance:", nexusClient);
+    if (startaleClient) {
+      console.log("Startale client instance:", startaleClient);
     }
-  }, [nexusClient]);
+  }, [startaleClient]);
 
   const handleLogout = async () => {
     localStorage.removeItem("authSignature");
@@ -121,31 +109,28 @@ export function SmartWallet() {
       chain: soneiumMinato, // or use `chain` if it's your custom viem chain
       transport: custom(provider),
     });
-    const nexusAccountInstance = await toNexusAccount({
+    const startaleAccountInstance = await toStartaleSmartAccount({
       signer: walletClient,
-      chain,
+      chain: chain,
       transport: http(),
-      attesters: [MOCK_ATTESTER_ADDRESS],
-      factoryAddress: NEXUS_K1_VALIDATOR_FACTORY_ADDRESS,
-      validatorAddress: NEXUS_K1_VALIDATOR_ADDRESS,
-      index: BigInt(1000029),
+      index: BigInt(7777888899991910910),
     });
 
-    console.log("Nexus Address:", nexusAccountInstance.address);
-    setNexusAccount(nexusAccountInstance);
+    console.log("startaleAccountInstance", startaleAccountInstance);
+    setStartaleAccount(startaleAccountInstance as any);
   };
 
   const initClient = async () => {
     try {
-      const nexusClientInstance = createSmartAccountClient({
-        account: nexusAccount,
+      const startaleClientInstance = createSmartAccountClient({
+        account: startaleAccount,
         transport: http(BUNDLER_URL),
         client: publicClient,
         paymaster: {
           async getPaymasterData(pmDataParams: GetPaymasterDataParameters) {
             pmDataParams.paymasterPostOpGasLimit = BigInt(100000);
             pmDataParams.paymasterVerificationGasLimit = BigInt(200000);
-            pmDataParams.verificationGasLimit = BigInt(500000);
+            pmDataParams.verificationGasLimit = BigInt(1000000);
             const paymasterResponse = await paymasterClient.getPaymasterData(
               pmDataParams
             );
@@ -170,7 +155,7 @@ export function SmartWallet() {
         },
       });
 
-      setNexusClient(nexusClientInstance);
+      setStartaleClient(startaleClientInstance);
 
       if (
         !localStorage.getItem("authSignature") ||
@@ -219,7 +204,7 @@ export function SmartWallet() {
 
   return (
     <>
-      {isLoggedIn ? (
+      {authenticated && ready ? (
         <Button
           variant="outline"
           className="bg-primary text-white"

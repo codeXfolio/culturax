@@ -11,15 +11,10 @@ import {
   http,
   createPublicClient,
   PublicClient,
-  parseUnits,
   encodeFunctionData,
   type Chain,
 } from "viem";
-import {
-  SmartSessionMode,
-  getSmartSessionsValidator,
-  isSessionEnabled,
-} from "@rhinestone/module-sdk";
+import { isSessionEnabled } from "@rhinestone/module-sdk";
 import { AA_CONFIG } from "@/context/config";
 import { soneiumMinato } from "viem/chains";
 import {
@@ -95,9 +90,9 @@ export class TransactionService {
       client: this.publicClient,
       paymaster: {
         getPaymasterData: async (pmDataParams: GetPaymasterDataParameters) => {
-          pmDataParams.paymasterPostOpGasLimit = BigInt(100000);
-          pmDataParams.paymasterVerificationGasLimit = BigInt(200000);
-          pmDataParams.verificationGasLimit = BigInt(500000);
+          pmDataParams.paymasterPostOpGasLimit = BigInt(1000000);
+          pmDataParams.paymasterVerificationGasLimit = BigInt(500000);
+          pmDataParams.verificationGasLimit = BigInt(10000000);
           return this.paymasterClient.getPaymasterData(pmDataParams);
         },
         getPaymasterStubData: async (
@@ -193,15 +188,6 @@ export class TransactionService {
     return this.executeTransaction({
       to: tokenAddress,
       data: callData,
-    });
-  }
-
-  // Helper function for native token transfers
-  async transferNative(to: `0x${string}`, amount: bigint) {
-    return this.executeTransaction({
-      to,
-      data: "0x",
-      value: amount,
     });
   }
 }

@@ -12,6 +12,8 @@ import userDocs from './docs/user.json';
 import feedDocs from './docs/feed.json';
 // @ts-ignore
 import subscriptionDocs from './docs/subscription.json';
+// @ts-ignore
+import blockchainDocs from './docs/blockchain.json';
 
 const app = express();
 
@@ -25,7 +27,7 @@ const openApiDocs = {
   },
   servers: [
     {
-      url: 'http://localhost:5555',
+      url: 'http://localhost:5000',
       description: 'Local Development',
     },
   ],
@@ -76,6 +78,10 @@ const openApiDocs = {
       name: 'Subscription',
       description: 'Operations related to subscriptions',
     },
+    {
+      name: 'Blockchain',
+      description: 'Operations related to blockchain interactions',
+    },
   ],
   paths: {
     ...aiDocs,
@@ -84,6 +90,7 @@ const openApiDocs = {
     ...userDocs,
     ...feedDocs,
     ...subscriptionDocs,
+    ...blockchainDocs,
   },
 };
 

@@ -1,16 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { soneiumMinato } from "viem/chains";
 import { PrivyProvider } from "@privy-io/react-auth";
 import { WagmiProvider } from "wagmi";
 import { config } from "./config";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import NexusContext from "./nexus-context";
-import { NexusClient } from "@biconomy/abstractjs";
+import StartaleContext from "./nexus-context";
+import { StartaleAccountClient } from "startale-aa-sdk";
 const queryClient = new QueryClient();
+import { SmartSession } from "@/lib/session";
 
 function Privy({ children }: { children: React.ReactNode }) {
-  const [nexusClient, setNexusClient] = useState<NexusClient | null>(null);
+  const [startaleClient, setStartaleClient] = useState<
+    StartaleAccountClient | undefined
+  >(undefined);
+
   return (
     <PrivyProvider
       appId="cma6diu3t026eky0mugki537p"
@@ -31,9 +35,14 @@ function Privy({ children }: { children: React.ReactNode }) {
     >
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <NexusContext.Provider value={{ nexusClient, setNexusClient }}>
+          <StartaleContext.Provider
+            value={{
+              startaleClient,
+              setStartaleClient,
+            }}
+          >
             {children}
-          </NexusContext.Provider>
+          </StartaleContext.Provider>
         </QueryClientProvider>
       </WagmiProvider>
     </PrivyProvider>

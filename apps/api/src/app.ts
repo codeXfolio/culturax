@@ -11,6 +11,7 @@ import path from 'path';
 import cors from 'cors';
 import subscriptionRoutes from './routes/subscription.routes';
 import dotenv from 'dotenv';
+import blockchainRoutes from './routes/blockchain.routes';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use('/api/feed', validateSignature, feedRoutes);
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/api/subscription', validateSignature, subscriptionRoutes);
+app.use('/api/blockchain', blockchainRoutes);
 
 app.use(errorHandler);
 

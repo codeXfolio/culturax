@@ -1,14 +1,17 @@
-import { NexusClient } from "@biconomy/abstractjs";
+import { NexusClient, SessionData } from "@biconomy/abstractjs";
 import { createContext } from "react";
+import { StartaleAccountClient } from "startale-aa-sdk";
 
-type NexusContextType = {
-  nexusClient: NexusClient | null;
-  setNexusClient: (nexusClient: NexusClient | null) => void;
+type StartaleContextType = {
+  startaleClient: StartaleAccountClient | undefined;
+  setStartaleClient: (
+    startaleClient: StartaleAccountClient | undefined
+  ) => void;
 };
 
-const NexusContext = createContext<NexusContextType>({
-  nexusClient: null,
-  setNexusClient: () => {},
+const StartaleContext = createContext<StartaleContextType>({
+  startaleClient: undefined,
+  setStartaleClient: () => {},
 });
 
-export default NexusContext;
+export default StartaleContext;

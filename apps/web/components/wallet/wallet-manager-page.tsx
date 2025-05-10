@@ -1,29 +1,23 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
+import {
+  useEffect,
+  useState,
+  useContext,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { Sidebar } from "../navigation/sidebar";
 import MobileNavigation from "../navigation/mobile-navigation";
 import { fetchProfile } from "@/lib/utils";
 import NexusContext from "@/context/nexus-context";
 import { WalletInfoCard } from "./wallet-info-card";
 import { WalletOverviewCard } from "./wallet-overview-card";
-import { SmartSession } from "@/lib/session";
-import { TransactionService } from "@/lib/transaction";
-import { http, createPublicClient, PublicClient, parseUnits } from "viem";
-import {
-  SmartSessionMode,
-  getSmartSessionsValidator,
-  isSessionEnabled,
-} from "@rhinestone/module-sdk";
-import { AA_CONFIG } from "@/context/config";
-import { soneiumMinato } from "viem/chains";
-import {
-  type GetPaymasterDataParameters,
-  createBundlerClient,
-  createPaymasterClient,
-} from "viem/account-abstraction";
-import { privateKeyToAccount } from "viem/accounts";
 import { type SessionData, type NexusClient } from "@biconomy/abstractjs";
+import { SmartSession } from "@/lib/session";
+import { apiRequest } from "@/lib/api/api";
+import StartaleContext from "@/context/nexus-context";
+import { StartaleAccountClient } from "startale-aa-sdk";
 
 interface Profile {
   avatar: string;
@@ -33,64 +27,22 @@ interface Profile {
 export function WalletManagerPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const { nexusClient } = useContext(NexusContext);
+  const { startaleClient } = useContext(StartaleContext);
   const [isSessionModuleInstalled, setIsSessionModuleInstalled] =
-    useState(false);
+    useState(true);
   const [activeSession, setActiveSession] = useState<SessionData | null>(null);
-
-  const publicClient = createPublicClient({
-    transport: http(AA_CONFIG.MINATO_RPC),
-    chain: soneiumMinato,
-  });
-
-  const bundlerClient = createBundlerClient({
-    client: publicClient,
-    transport: http(AA_CONFIG.BUNDLER_URL),
-  });
-
-  const paymasterClient = createPaymasterClient({
-    transport: http(AA_CONFIG.PAYMASTER_SERVICE_URL),
-  });
-
-  // Mock wallet data
-  const walletData = {
-    address: "0x1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t",
-    ensName: "creator.eth",
-  };
-
-  // Mock token balances
-  const tokenBalances = [
+  const [balances, setBalances] = useState<
     {
-      id: 1,
-      name: "Ethereum",
-      symbol: "ETH",
-      balance: "1.245",
-      usdValue: "2,856.45",
-      icon: "/icons/eth.png",
-      change: "+5.2%",
-      positive: true,
-    },
-    {
-      id: 2,
-      name: "USD Coin",
-      symbol: "USDC",
-      balance: "150.00",
-      usdValue: "150.00",
-      icon: "/icons/usdc.png",
-      change: "+0.1%",
-      positive: true,
-    },
-    {
-      id: 3,
-      name: "CulturaX Token",
-      symbol: "CX",
-      balance: "500.00",
-      usdValue: "750.00",
-      icon: "/logo.png",
-      change: "-2.5%",
-      positive: false,
-    },
-  ];
+      id: number;
+      name: string;
+      symbol: string;
+      balance: string;
+      usdValue: string;
+      icon: string;
+      change: string;
+      positive: boolean;
+    }[]
+  >([]);
 
   // Mock transaction data
   const transactions = [
@@ -136,28 +88,42 @@ export function WalletManagerPage() {
     },
   ];
 
-  const session = new SmartSession(
-    { isSessionModuleInstalled, setIsSessionModuleInstalled },
-    { activeSession, setActiveSession },
-    nexusClient as NexusClient
-  );
-
   useEffect(() => {
     const userId = localStorage.getItem("userId");
-    if (userId) {
-      fetchProfile().then((profile) => {
-        setProfile(profile);
-      });
 
-      session.createSession();
+    async function loadProfile() {
+      if (userId) {
+        const profile = await fetchProfile();
+        setProfile(profile);
+      }
     }
+
+    loadProfile();
   }, []);
 
   useEffect(() => {
-    if (nexusClient) {
+    if (startaleClient?.account?.address) {
+      const session = new SmartSession(
+        { isSessionModuleInstalled, setIsSessionModuleInstalled },
+        { activeSession, setActiveSession },
+        startaleClient as unknown as StartaleAccountClient
+      );
+
       session.checkIsSessionModuleInstalled();
     }
-  }, [nexusClient?.account?.address]);
+    loadBalances();
+  }, [startaleClient?.account?.address]);
+
+  useEffect(() => {
+    const session = new SmartSession(
+      { isSessionModuleInstalled, setIsSessionModuleInstalled },
+      { activeSession, setActiveSession },
+      startaleClient as unknown as StartaleAccountClient
+    );
+    if (startaleClient) {
+      session.checkIsSessionModuleInstalled();
+    }
+  }, [startaleClient?.account?.address]);
 
   useEffect(() => {
     if (!isSessionModuleInstalled) {
@@ -177,9 +143,58 @@ export function WalletManagerPage() {
     }
   }, [activeSession]);
 
+  async function loadBalances() {
+    if (!startaleClient?.account.address) {
+      return;
+    }
+    const data = await apiRequest<{
+      eth: string;
+      usdc: string;
+      cx: string;
+    }>("/api/blockchain/balances", {
+      method: "POST",
+      body: JSON.stringify({
+        address: startaleClient?.account.address,
+      }),
+    });
+    setBalances([
+      {
+        id: 1,
+        name: "Ethereum",
+        symbol: "ETH",
+        balance: data.data.eth,
+        usdValue: (parseFloat(data.data.eth) * 2300).toFixed(2),
+        icon: "/icons/eth.png",
+        change: "+5.2%",
+        positive: true,
+      },
+      {
+        id: 2,
+        name: "USD Coin",
+        symbol: "USDC",
+        balance: data.data.usdc,
+        usdValue: (parseFloat(data.data.usdc) * 1).toFixed(2),
+        icon: "/icons/usdc.png",
+        change: "+0.1%",
+        positive: true,
+      },
+      {
+        id: 3,
+        name: "CulturaX Token",
+        symbol: "CX",
+        balance: data.data.cx,
+        usdValue: (parseFloat(data.data.cx) * 1).toFixed(2),
+        icon: "/logo.png",
+        change: "1%",
+        positive: true,
+      },
+    ]);
+  }
+
   const handleRefresh = async () => {
     try {
       setRefreshing(true);
+      await loadBalances();
     } catch (error) {
       console.error("Error in handleRefresh:", error);
     } finally {
@@ -199,16 +214,21 @@ export function WalletManagerPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <WalletInfoCard
               walletData={{
-                address: nexusClient?.account.address || "-",
+                address: startaleClient?.account.address || "-",
                 ensName: "",
               }}
               onRefresh={handleRefresh}
               refreshing={refreshing}
-              nexusClient={nexusClient as NexusClient}
+              startaleClient={startaleClient as StartaleAccountClient}
               activeSession={activeSession as SessionData}
+              isSessionModuleInstalled={isSessionModuleInstalled}
+              setIsSessionModuleInstalled={setIsSessionModuleInstalled}
+              setActiveSession={
+                setActiveSession as Dispatch<SetStateAction<SessionData | null>>
+              }
             />
             <WalletOverviewCard
-              tokenBalances={tokenBalances}
+              tokenBalances={balances}
               transactions={transactions}
             />
           </div>

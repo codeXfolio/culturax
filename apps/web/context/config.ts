@@ -13,8 +13,7 @@ export const AA_CONFIG = {
   MINATO_RPC: "https://rpc.minato.soneium.org",
   BUNDLER_URL:
     "https://soneium-minato.dev.bundler.scs.startale.com?apikey=scsadmin",
-  PAYMASTER_SERVICE_URL:
-    "https://dev.paymaster.scs.startale.com/v1/?apikey=scsadmin-paymaster",
+  PAYMASTER_SERVICE_URL: "https://public.paymaster.scs.startale.com/v1",
   USDC_ADDRESS: "0xE9A198d38483aD727ABC8b0B1e16B2d338CF0391" as Address,
   CULTURA_X_ADDRESS: "0x3c364F6195d4002e59B651Eb77D0A0EC80adE305" as Address,
   SUBSCRIPTION_MANAGER_ADDRESS:

@@ -27,12 +27,15 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useToast } from "../ui/use-toast";
 import { TransactionService } from "@/lib/transaction";
 import { NexusClient, SessionData } from "@biconomy/abstractjs";
-import { parseUnits } from "viem";
+import { parseEther, parseUnits } from "viem";
 import { AA_CONFIG } from "@/context/config";
+import { soneiumMinato } from "viem/chains";
+import { StartaleAccountClient } from "startale-aa-sdk";
+import { SmartSession } from "@/lib/session";
 
 interface WalletInfoCardProps {
   walletData: {
@@ -41,16 +44,22 @@ interface WalletInfoCardProps {
   };
   onRefresh: () => void;
   refreshing: boolean;
-  nexusClient: NexusClient;
+  startaleClient: StartaleAccountClient;
   activeSession: SessionData;
+  isSessionModuleInstalled: boolean;
+  setIsSessionModuleInstalled: Dispatch<SetStateAction<boolean>>;
+  setActiveSession: Dispatch<SetStateAction<SessionData | null>>;
 }
 
 export function WalletInfoCard({
   walletData,
   onRefresh,
   refreshing,
-  nexusClient,
+  startaleClient,
   activeSession,
+  isSessionModuleInstalled,
+  setIsSessionModuleInstalled,
+  setActiveSession,
 }: WalletInfoCardProps) {
   const [copied, setCopied] = useState(false);
   const [transferToken, setTransferToken] = useState("eth");
@@ -71,19 +80,42 @@ export function WalletInfoCard({
   const handleTransfer = async () => {
     try {
       setIsTransferring(true);
-      const tokenAddress = {
-        usdc: AA_CONFIG.USDC_ADDRESS,
-        cx: AA_CONFIG.CULTURA_X_ADDRESS,
-      };
-      const transactionService = new TransactionService(
-        nexusClient as NexusClient,
-        activeSession
+
+      const session = new SmartSession(
+        { isSessionModuleInstalled, setIsSessionModuleInstalled },
+        { activeSession: activeSession as SessionData, setActiveSession },
+        startaleClient as unknown as StartaleAccountClient
       );
-      const hash = await transactionService.transferERC20(
-        tokenAddress[transferToken as keyof typeof tokenAddress],
-        recipientAddress as `0x${string}`,
-        parseUnits(transferAmount, 18)
-      );
+
+      if (!localStorage.getItem("smartSessionData")) {
+        await session.createSession();
+      }
+
+      let hash = "";
+
+      if (transferToken === "eth") {
+        hash = await startaleClient.sendTransaction({
+          to: recipientAddress as `0x${string}`,
+          value: parseEther(transferAmount),
+          chain: soneiumMinato,
+        });
+      } else {
+        const tokenAddress = {
+          usdc: AA_CONFIG.USDC_ADDRESS,
+          cx: AA_CONFIG.CULTURA_X_ADDRESS,
+        };
+        const transactionService = new TransactionService(
+          startaleClient as unknown as NexusClient,
+          activeSession
+        );
+        hash = await transactionService.transferERC20(
+          tokenAddress[transferToken as keyof typeof tokenAddress],
+          recipientAddress as `0x${string}`,
+          parseUnits(transferAmount, transferToken === "usdc" ? 6 : 18)
+        );
+      }
+
+      setIsTransferring(false);
       setTxHash(hash);
       setDialogOpen(false);
       setCompletionDialogOpen(true);
@@ -137,7 +169,7 @@ export function WalletInfoCard({
             </Button>
             <Button variant="ghost" size="icon" className="h-6 w-6" asChild>
               <a
-                href={`https://etherscan.io/address/${walletData.address}`}
+                href={`${process.env.NEXT_PUBLIC_EXPLORER_URL}/address/${walletData.address}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

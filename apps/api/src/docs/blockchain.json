@@ -1,0 +1,58 @@
+{
+  "/api/blockchain/balances": {
+    "post": {
+      "tags": ["Blockchain"],
+      "summary": "Get token balances for an Ethereum address",
+      "description": "Retrieves ETH, USDC, and CX token balances for a given Ethereum address",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["address"],
+              "properties": {
+                "address": {
+                  "type": "string",
+                  "description": "Ethereum address to check balances for"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Successfully retrieved balances",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "eth": {
+                    "type": "string",
+                    "description": "ETH balance in Ether"
+                  },
+                  "usdc": {
+                    "type": "string",
+                    "description": "USDC token balance"
+                  },
+                  "cx": {
+                    "type": "string",
+                    "description": "CX token balance"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid request parameters"
+        },
+        "500": {
+          "description": "Internal server error"
+        }
+      }
+    }
+  }
+}

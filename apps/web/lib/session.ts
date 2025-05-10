@@ -1,13 +1,10 @@
 import {
   type CreateSessionDataParams,
-  type NexusClient,
+  type StartaleAccountClient,
   type SessionData,
-  createSmartAccountClient,
   smartSessionCreateActions,
-  smartSessionUseActions,
-  toNexusAccount,
   toSmartSessionsValidator,
-} from "@biconomy/abstractjs";
+} from "startale-aa-sdk";
 import {
   SmartSessionMode,
   getSmartSessionsValidator,
@@ -53,7 +50,7 @@ export class SmartSession {
   constructor(
     moduleInstall: SessionModuleInstall,
     session: Session,
-    nexusClient: NexusClient
+    nexusClient: StartaleAccountClient
   ) {
     this.chain = soneiumMinato;
     this.publicClient = createPublicClient({
@@ -95,7 +92,12 @@ export class SmartSession {
       }
       const sessionsModule = getSmartSessionsValidator({});
 
-      if (!this.moduleInstall.isSessionModuleInstalled) {
+      const isSmartSessionsModuleInstalled =
+        await this.nexusClient.isModuleInstalled({
+          module: sessionsModule,
+        });
+
+      if (!isSmartSessionsModuleInstalled) {
         console.log("Installing Smart Sessions module");
         const opHash = await this.nexusClient.installModule({
           module: sessionsModule,
