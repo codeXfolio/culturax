@@ -170,6 +170,9 @@ importers:
       sonner:
         specifier: ^1.7.1
         version: 1.7.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      startale-aa-sdk:
+        specifier: ^0.0.10
+        version: 0.0.10(@rhinestone/module-sdk@0.2.8(viem@2.28.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(typescript@5.8.3)(viem@2.28.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       tailwind-merge:
         specifier: ^2.5.5
         version: 2.6.0
@@ -3309,6 +3312,13 @@ packages:
   split2@4.2.0:
     resolution: {integrity: sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg==}
     engines: {node: '>= 10.x'}
+
+  startale-aa-sdk@0.0.10:
+    resolution: {integrity: sha512-8c1baZexbSJGUdLOaGVQjXSvuCl284MQG3C9KNqTDQUIStWTklm7Kzk02XDF13VwuIcQkssnihEcMW2AVRcANA==}
+    peerDependencies:
+      '@rhinestone/module-sdk': 0.2.3
+      typescript: ^5.8.2
+      viem: 2.23.2
 
   stream-chain@2.2.5:
     resolution: {integrity: sha512-1TJmBx6aSWqZ4tx7aTpBDXK0/e2hhcNSTV8+CbFJtDjbb+I1mZ8lHit0Grw9GRT+6JbIrrDd8esncgBi8aBXGA==}
@@ -8069,6 +8079,12 @@ snapshots:
   split-on-first@1.1.0: {}
 
   split2@4.2.0: {}
+
+  startale-aa-sdk@0.0.10(@rhinestone/module-sdk@0.2.8(viem@2.28.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(typescript@5.8.3)(viem@2.28.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)):
+    dependencies:
+      '@rhinestone/module-sdk': 0.2.8(viem@2.28.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
+      typescript: 5.8.3
+      viem: 2.28.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
 
   stream-chain@2.2.5: {}
 
