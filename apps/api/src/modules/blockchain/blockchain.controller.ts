@@ -20,7 +20,7 @@ export default class BlockchainController {
       ),
       this.getTokenBalance.bind(this)(
         address,
-        '0x3c364F6195d4002e59B651Eb77D0A0EC80adE305',
+        '0x464706802C9A092712E78BEa7cB91E54606A2A0c',
       ),
     ]);
     return res.status(200).json({

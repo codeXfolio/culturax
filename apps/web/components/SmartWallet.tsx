@@ -97,6 +97,8 @@ export function SmartWallet() {
       localStorage.removeItem("authSignature");
       localStorage.removeItem("authAddress");
       localStorage.removeItem("userId");
+      localStorage.removeItem("smartSessionData");
+      localStorage.removeItem("sessionOwnerKey");
       await logout();
       router.push("/");
    };
@@ -179,7 +181,7 @@ export function SmartWallet() {
             localStorage.setItem("authAddress", address);
 
             const user = await fetch(
-               `${process.env.NEXT_PUBLIC_API_URL}/api/user/${address}`,
+               `${process.env.NEXT_PUBLIC_API_URL}/api/user/validation/${address}`,
                {
                   method: "GET",
                   headers: {

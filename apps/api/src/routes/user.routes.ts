@@ -54,6 +54,11 @@ const routes: RouteConfig[] = [
     middlewares: [upload.single('coverImage')],
   },
   {
+    path: '/validation/:address',
+    method: 'get',
+    handler: userController.validationUser,
+  },
+  {
     path: '/:userId/profile',
     method: 'get',
     handler: userController.getUserProfile,

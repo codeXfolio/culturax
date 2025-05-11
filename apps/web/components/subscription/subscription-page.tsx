@@ -58,6 +58,9 @@ import { SmartSession } from "@/lib/session";
 import { SessionData, StartaleAccountClient } from "startale-aa-sdk";
 import StartaleContext from "@/context/nexus-context";
 import { TransactionService } from "@/lib/transaction";
+import { encodeFunctionData, parseEther } from "viem";
+import { AA_CONFIG } from "@/context/config";
+import { soneiumMinato } from "viem/chains";
 
 interface SubscriptionPageProps {
    username: string;
@@ -304,27 +307,79 @@ export function SubscriptionPage({ username }: SubscriptionPageProps) {
                   </Button>
                   <Button
                      onClick={async () => {
-                        const session = new SmartSession(
+                        const abi = [
                            {
-                              isSessionModuleInstalled,
-                              setIsSessionModuleInstalled,
+                              type: "function",
+                              name: "subscribe",
+                              inputs: [
+                                 {
+                                    name: "to",
+                                    type: "address",
+                                 },
+                              ],
+                              outputs: [
+                                 {
+                                    name: "",
+                                    type: "bool",
+                                 },
+                              ],
+                              stateMutability: "payable",
                            },
-                           {
-                              activeSession: activeSession as SessionData,
-                              setActiveSession,
-                           },
-                           startaleClient as unknown as StartaleAccountClient
-                        );
-                        const transactionService = new TransactionService(
-                           startaleClient as unknown as StartaleAccountClient,
-                           activeSession as SessionData
-                        );
+                        ];
 
-                        if (!localStorage.getItem("smartSessionData")) {
-                           await session.createSession();
-                        }
+                        // approve usdc
+                        const approveData = encodeFunctionData({
+                           abi: [
+                              {
+                                 type: "function",
+                                 name: "approve",
+                                 inputs: [
+                                    {
+                                       name: "spender",
+                                       type: "address",
+                                    },
+                                    {
+                                       name: "amount",
+                                       type: "uint256",
+                                    },
+                                 ],
+                                 outputs: [
+                                    {
+                                       name: "",
+                                       type: "bool",
+                                    },
+                                 ],
+                                 stateMutability: "nonpayable",
+                              },
+                           ],
+                           functionName: "approve",
+                           args: [
+                              AA_CONFIG.SUBSCRIPTION_MANAGER_ADDRESS,
+                              BigInt(10000000),
+                           ],
+                        });
 
-                        await transactionService.subscribe(profile?.address);
+                        // const approveHash =
+                        //    await startaleClient?.sendTransaction({
+                        //       to: AA_CONFIG.USDC_ADDRESS,
+                        //       data: approveData,
+                        //       chain: soneiumMinato,
+                        //    });
+                        // console.log(approveHash);
+
+                        const callData = encodeFunctionData({
+                           abi,
+                           functionName: "subscribe",
+                           args: ["0xee7768E6DE5555e524E91F76AaF159Ab556DaE6c"],
+                        });
+
+                        const hash = await startaleClient?.sendTransaction({
+                           to: AA_CONFIG.SUBSCRIPTION_MANAGER_ADDRESS,
+                           data: callData,
+                           chain: soneiumMinato,
+                        });
+
+                        console.log(hash);
                      }}
                   >
                      Confirm Subscription

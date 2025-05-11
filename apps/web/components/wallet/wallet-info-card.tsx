@@ -31,11 +31,12 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useToast } from "../ui/use-toast";
 import { TransactionService } from "@/lib/transaction";
 import { NexusClient, SessionData } from "@biconomy/abstractjs";
-import { parseEther, parseUnits } from "viem";
+import { parseEther, parseUnits, stringify } from "viem";
 import { AA_CONFIG } from "@/context/config";
 import { soneiumMinato } from "viem/chains";
 import { StartaleAccountClient } from "startale-aa-sdk";
 import { SmartSession } from "@/lib/session";
+import { toFunctionSelector } from "viem";
 
 interface WalletInfoCardProps {
    walletData: {
@@ -45,10 +46,6 @@ interface WalletInfoCardProps {
    onRefresh: () => void;
    refreshing: boolean;
    startaleClient: StartaleAccountClient;
-   activeSession: SessionData;
-   isSessionModuleInstalled: boolean;
-   setIsSessionModuleInstalled: Dispatch<SetStateAction<boolean>>;
-   setActiveSession: Dispatch<SetStateAction<SessionData | null>>;
 }
 
 export function WalletInfoCard({
@@ -56,10 +53,6 @@ export function WalletInfoCard({
    onRefresh,
    refreshing,
    startaleClient,
-   activeSession,
-   isSessionModuleInstalled,
-   setIsSessionModuleInstalled,
-   setActiveSession,
 }: WalletInfoCardProps) {
    const [copied, setCopied] = useState(false);
    const [transferToken, setTransferToken] = useState("eth");
@@ -81,14 +74,40 @@ export function WalletInfoCard({
       try {
          setIsTransferring(true);
 
-         const session = new SmartSession(
-            { isSessionModuleInstalled, setIsSessionModuleInstalled },
-            { activeSession: activeSession as SessionData, setActiveSession },
-            startaleClient as unknown as StartaleAccountClient
-         );
+         let activeSession: SessionData | null = null;
 
-         if (!localStorage.getItem("smartSessionData")) {
-            await session.createSession();
+         if (!localStorage.getItem("walletSessionData")) {
+            const session = new SmartSession(
+               startaleClient as unknown as StartaleAccountClient
+            );
+            const sessionData = await session.createSession([
+               {
+                  contractAddress: AA_CONFIG.USDC_ADDRESS,
+                  functionSelector: toFunctionSelector(
+                     "transfer(address,uint256)"
+                  ),
+                  sudo: true,
+               },
+               {
+                  contractAddress: AA_CONFIG.CULTURA_X_ADDRESS,
+                  functionSelector: toFunctionSelector(
+                     "transfer(address,uint256)"
+                  ),
+                  sudo: true,
+               },
+            ]);
+
+            if (sessionData) {
+               localStorage.setItem(
+                  "walletSessionData",
+                  stringify(sessionData)
+               );
+               activeSession = sessionData;
+            }
+         } else {
+            activeSession = JSON.parse(
+               localStorage.getItem("walletSessionData") || ""
+            );
          }
 
          let hash = "";

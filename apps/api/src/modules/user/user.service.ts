@@ -19,7 +19,7 @@ export const inputUser = async (input: RegisterUserInput) => {
       email: input.email,
       name: input.name,
       username: input.username,
-      address: input.address,
+      address: input.address.toUpperCase(),
       accountType: input.accountType,
       avatar: input.avatar,
       coverImage:
@@ -42,7 +42,7 @@ export const inputUser = async (input: RegisterUserInput) => {
 export const getUserByAddress = async (address: string) => {
   const prisma = new PrismaClient();
   const user = await prisma.user.findUnique({
-    where: { address },
+    where: { address: address.toUpperCase() },
   });
   return {
     success: user ? true : false,

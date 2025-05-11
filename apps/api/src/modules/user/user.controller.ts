@@ -72,6 +72,24 @@ class UserController {
     res.json(user);
   }
 
+  async validationUser(req: Request, res: Response) {
+    const { address } = req.params;
+    if (!address) {
+      return res.status(400).json({
+        success: false,
+        error: 'Address is required',
+      });
+    }
+
+    const user = await getUserByAddress(address);
+
+    if (!user.success) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    res.json(user);
+  }
+
   async follow(req: Request, res: Response) {
     try {
       const { userAddress, targetAddress } = req.body;

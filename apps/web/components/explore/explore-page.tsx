@@ -155,7 +155,7 @@ export function ExplorePage() {
          {/* Header */}
          <Header />
 
-         <div className="flex pt-16">
+         <div className="flex pt-24">
             {/* Sidebar Navigation */}
             <Sidebar profile={profile} />
 

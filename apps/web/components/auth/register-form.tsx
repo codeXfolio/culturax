@@ -122,7 +122,6 @@ export function RegisterForm() {
          if (data.success) {
             toast.success("Registration successful!");
             localStorage.setItem("userId", data.data.id);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
             router.push("/feed");
          } else {
             toast.error(data.error || "Registration failed");

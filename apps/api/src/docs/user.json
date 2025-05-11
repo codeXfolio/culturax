@@ -951,5 +951,111 @@
         }
       }
     }
+  },
+  "/api/user/validation/{address}": {
+    "get": {
+      "tags": ["User"],
+      "summary": "Validate user existence",
+      "description": "Validates if a user exists by their blockchain address",
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "description": "Blockchain address of the user",
+          "schema": {
+            "type": "string"
+          },
+          "example": "0x1234567890abcdef"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Successful response",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                      },
+                      "username": {
+                        "type": "string",
+                        "example": "johndoe"
+                      },
+                      "address": {
+                        "type": "string",
+                        "example": "0x1234567890abcdef"
+                      },
+                      "accountType": {
+                        "type": "string",
+                        "example": "USER"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "User not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "example": "Address is required"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
