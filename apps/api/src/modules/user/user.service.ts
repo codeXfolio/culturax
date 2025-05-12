@@ -63,9 +63,12 @@ export const getUserByUsername = async (username: string, address: string) => {
       coverImage: true,
       bio: true,
       featured: true,
+      website: true,
+      email: true,
       _count: {
         select: {
           following: true,
+          Subscriptions: true,
         },
       },
       following: {
@@ -89,7 +92,10 @@ export const getUserByUsername = async (username: string, address: string) => {
       coverImage: user?.coverImage,
       bio: user?.bio,
       totalFollowers: user?._count.following,
+      totalSubscriptions: user?._count.Subscriptions,
       featured: user?.featured,
+      website: user?.website,
+      email: user?.email,
       isFollowed: user?.following && user.following.length > 0,
     },
   };
@@ -332,6 +338,7 @@ export const getUserProfile = async (userId: string) => {
     select: {
       id: true,
       avatar: true,
+      username: true,
       accountType: true,
     },
   });

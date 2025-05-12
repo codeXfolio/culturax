@@ -1,15 +1,14 @@
-import type React from "react"
-import { Navbar } from "@/components/navigation/navbar"
+import type React from "react";
+import { Navbar } from "@/components/navigation/navbar";
 
 export default function CreatorProfileLayout({
-  children,
+   children,
 }: {
-  children: React.ReactNode
+   children: React.ReactNode;
 }) {
-  return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar isCreator={true} />
-      <main className="flex-1">{children}</main>
-    </div>
-  )
+   return (
+      <div className="flex min-h-screen flex-col">
+         <main className="flex-1">{children}</main>
+      </div>
+   );
 }

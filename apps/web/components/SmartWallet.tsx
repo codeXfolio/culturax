@@ -97,8 +97,8 @@ export function SmartWallet() {
       localStorage.removeItem("authSignature");
       localStorage.removeItem("authAddress");
       localStorage.removeItem("userId");
-      localStorage.removeItem("smartSessionData");
       localStorage.removeItem("sessionOwnerKey");
+      localStorage.removeItem("walletSessionData");
       await logout();
       router.push("/");
    };

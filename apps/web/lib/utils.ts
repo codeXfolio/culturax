@@ -25,7 +25,7 @@ export const fetchProfile = async () => {
    );
    const data: {
       success: boolean;
-      data: { avatar: string; accountType: string };
+      data: { avatar: string; accountType: string; username: string };
    } = await response.json();
 
    if (data.success) {

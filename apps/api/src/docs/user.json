@@ -55,6 +55,10 @@
                         "type": "number",
                         "example": 100
                       },
+                      "totalSubscriptions": {
+                        "type": "number",
+                        "example": 50
+                      },
                       "isFollowed": {
                         "type": "boolean",
                         "example": true
