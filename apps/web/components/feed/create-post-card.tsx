@@ -20,7 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { FeedItem } from "./fan-feed";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface CreatePostCardProps {
    onCreatePost: (result: FeedItem) => void;
@@ -28,7 +28,7 @@ interface CreatePostCardProps {
 }
 
 export function CreatePostCard({ onCreatePost, avatar }: CreatePostCardProps) {
-   const searchParams = useSearchParams();
+   const router = useRouter();
    const [imagePreview, setImagePreview] = useState<string | null>(null);
    const [showFeelingModal, setShowFeelingModal] = useState(false);
    const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null);
@@ -38,25 +38,32 @@ export function CreatePostCard({ onCreatePost, avatar }: CreatePostCardProps) {
    const [isLoading, setIsLoading] = useState(false);
 
    useEffect(() => {
-      const captionParam = searchParams.get("caption");
-      if (captionParam) {
-         try {
-            const decodedData = JSON.parse(decodeURIComponent(captionParam));
-            setCaption(decodedData.caption);
+      // Use URLSearchParams with the window location to safely parse query parameters
+      if (typeof window !== "undefined") {
+         const urlParams = new URLSearchParams(window.location.search);
+         const captionParam = urlParams.get("caption");
+         
+         if (captionParam) {
+            try {
+               const decodedData = JSON.parse(decodeURIComponent(captionParam));
+               setCaption(decodedData.caption);
 
-            // Add hashtags to the caption if they exist
-            if (decodedData.hashtags && decodedData.hashtags.length > 0) {
-               const hashtagsText = decodedData.hashtags.join(" ");
-               setCaption((prev) => `${prev}\n\n${hashtagsText}`);
+               // Add hashtags to the caption if they exist
+               if (decodedData.hashtags && decodedData.hashtags.length > 0) {
+                  const hashtagsText = decodedData.hashtags.join(" ");
+                  setCaption((prev) => `${prev}\n\n${hashtagsText}`);
+               }
+
+               // Clear the URL parameter after setting the caption
+               if (window.history) {
+                  window.history.replaceState({}, "", "/feed");
+               }
+            } catch (error) {
+               console.error("Error parsing caption data:", error);
             }
-
-            // Clear the URL parameter after setting the caption
-            window.history.replaceState({}, "", "/feed");
-         } catch (error) {
-            console.error("Error parsing caption data:", error);
          }
       }
-   }, [searchParams]);
+   }, []);
 
    const handleImageClick = () => {
       fileInputRef.current?.click();
