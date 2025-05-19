@@ -2,9 +2,9 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "nodemon --watch 'src/**/*.ts' --exec 'tsx' src/server.ts",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec tsx src/server.ts",
     "clean": "rm -rf dist",
-    "specs": "nodemon --watch 'src/**/*.ts' --exec 'tsx' src/specs.ts",
+    "specs": "nodemon --watch 'src/**/*.ts' --exec tsx src/specs.ts",
     "generate-signature": "tsx scripts/generateSignature.ts"
   },
   "dependencies": {
